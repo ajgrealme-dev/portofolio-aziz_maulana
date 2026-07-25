@@ -115,10 +115,55 @@ function FlipCard({ project, isDark, scrollVelocity = 0 }) {
             ))}
           </ul>
 
-          {['AgentFlow Bot', 'Job Scraper Bot'].includes(project.title) && (
+          {/* Demo & PPTX buttons for AgentFlow */}
+          {project.title === 'AgentFlow Bot' && (
+            <div style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.6rem', alignItems: 'center' }}>
+              <a
+                href={project.demoUrl}
+                target="_blank"
+                rel="noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: '6px',
+                  background: isDark ? 'linear-gradient(90deg, rgba(20,184,166,0.15), rgba(16,185,129,0.12))' : 'linear-gradient(90deg, rgba(99,102,241,0.1), rgba(139,92,246,0.1))',
+                  border: `1px solid ${isDark ? '#14b8a6' : '#8b5cf6'}`,
+                  color: isDark ? '#14b8a6' : '#8b5cf6',
+                  padding: '8px 20px', borderRadius: '20px',
+                  fontSize: '0.85rem', fontWeight: 'bold',
+                  fontFamily: 'JetBrains Mono, monospace',
+                  textDecoration: 'none',
+                  boxShadow: isDark ? '0 0 12px rgba(20,184,166,0.3)' : 'none',
+                  width: '100%', justifyContent: 'center',
+                }}
+              >
+                ⚡ Lihat Demo AgentFlow
+              </a>
+              <a
+                href={project.pptxUrl}
+                download="AgentFlow-PitchDeck.pptx"
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: '6px',
+                  background: 'transparent',
+                  border: `1px solid ${isDark ? 'rgba(129,140,248,0.4)' : 'rgba(99,102,241,0.3)'}`,
+                  color: isDark ? '#818cf8' : '#6366f1',
+                  padding: '7px 20px', borderRadius: '20px',
+                  fontSize: '0.8rem', fontWeight: 'bold',
+                  fontFamily: 'JetBrains Mono, monospace',
+                  textDecoration: 'none',
+                  width: '100%', justifyContent: 'center',
+                }}
+              >
+                📥 Download Pitch Deck (.pptx)
+              </a>
+            </div>
+          )}
+
+          {/* Demo button for Job Scraper Bot */}
+          {project.title === 'Job Scraper Bot' && (
             <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
-              <a 
-                href={`/?demo=${project.title === 'AgentFlow Bot' ? 'agentflow' : 'jobscraper'}`}
+              <a
+                href={`/?demo=jobscraper`}
                 target="_blank"
                 rel="noreferrer"
                 onClick={(e) => e.stopPropagation()}
@@ -127,14 +172,12 @@ function FlipCard({ project, isDark, scrollVelocity = 0 }) {
                   background: isDark ? 'linear-gradient(90deg, rgba(57,255,20,0.1), rgba(0,245,255,0.1))' : 'linear-gradient(90deg, rgba(139,92,246,0.1), rgba(99,102,241,0.1))',
                   border: `1px solid ${isDark ? '#39ff14' : '#8b5cf6'}`,
                   color: isDark ? '#39ff14' : '#8b5cf6',
-                  padding: '8px 20px',
-                  borderRadius: '20px',
-                  fontSize: '0.85rem',
-                  fontWeight: 'bold',
+                  padding: '8px 20px', borderRadius: '20px',
+                  fontSize: '0.85rem', fontWeight: 'bold',
                   fontFamily: 'JetBrains Mono, monospace',
                   textDecoration: 'none',
                   boxShadow: isDark ? '0 0 10px rgba(57,255,20,0.3)' : 'none',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
                 }}
               >
                 ⚡ Lihat Demo Bot

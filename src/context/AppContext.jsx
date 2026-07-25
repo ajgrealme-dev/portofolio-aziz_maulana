@@ -37,15 +37,17 @@ export const translations = {
       items: [
         {
           title: 'AgentFlow Bot',
-          icon: '📦',
+          icon: '⚡',
           period: 'Maret 2026 – Sekarang',
-          tag: 'Node.js · SQLite · Gemini AI',
-          desc: 'Sistem administrasi pergudangan digital berbasis Telegram Bot yang mampu membaca dokumen otomatis via AI dan melakukan rekonsiliasi laporan harian.',
+          tag: 'Next.js · Gemini AI · SQLite · Prisma · Puppeteer',
+          desc: 'Platform ERP berbasis AI Agent otonom 24/7 yang mengotomasi operasional kantor lintas divisi — Finance, HR, Pengadaan, Marketing, Legal, hingga Strategi — dalam satu sistem terintegrasi.',
+          demoUrl: 'http://localhost:3000',
+          pptxUrl: '/AgentFlow-PitchDeck.pptx',
           points: [
-            'Telegram Bot (Node.js + SQLite) untuk sistem pergudangan paperless',
-            'Integrasi Gemini AI API untuk input data otomatis dari foto bon',
-            'Sistem rekonsiliasi otomatis untuk audit pembukuan harian',
-            'Alur persetujuan cuti 3-tingkat digital (Shift → Bagian → Divisi)',
+            'Dashboard eksekutif real-time: monitor jam kerja dihemat & biaya API token',
+            'Ava AI Command Center: chatbot otonom berbasis Obsidian knowledge base',
+            'Workbench & Sandbox: uji semua alat AI (OCR, RFQ, Payroll, dll.) secara langsung',
+            '8 divisi AI agent: Finance, SDM, Pengadaan, IT, Legal, Marketing, CS & Strategi',
           ],
         },
         {
@@ -150,15 +152,17 @@ export const translations = {
       items: [
         {
           title: 'AgentFlow Bot',
-          icon: '📦',
+          icon: '⚡',
           period: 'March 2026 – Present',
-          tag: 'Node.js · SQLite · Gemini AI',
-          desc: 'Digital warehouse administration system based on Telegram Bot, capable of auto-reading documents via AI and reconciling daily reports.',
+          tag: 'Next.js · Gemini AI · SQLite · Prisma · Puppeteer',
+          desc: 'Autonomous 24/7 AI Agent ERP platform that automates office operations across divisions — Finance, HR, Procurement, Marketing, Legal, and Strategy — in one integrated system.',
+          demoUrl: 'http://localhost:3000',
+          pptxUrl: '/AgentFlow-PitchDeck.pptx',
           points: [
-            'Telegram Bot (Node.js + SQLite) for paperless warehouse system',
-            'Gemini AI API integration for automated data input from receipt photos',
-            'Auto-reconciliation system for daily bookkeeping audit',
-            '3-level digital leave approval flow (Shift → Department → Division)',
+            'Real-time executive dashboard: tracks hours saved & API token costs',
+            'Ava AI Command Center: autonomous chatbot powered by Obsidian knowledge base',
+            'Workbench & Sandbox: live-test all AI tools (OCR, RFQ, Payroll, etc.)',
+            '8 AI division agents: Finance, HR, Procurement, IT, Legal, Marketing, CS & Strategy',
           ],
         },
         {
