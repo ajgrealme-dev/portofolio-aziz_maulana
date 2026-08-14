@@ -36,6 +36,19 @@ export const translations = {
       title: 'Proyek Mandiri',
       items: [
         {
+          title: 'AgentFlow B2B Makelar',
+          icon: '🤝',
+          period: 'Agustus 2026 – Sekarang',
+          tag: 'Node.js · Playwright · Gemini AI · OSINT',
+          desc: 'Mesin AI Makelar B2B end-to-end yang mengotomatisasi pencarian pabrik (buyer & supplier), negosiasi, dan tender harga (RFQ) secara mandiri menggunakan teknologi web scraping dan OSINT.',
+          points: [
+            'Scraping direktori bisnis (Google Maps) untuk memetakan pabrik target berdasarkan wilayah',
+            'Pencarian dan ekstraksi alamat email B2B asli menggunakan teknik OSINT (Open Source Intelligence)',
+            'Validasi DNS MX Record ketat untuk memastikan zero-bounce pada email campaign',
+            'Sistem Tender Terbuka (RFQ) otomatis ke berbagai supplier untuk mengunci harga grosir termurah'
+          ]
+        },
+        {
           title: 'AgentFlow Bot',
           icon: '⚡',
           period: 'Maret 2026 – Sekarang',
@@ -150,6 +163,19 @@ export const translations = {
     projects: {
       title: 'Personal Projects',
       items: [
+        {
+          title: 'AgentFlow B2B Broker',
+          icon: '🤝',
+          period: 'August 2026 – Present',
+          tag: 'Node.js · Playwright · Gemini AI · OSINT',
+          desc: 'An end-to-end B2B Broker AI engine that automates factory discovery (buyers & suppliers), negotiation, and open tender (RFQ) pricing using web scraping and OSINT technologies.',
+          points: [
+            'Scraping business directories (Google Maps) to map target factories by region',
+            'Discovery and extraction of authentic B2B email addresses using OSINT techniques',
+            'Strict DNS MX Record validation to ensure zero-bounce rate on email campaigns',
+            'Automated Open Tender (RFQ) system across multiple suppliers to lock in the lowest wholesale prices'
+          ]
+        },
         {
           title: 'AgentFlow Bot',
           icon: '⚡',
