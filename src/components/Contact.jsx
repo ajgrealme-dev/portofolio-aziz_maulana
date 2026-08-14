@@ -108,7 +108,7 @@ export default function Contact() {
       type: 'link',
       label: 'LinkedIn',
       value: 'Aziz Maulana',
-      href: 'https://www.linkedin.com/in/aziz-maulana-75908b260/',
+      href: 'https://www.linkedin.com/in/aziz-maulana-',
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
           <path d="M22.23 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.72V1.72C24 .77 23.2 0 22.23 0zM7.06 20.45H3.56V9h3.5v11.45zM5.31 7.55c-1.12 0-2.03-.91-2.03-2.03s.91-2.03 2.03-2.03 2.03.91 2.03 2.03-.91 2.03-2.03 2.03zM20.45 20.45h-3.5v-5.6c0-1.34-.03-3.06-1.87-3.06-1.87 0-2.15 1.46-2.15 2.96v5.7H9.44V9h3.36v1.56h.05c.47-.89 1.62-1.83 3.33-1.83 3.56 0 4.22 2.34 4.22 5.39v6.33z" fill="#0A66C2"/>
