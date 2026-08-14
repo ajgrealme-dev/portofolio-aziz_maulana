@@ -37,7 +37,7 @@ export default function About() {
   const textColor = isDark ? '#e2e8f0' : '#1e293b';
   const subColor = isDark ? '#94a3b8' : '#64748b';
   const cardBorder = isDark ? 'rgba(0,245,255,0.15)' : 'rgba(99,102,241,0.2)';
-  const photoSrc = '/foto_website.png';
+  const photoSrc = '/foto_asli.jpg';
 
   return (
     <section id="about" ref={ref} style={{ padding: '120px 2rem', position: 'relative', zIndex: 10 }}>

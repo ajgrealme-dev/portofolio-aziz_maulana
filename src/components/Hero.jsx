@@ -138,7 +138,7 @@ export default function Hero() {
             {t.hero.cta}
           </motion.a>
           <motion.a
-            href="/CV_Aziz_Maulana_IT_Operations.pdf" download
+            href="./CV_Aziz_Maulana_IT_Operations.pdf" download
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             style={{
@@ -169,9 +169,7 @@ export default function Hero() {
           </span>
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', justifyContent: 'center' }}>
             <motion.a
-              href="http://localhost:3000"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="#projects"
               whileHover={{ scale: 1.06, boxShadow: '0 0 40px rgba(20, 184, 166, 0.5)' }}
               whileTap={{ scale: 0.96 }}
               style={{
@@ -184,10 +182,10 @@ export default function Hero() {
                 boxShadow: '0 0 24px rgba(20, 184, 166, 0.35)',
               }}
             >
-              <span>🤖</span> Lihat Demo AgentFlow ERP
+              <span>🤖</span> Lihat Proyek AgentFlow & B2B
             </motion.a>
             <motion.a
-              href="http://localhost:3000/api/pitch/generate-pptx"
+              href="./AgentFlow-PitchDeck.pptx"
               download="AgentFlow-PitchDeck.pptx"
               whileHover={{ scale: 1.06 }}
               whileTap={{ scale: 0.96 }}
