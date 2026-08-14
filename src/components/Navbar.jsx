@@ -51,16 +51,6 @@ export default function Navbar({ activeSection }) {
           whileHover={{ scale: 1.05 }}
           style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '10px' }}
         >
-          <img
-            src="./foto_asli.jpg"
-            alt="Aziz Maulana"
-            style={{
-              width: '38px', height: '38px', borderRadius: '10px',
-              objectFit: 'cover', objectPosition: 'center',
-              border: `1px solid ${accentColor}`,
-              boxShadow: `0 0 12px ${accentColor}60`,
-            }}
-          />
           <span style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.1rem', fontWeight: 700, color: textColor }}>
             Aziz Maulana
           </span>
