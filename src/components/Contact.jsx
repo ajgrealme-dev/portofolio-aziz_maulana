@@ -61,13 +61,10 @@ export default function Contact() {
       type: 'link',
       label: 'Email',
       value: 'ajgrealme@gmail.com',
-      href: 'mailto:ajgrealme@gmail.com',
+      href: 'https://mail.google.com/mail/?view=cm&fs=1&to=ajgrealme@gmail.com',
       icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-          <path d="M1.5 19.333c0 .92.747 1.667 1.667 1.667h3.333V9.167L1.5 5.833V19.333z" fill="#4285F4"/>
-          <path d="M17.5 21h3.333c.92 0 1.667-.747 1.667-1.667V5.833l-5 3.334V21z" fill="#34A853"/>
-          <path d="M17.5 9.167L22.5 5.833A1.66 1.66 0 0 0 21 3.333L12 9.167l-9-5.834a1.66 1.66 0 0 0-1.5 2.5l5 3.334" fill="#EA4335"/>
-          <path d="M6.5 9.167v11.833h11V9.167l-5.5 3.666-5.5-3.666z" fill="#FBBC05"/>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#EA4335">
+          <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z" />
         </svg>
       )
     },

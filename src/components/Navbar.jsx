@@ -52,7 +52,7 @@ export default function Navbar({ activeSection }) {
           style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '10px' }}
         >
           <img
-            src="./foto_website.png"
+            src="./foto_asli.jpg"
             alt="Aziz Maulana"
             style={{
               width: '38px', height: '38px', borderRadius: '10px',
