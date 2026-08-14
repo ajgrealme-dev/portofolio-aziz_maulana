@@ -56,7 +56,7 @@ export default function Navbar({ activeSection }) {
             alt="Aziz Maulana"
             style={{
               width: '38px', height: '38px', borderRadius: '10px',
-              objectFit: 'cover', objectPosition: 'center top',
+              objectFit: 'cover', objectPosition: 'center',
               border: `1px solid ${accentColor}`,
               boxShadow: `0 0 12px ${accentColor}60`,
             }}

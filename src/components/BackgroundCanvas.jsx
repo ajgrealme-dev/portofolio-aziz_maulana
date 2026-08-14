@@ -131,7 +131,8 @@ export default function BackgroundCanvas({ isDark }) {
     <Canvas
       camera={{ position: [0, 0, 5], fov: 75 }}
       style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }}
-      gl={{ antialias: true, alpha: true }}
+      dpr={[1, 1.5]}
+      gl={{ antialias: false, alpha: true }}
     >
       <ambientLight intensity={0.4} />
       <pointLight position={[5, 5, 5]} intensity={0.7} color={isDark ? '#00f5ff' : '#6366f1'} />

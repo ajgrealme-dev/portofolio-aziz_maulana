@@ -243,7 +243,7 @@ export default function Skills() {
             {isDark ? 'Interactive Tech & Soft Skills Sphere' : 'Interactive Tech & Soft Skills Sphere'}
           </h3>
           <div style={{ width: '100%', height: '100%', position: 'absolute', inset: 0, top: '2.5rem' }}>
-            <Canvas camera={{ position: [0, 0, 6.2], fov: 60 }} style={{ pointerEvents: 'none' }}>
+            <Canvas dpr={[1, 1.5]} gl={{ antialias: false }} camera={{ position: [0, 0, 6.2], fov: 60 }} style={{ pointerEvents: 'none' }}>
               <Cloud isDark={isDark} />
             </Canvas>
           </div>

@@ -93,7 +93,8 @@ export default function HeroCanvas({ isDark }) {
     <Canvas
       camera={{ position: [0, 0, 8], fov: 60 }}
       style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}
-      gl={{ antialias: true, alpha: true }}
+      dpr={[1, 1.5]}
+      gl={{ antialias: false, alpha: true }}
     >
       <ambientLight intensity={isDark ? 0.3 : 0.5} />
       <pointLight position={[10, 10, 10]} intensity={isDark ? 1 : 0.8} color={isDark ? '#00f5ff' : '#2563eb'} />
