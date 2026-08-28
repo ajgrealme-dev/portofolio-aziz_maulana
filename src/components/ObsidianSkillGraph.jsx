@@ -1,124 +1,107 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 
 // Constellation Knowledge Graph Data
 const GRAPH_DATA = {
   nodes: [
     // Center Hub
-    { id: 'root', label: 'Aziz Maulana', category: 'root', color: '#00f5ff', radius: 24, x: 0, y: 0, level: 'Core Hub', desc: 'Warehouse & Operations Administrator (Automation-Enabled)' },
+    { id: 'root', label: 'Aziz Maulana', category: 'root', color: '#00f5ff', radius: 26, x: 0, y: 0, mass: 3.0 },
 
     // Category Hubs
-    { id: 'hub-admin', label: 'Administrasi & Data', category: 'admin', color: '#38bdf8', radius: 18, x: -160, y: -90, level: 'Kategori', desc: 'Pusat ketelitian pencatatan, verifikasi dokumen & spreadsheet' },
-    { id: 'hub-ai', label: 'AI & Otomasi', category: 'ai', color: '#a855f7', radius: 18, x: 170, y: -90, level: 'Kategori', desc: 'Arsitektur bot otonom, LLM API, & web automation' },
-    { id: 'hub-tech', label: 'Advanced Tech', category: 'tech', color: '#ec4899', radius: 18, x: 150, y: 110, level: 'Kategori', desc: 'Computer vision, 3D WebGL scenes, & quantitative trading' },
-    { id: 'hub-soft', label: 'Karakter & Disiplin', category: 'soft', color: '#22c55e', radius: 18, x: -150, y: 110, level: 'Kategori', desc: 'Integritas tinggi, kepatuhan SOP & kedisiplinan kerja' },
+    { id: 'hub-admin', label: 'Administrasi & Data', category: 'admin', color: '#38bdf8', radius: 19, x: -170, y: -90, mass: 1.8 },
+    { id: 'hub-ai', label: 'AI & Otomasi', category: 'ai', color: '#a855f7', radius: 19, x: 180, y: -90, mass: 1.8 },
+    { id: 'hub-tech', label: 'Advanced Tech', category: 'tech', color: '#ec4899', radius: 19, x: 160, y: 110, mass: 1.8 },
+    { id: 'hub-soft', label: 'Karakter & Disiplin', category: 'soft', color: '#22c55e', radius: 19, x: -160, y: 110, mass: 1.8 },
 
     // Admin Leaf Nodes
-    { id: 'skill-dataentry', label: 'Data Entry', category: 'admin', color: '#38bdf8', radius: 13, x: -260, y: -150, level: 'Skill', desc: 'Input data cepat dan akurat dengan verifikasi zero-error' },
-    { id: 'skill-excel', label: 'MS Excel (VLOOKUP/Pivot)', category: 'admin', color: '#38bdf8', radius: 14, x: -270, y: -60, level: 'Skill', desc: 'Pengolahan tabel, formula logika, rekonsiliasi & reporting' },
-    { id: 'skill-word', label: 'MS Word & SOP', category: 'admin', color: '#38bdf8', radius: 12, x: -200, y: -180, level: 'Skill', desc: 'Penyusunan berkas resmi, surat jalan, dan dokumentasi kerja' },
-    { id: 'skill-laporan', label: 'Laporan Harian', category: 'admin', color: '#38bdf8', radius: 13, x: -100, y: -190, level: 'Skill', desc: 'Rekapitulasi berkala arus barang masuk/keluar & kas operasional' },
+    { id: 'skill-dataentry', label: 'Data Entry', category: 'admin', color: '#38bdf8', radius: 13, x: -270, y: -150, mass: 1.0 },
+    { id: 'skill-excel', label: 'MS Excel (VLOOKUP/Pivot)', category: 'admin', color: '#38bdf8', radius: 14, x: -280, y: -60, mass: 1.0 },
+    { id: 'skill-word', label: 'MS Word & SOP', category: 'admin', color: '#38bdf8', radius: 12, x: -210, y: -180, mass: 1.0 },
+    { id: 'skill-laporan', label: 'Laporan Harian', category: 'admin', color: '#38bdf8', radius: 13, x: -110, y: -190, mass: 1.0 },
 
     // AI & Otomasi Leaf Nodes
-    { id: 'skill-nodejs', label: 'Node.js', category: 'ai', color: '#a855f7', radius: 14, x: 260, y: -160, level: 'Skill', desc: 'Runtime backend untuk bot multi-agent & automasi data' },
-    { id: 'skill-python', label: 'Python (Pandas)', category: 'ai', color: '#a855f7', radius: 14, x: 270, y: -60, level: 'Skill', desc: 'Manipulasi dataset CSV, web scraping, & machine learning' },
-    { id: 'skill-sqlite', label: 'SQLite / Prisma', category: 'ai', color: '#a855f7', radius: 12, x: 200, y: -180, level: 'Skill', desc: 'Penyimpanan database relasional cepat & terstruktur' },
-    { id: 'skill-gemini', label: 'Gemini AI API', category: 'ai', color: '#a855f7', radius: 13, x: 120, y: -180, level: 'Skill', desc: 'Ekstraksi dokumen OCR, vision parsing, & natural language' },
-    { id: 'skill-playwright', label: 'Playwright', category: 'ai', color: '#a855f7', radius: 13, x: 280, y: 20, level: 'Skill', desc: 'Automasi browser tanpa kepala untuk web scraping & data mining' },
-    { id: 'skill-telegram', label: 'Telegram Bot API', category: 'ai', color: '#a855f7', radius: 12, x: 70, y: -180, level: 'Skill', desc: 'Notifikasi real-time & command center interaktif di smartphone' },
+    { id: 'skill-nodejs', label: 'Node.js', category: 'ai', color: '#a855f7', radius: 14, x: 270, y: -160, mass: 1.0 },
+    { id: 'skill-python', label: 'Python (Pandas)', category: 'ai', color: '#a855f7', radius: 14, x: 280, y: -60, mass: 1.0 },
+    { id: 'skill-sqlite', label: 'SQLite / Prisma', category: 'ai', color: '#a855f7', radius: 12, x: 210, y: -180, mass: 1.0 },
+    { id: 'skill-gemini', label: 'Gemini AI API', category: 'ai', color: '#a855f7', radius: 13, x: 130, y: -180, mass: 1.0 },
+    { id: 'skill-playwright', label: 'Playwright', category: 'ai', color: '#a855f7', radius: 13, x: 290, y: 20, mass: 1.0 },
+    { id: 'skill-telegram', label: 'Telegram Bot API', category: 'ai', color: '#a855f7', radius: 12, x: 80, y: -180, mass: 1.0 },
 
     // Tech Leaf Nodes
-    { id: 'skill-threejs', label: 'Three.js / WebGL', category: 'tech', color: '#ec4899', radius: 13, x: 240, y: 170, level: 'Skill', desc: 'Grafik interaktif 3D & visualisasi spasial berbasis web' },
-    { id: 'skill-opencv', label: 'OpenCV', category: 'tech', color: '#ec4899', radius: 13, x: 230, y: 70, level: 'Skill', desc: 'Pengolahan citra komputer & deteksi visual real-time' },
-    { id: 'skill-mediapipe', label: 'MediaPipe 3D', category: 'tech', color: '#ec4899', radius: 12, x: 90, y: 200, level: 'Skill', desc: 'Pelacakan landmark wajah dan tangan secara 3 dimensi' },
-    { id: 'skill-mt5', label: 'MetaTrader 5 API', category: 'tech', color: '#ec4899', radius: 13, x: 180, y: 200, level: 'Skill', desc: 'Eksekusi transaksi finansial kuantitatif algoritmik' },
+    { id: 'skill-threejs', label: 'Three.js / WebGL', category: 'tech', color: '#ec4899', radius: 13, x: 250, y: 170, mass: 1.0 },
+    { id: 'skill-opencv', label: 'OpenCV', category: 'tech', color: '#ec4899', radius: 13, x: 240, y: 70, mass: 1.0 },
+    { id: 'skill-mediapipe', label: 'MediaPipe 3D', category: 'tech', color: '#ec4899', radius: 12, x: 100, y: 200, mass: 1.0 },
+    { id: 'skill-mt5', label: 'MetaTrader 5 API', category: 'tech', color: '#ec4899', radius: 13, x: 190, y: 200, mass: 1.0 },
 
     // Soft Skills Leaf Nodes
-    { id: 'skill-disiplin', label: 'Disiplin Tinggi', category: 'soft', color: '#22c55e', radius: 13, x: -250, y: 160, level: 'Soft Skill', desc: 'Kepatuhan waktu & komitmen tinggi terhadap target pekerjaan' },
-    { id: 'skill-teliti', label: 'Ketelitian Data', category: 'soft', color: '#22c55e', radius: 14, x: -250, y: 60, level: 'Soft Skill', desc: 'Fokus presisi terhadap angka & minim kesalahan rekonsiliasi' },
-    { id: 'skill-belajar', label: 'Kemauan Belajar', category: 'soft', color: '#22c55e', radius: 13, x: -90, y: 190, level: 'Soft Skill', desc: 'Cepat beradaptasi dengan software & teknologi baru di kantor' },
-    { id: 'skill-patuh', label: 'Kepatuhan Aturan', category: 'soft', color: '#22c55e', radius: 13, x: -180, y: 190, level: 'Soft Skill', desc: 'Menjalankan instruksi atasan & SOP perusahaan secara disiplin' },
+    { id: 'skill-disiplin', label: 'Disiplin Tinggi', category: 'soft', color: '#22c55e', radius: 13, x: -260, y: 160, mass: 1.0 },
+    { id: 'skill-teliti', label: 'Ketelitian Data', category: 'soft', color: '#22c55e', radius: 14, x: -260, y: 60, mass: 1.0 },
+    { id: 'skill-belajar', label: 'Kemauan Belajar', category: 'soft', color: '#22c55e', radius: 13, x: -100, y: 190, mass: 1.0 },
+    { id: 'skill-patuh', label: 'Kepatuhan Aturan', category: 'soft', color: '#22c55e', radius: 13, x: -190, y: 190, mass: 1.0 },
   ],
   links: [
     // Root to Hubs
-    { source: 'root', target: 'hub-admin' },
-    { source: 'root', target: 'hub-ai' },
-    { source: 'root', target: 'hub-tech' },
-    { source: 'root', target: 'hub-soft' },
+    { source: 'root', target: 'hub-admin', length: 140 },
+    { source: 'root', target: 'hub-ai', length: 140 },
+    { source: 'root', target: 'hub-tech', length: 140 },
+    { source: 'root', target: 'hub-soft', length: 140 },
 
     // Admin Hub
-    { source: 'hub-admin', target: 'skill-dataentry' },
-    { source: 'hub-admin', target: 'skill-excel' },
-    { source: 'hub-admin', target: 'skill-word' },
-    { source: 'hub-admin', target: 'skill-laporan' },
-    { source: 'skill-dataentry', target: 'skill-excel' },
+    { source: 'hub-admin', target: 'skill-dataentry', length: 90 },
+    { source: 'hub-admin', target: 'skill-excel', length: 90 },
+    { source: 'hub-admin', target: 'skill-word', length: 90 },
+    { source: 'hub-admin', target: 'skill-laporan', length: 90 },
+    { source: 'skill-dataentry', target: 'skill-excel', length: 70 },
 
     // AI Hub
-    { source: 'hub-ai', target: 'skill-nodejs' },
-    { source: 'hub-ai', target: 'skill-python' },
-    { source: 'hub-ai', target: 'skill-sqlite' },
-    { source: 'hub-ai', target: 'skill-gemini' },
-    { source: 'hub-ai', target: 'skill-playwright' },
-    { source: 'hub-ai', target: 'skill-telegram' },
-    { source: 'skill-nodejs', target: 'skill-gemini' },
-    { source: 'skill-python', target: 'skill-playwright' },
+    { source: 'hub-ai', target: 'skill-nodejs', length: 90 },
+    { source: 'hub-ai', target: 'skill-python', length: 90 },
+    { source: 'hub-ai', target: 'skill-sqlite', length: 90 },
+    { source: 'hub-ai', target: 'skill-gemini', length: 90 },
+    { source: 'hub-ai', target: 'skill-playwright', length: 90 },
+    { source: 'hub-ai', target: 'skill-telegram', length: 90 },
+    { source: 'skill-nodejs', target: 'skill-gemini', length: 70 },
+    { source: 'skill-python', target: 'skill-playwright', length: 70 },
 
     // Tech Hub
-    { source: 'hub-tech', target: 'skill-threejs' },
-    { source: 'hub-tech', target: 'skill-opencv' },
-    { source: 'hub-tech', target: 'skill-mediapipe' },
-    { source: 'hub-tech', target: 'skill-mt5' },
-    { source: 'skill-opencv', target: 'skill-mediapipe' },
+    { source: 'hub-tech', target: 'skill-threejs', length: 90 },
+    { source: 'hub-tech', target: 'skill-opencv', length: 90 },
+    { source: 'hub-tech', target: 'skill-mediapipe', length: 90 },
+    { source: 'hub-tech', target: 'skill-mt5', length: 90 },
+    { source: 'skill-opencv', target: 'skill-mediapipe', length: 70 },
 
     // Soft Skills Hub
-    { source: 'hub-soft', target: 'skill-disiplin' },
-    { source: 'hub-soft', target: 'skill-teliti' },
-    { source: 'hub-soft', target: 'skill-belajar' },
-    { source: 'hub-soft', target: 'skill-patuh' },
-    { source: 'skill-disiplin', target: 'skill-patuh' },
+    { source: 'hub-soft', target: 'skill-disiplin', length: 90 },
+    { source: 'hub-soft', target: 'skill-teliti', length: 90 },
+    { source: 'hub-soft', target: 'skill-belajar', length: 90 },
+    { source: 'hub-soft', target: 'skill-patuh', length: 90 },
+    { source: 'skill-disiplin', target: 'skill-patuh', length: 70 },
 
     // Cross-Category Links
-    { source: 'skill-excel', target: 'skill-python' },
-    { source: 'skill-dataentry', target: 'skill-nodejs' },
-    { source: 'skill-teliti', target: 'skill-dataentry' },
+    { source: 'skill-excel', target: 'skill-python', length: 120 },
+    { source: 'skill-dataentry', target: 'skill-nodejs', length: 120 },
+    { source: 'skill-teliti', target: 'skill-dataentry', length: 90 },
   ]
 };
 
 export default function ObsidianSkillGraph({ isDark }) {
   const canvasRef = useRef(null);
-  const [selectedNode, setSelectedNode] = useState(GRAPH_DATA.nodes[0]);
   const [hoveredNode, setHoveredNode] = useState(null);
 
-  // Physics simulation state
+  // Physics simulation state (Nodes with velocities and home anchors)
   const nodesRef = useRef(
     GRAPH_DATA.nodes.map(n => ({
       ...n,
-      vx: 0,
-      vy: 0,
       currentX: n.x,
       currentY: n.y,
+      vx: 0,
+      vy: 0,
+      anchorX: n.x,
+      anchorY: n.y,
     }))
   );
 
-  const panRef = useRef({ x: 0, y: 0 });
-  const zoomRef = useRef(1);
-  const isDraggingNodeRef = useRef(null);
-  const isPanningRef = useRef(false);
-  const lastMousePosRef = useRef({ x: 0, y: 0 });
-
-  const activeNode = hoveredNode || selectedNode;
-  const activeId = activeNode?.id;
-
-  const handleReset = () => {
-    panRef.current = { x: 0, y: 0 };
-    zoomRef.current = 1;
-    nodesRef.current.forEach(n => {
-      n.currentX = n.x;
-      n.currentY = n.y;
-      n.vx = 0;
-      n.vy = 0;
-    });
-  };
+  const draggedNodeRef = useRef(null);
+  const mousePosRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -143,33 +126,109 @@ export default function ObsidianSkillGraph({ isDark }) {
       const rect = canvas.getBoundingClientRect();
       const width = rect.width;
       const height = rect.height;
-      const centerX = width / 2 + panRef.current.x;
-      const centerY = height / 2 + panRef.current.y;
-      const zoom = zoomRef.current;
+      const centerX = width / 2;
+      const centerY = height / 2;
 
       ctx.clearRect(0, 0, width, height);
 
-      // Force-directed spring physics update
       const nodes = nodesRef.current;
       const nodeMap = new Map();
       nodes.forEach(n => nodeMap.set(n.id, n));
 
-      nodes.forEach((n, idx) => {
-        if (isDraggingNodeRef.current !== n) {
-          const floatX = Math.sin(time + idx * 0.7) * 0.2;
-          const floatY = Math.cos(time + idx * 0.5) * 0.2;
-          n.currentX += floatX;
-          n.currentY += floatY;
+      // ==========================================
+      // 🌐 TRUE ELASTIC WEB PHYSICS ENGINE
+      // ==========================================
 
-          // Gentle spring pull towards base position
-          const dx = n.x - n.currentX;
-          const dy = n.y - n.currentY;
-          n.currentX += dx * 0.035;
-          n.currentY += dy * 0.035;
+      // 1. Link Spring Forces (Tension pulling connected nodes)
+      const SPRING_K = 0.045; // Spring tension
+      GRAPH_DATA.links.forEach(link => {
+        const a = nodeMap.get(link.source);
+        const b = nodeMap.get(link.target);
+        if (!a || !b) return;
+
+        const dx = b.currentX - a.currentX;
+        const dy = b.currentY - a.currentY;
+        const dist = Math.hypot(dx, dy) || 1;
+        const restLen = link.length || 100;
+        const force = (dist - restLen) * SPRING_K;
+
+        const fx = (dx / dist) * force;
+        const fy = (dy / dist) * force;
+
+        if (draggedNodeRef.current !== a) {
+          a.vx += (fx / a.mass);
+          a.vy += (fy / a.mass);
+        }
+        if (draggedNodeRef.current !== b) {
+          b.vx -= (fx / b.mass);
+          b.vy -= (fy / b.mass);
         }
       });
 
-      // 1. Draw Links (Lines)
+      // 2. Coulomb Repulsion between all nodes (prevents overlap)
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const a = nodes[i];
+          const b = nodes[j];
+          const dx = b.currentX - a.currentX;
+          const dy = b.currentY - a.currentY;
+          const dist = Math.hypot(dx, dy) || 1;
+          const minDist = (a.radius + b.radius) + 30;
+
+          if (dist < minDist) {
+            const repelForce = ((minDist - dist) / dist) * 0.4;
+            const rfx = dx * repelForce;
+            const rfy = dy * repelForce;
+
+            if (draggedNodeRef.current !== a) {
+              a.vx -= rfx;
+              a.vy -= rfy;
+            }
+            if (draggedNodeRef.current !== b) {
+              b.vx += rfx;
+              b.vy += rfy;
+            }
+          }
+        }
+      }
+
+      // 3. Anchor Gravity + Ambient Float + Position Integration
+      const HOME_GRAVITY_K = 0.025; // Gentle return home gravity
+      const DAMPING = 0.85; // Air friction
+
+      nodes.forEach((n, idx) => {
+        if (draggedNodeRef.current === n) {
+          // Dragged node follows mouse directly
+          n.currentX = mousePosRef.current.x;
+          n.currentY = mousePosRef.current.y;
+          n.vx = 0;
+          n.vy = 0;
+        } else {
+          // Ambient breathing motion
+          const floatX = Math.sin(time + idx * 0.7) * 0.15;
+          const floatY = Math.cos(time + idx * 0.5) * 0.15;
+
+          // Pull back towards home anchor
+          const anchorDx = n.anchorX - n.currentX;
+          const anchorDy = n.anchorY - n.currentY;
+
+          n.vx += anchorDx * HOME_GRAVITY_K + floatX;
+          n.vy += anchorDy * HOME_GRAVITY_K + floatY;
+
+          // Apply velocity and damping
+          n.vx *= DAMPING;
+          n.vy *= DAMPING;
+          n.currentX += n.vx;
+          n.currentY += n.vy;
+        }
+      });
+
+      const activeNode = hoveredNode;
+      const activeId = activeNode?.id;
+
+      // ==========================================
+      // 🎨 DRAW CONNECTING LINES (LINKS)
+      // ==========================================
       GRAPH_DATA.links.forEach(link => {
         const source = nodeMap.get(link.source);
         const target = nodeMap.get(link.target);
@@ -178,29 +237,29 @@ export default function ObsidianSkillGraph({ isDark }) {
         const isRelated = activeId && (link.source === activeId || link.target === activeId);
         const isDimmed = activeId && !isRelated;
 
-        const sx = centerX + source.currentX * zoom;
-        const sy = centerY + source.currentY * zoom;
-        const tx = centerX + target.currentX * zoom;
-        const ty = centerY + target.currentY * zoom;
+        const sx = centerX + source.currentX;
+        const sy = centerY + source.currentY;
+        const tx = centerX + target.currentX;
+        const ty = centerY + target.currentY;
 
         ctx.beginPath();
         ctx.moveTo(sx, sy);
         ctx.lineTo(tx, ty);
-        ctx.lineWidth = isRelated ? 2.2 * zoom : 1.1 * zoom;
+        ctx.lineWidth = isRelated ? 2.4 : 1.2;
         ctx.strokeStyle = isRelated
           ? (isDark ? '#00f5ff' : '#6366f1')
           : isDimmed
           ? (isDark ? 'rgba(0, 245, 255, 0.08)' : 'rgba(99, 102, 241, 0.08)')
-          : (isDark ? 'rgba(0, 245, 255, 0.3)' : 'rgba(99, 102, 241, 0.3)');
+          : (isDark ? 'rgba(0, 245, 255, 0.32)' : 'rgba(99, 102, 241, 0.32)');
         ctx.stroke();
 
-        // Pulsing pulse energy ball on active relation
+        // Pulsing energy particle along active link
         if (isRelated) {
-          const pulseT = (time * 1.5) % 1;
+          const pulseT = (time * 1.6) % 1;
           const px = sx + (tx - sx) * pulseT;
           const py = sy + (ty - sy) * pulseT;
           ctx.beginPath();
-          ctx.arc(px, py, 3.5 * zoom, 0, Math.PI * 2);
+          ctx.arc(px, py, 3.5, 0, Math.PI * 2);
           ctx.fillStyle = isDark ? '#39ff14' : '#8b5cf6';
           ctx.shadowBlur = 10;
           ctx.shadowColor = isDark ? '#39ff14' : '#8b5cf6';
@@ -209,10 +268,12 @@ export default function ObsidianSkillGraph({ isDark }) {
         }
       });
 
-      // 2. Draw Nodes
+      // ==========================================
+      // 🌟 DRAW NODES
+      // ==========================================
       nodes.forEach(node => {
-        const isSelected = selectedNode?.id === node.id;
         const isHovered = hoveredNode?.id === node.id;
+        const isDragged = draggedNodeRef.current?.id === node.id;
         const isRelated = activeId && (
           node.id === activeId ||
           GRAPH_DATA.links.some(l => 
@@ -221,21 +282,21 @@ export default function ObsidianSkillGraph({ isDark }) {
           )
         );
         const isDimmed = activeId && !isRelated;
-        const isHighlighted = isSelected || isHovered;
+        const isHighlighted = isHovered || isDragged;
 
-        const nx = centerX + node.currentX * zoom;
-        const ny = centerY + node.currentY * zoom;
-        const nr = node.radius * zoom * (isHighlighted ? 1.25 : 1.0);
+        const nx = centerX + node.currentX;
+        const ny = centerY + node.currentY;
+        const nr = node.radius * (isHighlighted ? 1.25 : 1.0);
 
-        // Node Glow Halo
+        // Halo Glow
         if (isHighlighted || (!isDimmed && node.category === 'root')) {
           ctx.beginPath();
           ctx.arc(nx, ny, nr * 1.8, 0, Math.PI * 2);
-          ctx.fillStyle = `${node.color}30`;
+          ctx.fillStyle = `${node.color}35`;
           ctx.fill();
         }
 
-        // Node Body
+        // Node Circle Body
         ctx.beginPath();
         ctx.arc(nx, ny, Math.max(3, nr), 0, Math.PI * 2);
         ctx.fillStyle = isDimmed ? `${node.color}40` : node.color;
@@ -246,20 +307,20 @@ export default function ObsidianSkillGraph({ isDark }) {
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        // Node Border Ring
+        // Border Ring
         ctx.beginPath();
         ctx.arc(nx, ny, Math.max(3, nr), 0, Math.PI * 2);
-        ctx.lineWidth = isHighlighted ? 2.5 : 1.2;
-        ctx.strokeStyle = isHighlighted ? '#ffffff' : `${node.color}90`;
+        ctx.lineWidth = isHighlighted ? 2.5 : 1.4;
+        ctx.strokeStyle = isHighlighted ? '#ffffff' : `${node.color}99`;
         ctx.stroke();
 
-        // Node Label
-        const fontSize = Math.max(10, (node.category === 'root' ? 13 : node.category.startsWith('hub') ? 11 : 9.5) * zoom);
+        // Text Label
+        const fontSize = node.category === 'root' ? 13.5 : node.category.startsWith('hub') ? 11.5 : 9.5;
         ctx.font = `${node.category === 'root' ? 'bold' : '600'} ${fontSize}px "JetBrains Mono", monospace`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'top';
 
-        const textY = ny + nr + 4 * zoom;
+        const textY = ny + nr + 5;
         ctx.fillStyle = isDimmed
           ? (isDark ? 'rgba(226, 232, 240, 0.25)' : 'rgba(30, 41, 59, 0.25)')
           : isHighlighted
@@ -281,26 +342,20 @@ export default function ObsidianSkillGraph({ isDark }) {
       window.removeEventListener('resize', resizeCanvas);
       cancelAnimationFrame(animationFrameId);
     };
-  }, [isDark, activeId, selectedNode, hoveredNode]);
+  }, [isDark, hoveredNode]);
 
-  // Pointer Handling
+  // Pointer Handling for Dragging and Spring Cascade
   const getNodeAtPos = useCallback((clientX, clientY) => {
     const canvas = canvasRef.current;
     if (!canvas) return null;
     const rect = canvas.getBoundingClientRect();
-    const x = clientX - rect.left;
-    const y = clientY - rect.top;
-
-    const centerX = rect.width / 2 + panRef.current.x;
-    const centerY = rect.height / 2 + panRef.current.y;
-    const zoom = zoomRef.current;
+    const x = clientX - rect.left - rect.width / 2;
+    const y = clientY - rect.top - rect.height / 2;
 
     for (let i = nodesRef.current.length - 1; i >= 0; i--) {
       const node = nodesRef.current[i];
-      const nx = centerX + node.currentX * zoom;
-      const ny = centerY + node.currentY * zoom;
-      const dist = Math.hypot(x - nx, y - ny);
-      if (dist <= (node.radius + 8) * zoom) {
+      const dist = Math.hypot(x - node.currentX, y - node.currentY);
+      if (dist <= node.radius + 12) {
         return node;
       }
     }
@@ -309,54 +364,48 @@ export default function ObsidianSkillGraph({ isDark }) {
 
   const handlePointerDown = (e) => {
     const node = getNodeAtPos(e.clientX, e.clientY);
-    lastMousePosRef.current = { x: e.clientX, y: e.clientY };
-
     if (node) {
-      isDraggingNodeRef.current = node;
-      setSelectedNode(node);
-    } else {
-      isPanningRef.current = true;
+      draggedNodeRef.current = node;
+      const canvas = canvasRef.current;
+      const rect = canvas.getBoundingClientRect();
+      mousePosRef.current = {
+        x: e.clientX - rect.left - rect.width / 2,
+        y: e.clientY - rect.top - rect.height / 2,
+      };
+      if (canvas) canvas.style.cursor = 'grabbing';
     }
   };
 
   const handlePointerMove = (e) => {
-    const dx = e.clientX - lastMousePosRef.current.x;
-    const dy = e.clientY - lastMousePosRef.current.y;
-    lastMousePosRef.current = { x: e.clientX, y: e.clientY };
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    const relX = e.clientX - rect.left - rect.width / 2;
+    const relY = e.clientY - rect.top - rect.height / 2;
 
-    if (isDraggingNodeRef.current) {
-      const zoom = zoomRef.current;
-      isDraggingNodeRef.current.currentX += dx / zoom;
-      isDraggingNodeRef.current.currentY += dy / zoom;
-      isDraggingNodeRef.current.x = isDraggingNodeRef.current.currentX;
-      isDraggingNodeRef.current.y = isDraggingNodeRef.current.currentY;
-    } else if (isPanningRef.current) {
-      panRef.current.x += dx;
-      panRef.current.y += dy;
+    if (draggedNodeRef.current) {
+      mousePosRef.current = { x: relX, y: relY };
     } else {
       const hovered = getNodeAtPos(e.clientX, e.clientY);
       setHoveredNode(hovered);
-      if (canvasRef.current) {
-        canvasRef.current.style.cursor = hovered ? 'pointer' : 'grab';
-      }
+      canvas.style.cursor = hovered ? 'grab' : 'default';
     }
   };
 
   const handlePointerUp = () => {
-    isDraggingNodeRef.current = null;
-    isPanningRef.current = false;
-  };
-
-  const handleWheel = (e) => {
-    e.preventDefault();
-    const zoomFactor = e.deltaY < 0 ? 1.08 : 0.92;
-    zoomRef.current = Math.max(0.6, Math.min(2.0, zoomRef.current * zoomFactor));
+    if (draggedNodeRef.current) {
+      draggedNodeRef.current = null;
+      if (canvasRef.current) {
+        canvasRef.current.style.cursor = 'default';
+      }
+    }
   };
 
   return (
     <div
       style={{
         width: '100%',
+        height: '520px',
         position: 'relative',
         borderRadius: '24px',
         overflow: 'hidden',
@@ -366,155 +415,14 @@ export default function ObsidianSkillGraph({ isDark }) {
         backdropFilter: 'blur(16px)',
       }}
     >
-      {/* Top Header Bar */}
-      <div
-        style={{
-          padding: '1.25rem 1.5rem',
-          display: 'flex',
-          flexWrap: 'wrap',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '1rem',
-          borderBottom: `1px solid ${isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)'}`,
-          background: isDark ? 'rgba(15, 23, 42, 0.6)' : 'rgba(241, 245, 249, 0.7)',
-        }}
-      >
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#00f5ff', boxShadow: '0 0 8px #00f5ff' }} />
-            <span style={{ fontSize: '0.75rem', fontFamily: 'JetBrains Mono, monospace', color: isDark ? '#00f5ff' : '#6366f1', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase' }}>
-              OBSIDIAN KNOWLEDGE GRAPH
-            </span>
-          </div>
-          <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: isDark ? '#ffffff' : '#0f172a', fontFamily: 'Playfair Display, serif', margin: '0.25rem 0 0' }}>
-            Peta Konstelasi Keahlian & Otomasi
-          </h3>
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <button
-            onClick={handleReset}
-            style={{
-              padding: '6px 14px',
-              borderRadius: '8px',
-              fontSize: '0.75rem',
-              fontFamily: 'JetBrains Mono, monospace',
-              fontWeight: 600,
-              background: isDark ? 'rgba(30, 41, 59, 0.8)' : '#ffffff',
-              color: isDark ? '#e2e8f0' : '#1e293b',
-              border: `1px solid ${isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.15)'}`,
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-            }}
-          >
-            ↺ Reset Posisi
-          </button>
-          <span style={{ fontSize: '0.75rem', fontFamily: 'JetBrains Mono, monospace', color: isDark ? '#64748b' : '#94a3b8' }}>
-            🖱️ Seret Node • Geser Canvas • Scroll Zoom
-          </span>
-        </div>
-      </div>
-
-      {/* Physics Canvas */}
-      <div style={{ height: '460px', width: '100%', position: 'relative' }}>
-        <canvas
-          ref={canvasRef}
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerUp}
-          onPointerLeave={handlePointerUp}
-          onWheel={handleWheel}
-          style={{ width: '100%', height: '100%', display: 'block', touchAction: 'none' }}
-        />
-      </div>
-
-      {/* Bottom Spotlight Card */}
-      <div
-        style={{
-          padding: '1.25rem 1.5rem',
-          borderTop: `1px solid ${isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)'}`,
-          background: isDark ? 'rgba(15, 23, 42, 0.9)' : 'rgba(248, 250, 252, 0.95)',
-        }}
-      >
-        <AnimatePresence mode="wait">
-          {activeNode && (
-            <motion.div
-              key={activeNode.id}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.2 }}
-              style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                gap: '1rem',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-                <div
-                  style={{
-                    width: '42px',
-                    height: '42px',
-                    borderRadius: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '1.25rem',
-                    background: `${activeNode.color}25`,
-                    border: `1px solid ${activeNode.color}60`,
-                  }}
-                >
-                  {activeNode.category === 'root' ? '🌟' : activeNode.category === 'admin' ? '📋' : activeNode.category === 'ai' ? '⚡' : activeNode.category === 'tech' ? '🚀' : '💎'}
-                </div>
-
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span style={{ fontWeight: 700, color: isDark ? '#ffffff' : '#0f172a', fontSize: '0.95rem' }}>{activeNode.label}</span>
-                    <span
-                      style={{
-                        fontSize: '0.65rem',
-                        fontFamily: 'JetBrains Mono, monospace',
-                        fontWeight: 700,
-                        padding: '2px 8px',
-                        borderRadius: '100px',
-                        textTransform: 'uppercase',
-                        background: `${activeNode.color}20`,
-                        color: activeNode.color,
-                        border: `1px solid ${activeNode.color}50`,
-                      }}
-                    >
-                      {activeNode.level}
-                    </span>
-                  </div>
-                  <div style={{ fontSize: '0.8rem', color: isDark ? '#94a3b8' : '#64748b', marginTop: '2px' }}>{activeNode.desc}</div>
-                </div>
-              </div>
-
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  fontSize: '0.75rem',
-                  fontFamily: 'JetBrains Mono, monospace',
-                  padding: '6px 12px',
-                  borderRadius: '8px',
-                  background: isDark ? 'rgba(0, 245, 255, 0.1)' : 'rgba(99, 102, 241, 0.1)',
-                  border: `1px solid ${isDark ? 'rgba(0, 245, 255, 0.25)' : 'rgba(99, 102, 241, 0.25)'}`,
-                  color: isDark ? '#00f5ff' : '#6366f1',
-                }}
-              >
-                <span>Relasi Aktif:</span>
-                <span style={{ fontWeight: 700, color: isDark ? '#ffffff' : '#0f172a' }}>
-                  {GRAPH_DATA.links.filter(l => l.source === activeNode.id || l.target === activeNode.id).length} Koneksi
-                </span>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+      <canvas
+        ref={canvasRef}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerLeave={handlePointerUp}
+        style={{ width: '100%', height: '100%', display: 'block', touchAction: 'none' }}
+      />
     </div>
   );
 }
