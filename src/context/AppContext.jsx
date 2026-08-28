@@ -19,16 +19,16 @@ export const translations = {
       p2: 'Memiliki minat besar dalam efisiensi operasional dan administrasi. Mampu mengombinasikan ketelitian administratif dengan solusi otomasi digital (Node.js & AI) untuk mempercepat proses input data.',
       p3: 'Pribadi yang patuh pada aturan, jujur, dan siap berkontribusi menjaga akurasi catatan data di lingkungan industri.',
       stats: [
-        { label: 'Proyek Selesai', value: '1+' },
+        { label: 'Proyek Selesai', value: '7+' },
         { label: 'Tahun Belajar', value: '2+' },
-        { label: 'Keahlian', value: '10+' },
+        { label: 'Keahlian', value: '12+' },
       ],
     },
     skills: {
       title: 'Keahlian',
       cats: [
         { name: 'Administratif', items: ['Data Entry', 'Microsoft Excel', 'Microsoft Word', 'Laporan Harian', 'Pencatatan Dokumen'] },
-        { name: 'IT & Otomasi', items: ['Node.js', 'JavaScript', 'SQL / SQLite', 'Gemini AI API', 'Telegram Bot'] },
+        { name: 'IT & Otomasi', items: ['Node.js', 'JavaScript', 'Python', 'SQL / SQLite', 'Gemini AI API', 'Telegram Bot'] },
         { name: 'Karakter', items: ['Disiplin Tinggi', 'Ketelitian Data', 'Kemauan Belajar', 'Patuh Aturan', 'Integritas'] },
       ],
     },
@@ -49,19 +49,45 @@ export const translations = {
           ]
         },
         {
-          title: 'AgentFlow Bot',
+          title: 'AgentFlow Agency ERP',
           icon: '⚡',
           period: 'Maret 2026 – Sekarang',
-          tag: 'Next.js · Gemini AI · SQLite · Prisma · Puppeteer',
-          desc: 'Platform ERP berbasis AI Agent otonom 24/7 yang mengotomasi operasional kantor lintas divisi — Finance, HR, Pengadaan, Marketing, Legal, hingga Strategi — dalam satu sistem terintegrasi.',
+          tag: 'Next.js · Gemini Spark · SQLite · Prisma · Puppeteer',
+          desc: 'Platform ERP berbasis AI Agent otonom 24/7 yang mengotomasi operasional kantor lintas 8 divisi — Finance, Gudang, Logistik, HR, Pengadaan, IT, hingga Dashboard Eksekutif.',
           demoUrl: 'http://localhost:3000',
           pptxUrl: '/AgentFlow-PitchDeck.pptx',
           points: [
             'Dashboard eksekutif real-time: monitor jam kerja dihemat & biaya API token',
-            'Ava AI Command Center: chatbot otonom berbasis Obsidian knowledge base',
-            'Workbench & Sandbox: uji semua alat AI (OCR, RFQ, Payroll, dll.) secara langsung',
-            '8 divisi AI agent: Finance, SDM, Pengadaan, IT, Legal, Marketing, CS & Strategi',
+            'SOP Kontrak Data Baku (OrderDraft ➔ StockReserved ➔ Invoice PPN ➔ Surat Jalan)',
+            'Simulator Hub Interaktif: uji 8 divisi AI merespons pesanan dan memproses dokumen',
+            'Integrasi OCR Bon/Struk dan ekspor otomatis PDF Faktur Resmi & Surat Jalan'
           ],
+        },
+        {
+          title: 'NexaBooks (Accounting AI)',
+          icon: '📊',
+          period: 'Mei 2026 – Sekarang',
+          tag: 'Python · FastAPI · SQLite · Chart.js · Accounting',
+          desc: 'Sistem akuntansi & pembukuan modern berbasis AI yang mengotomasi pencatatan jurnal umum, buku besar, neraca saldo, dan laporan arus kas harian.',
+          points: [
+            'Pencatatan otomatis jurnal debet/kredit terintegrasi dengan database SQLite',
+            'Laporan neraca keuangan, laba rugi, dan arus kas yang dihasilkan secara otomatis',
+            'Visualisasi tren pendapatan dan beban operasional bulanan berbasis Chart.js',
+            'AI Engine analitik untuk deteksi anomali pengeluaran dan rekonsiliasi kas'
+          ]
+        },
+        {
+          title: 'SakuTracker (PWA Finance)',
+          icon: '📱',
+          period: 'Juni 2026 – Sekarang',
+          tag: 'React · TypeScript · Tailwind CSS · Dexie.js · PWA',
+          desc: 'Aplikasi pelacak keuangan pribadi & operasional berbasis Progressive Web App (PWA) dan Android APK yang berjalan 100% offline dengan IndexedDB.',
+          points: [
+            'Pencatatan pemasukan & pengeluaran cepat dengan penyimpanan lokal Dexie.js (IndexedDB)',
+            'Dukungan instalasi PWA dan paket rilis Android APK (SakuTracker-v1.0.apk)',
+            'Kalkulasi sisa anggaran harian dan visualisasi kategori pengeluaran',
+            'Fitur backup dan ekspor riwayat transaksi ke format CSV / JSON'
+          ]
         },
         {
           title: 'Job Scraper Bot',
@@ -77,29 +103,29 @@ export const translations = {
           ]
         },
         {
-          title: 'Robot Sakti (Otomasi Trading AI Hedge Fund)',
+          title: 'Robot Sakti (AI Trading)',
           icon: '📈',
           period: 'Desember 2025 – Sekarang',
-          tag: 'Python · MetaTrader 5 · TensorFlow · Stable-Baselines3 · LightGBM · Gemini AI',
-          desc: 'Sistem trading multi-asset otomatis (Gold, Bitcoin, Forex) yang mengintegrasikan kecerdasan buatan (Machine Learning, Reinforcement Learning, & NLP) dengan execution engine MetaTrader 5.',
+          tag: 'Python · MetaTrader 5 · TensorFlow · Stable-Baselines3 · LightGBM',
+          desc: 'Sistem trading multi-asset otomatis (Gold, Bitcoin, Forex) yang mengintegrasikan kecerdasan buatan (Machine Learning & Reinforcement Learning) dengan execution engine MetaTrader 5.',
           points: [
             'Mengintegrasikan MetaTrader 5 API untuk eksekusi order otomatis secara real-time',
             'Model prediksi arah tren menggunakan LightGBM & ekstraksi fitur dengan Autoencoder',
-            'Portofolio manajemen & optimasi order menggunakan Deep Reinforcement Learning (Stable-Baselines3)',
+            'Portofolio manajemen & optimasi order menggunakan Deep Reinforcement Learning',
             'Veto sinyal teknikal secara cerdas menggunakan Gemini AI NLP untuk analisis berita & makro'
           ]
         },
         {
-          title: 'Kicaw Mania (Game Kamera Interaktif OpenCV)',
+          title: 'Kicaw Mania (Game Vision)',
           icon: '🐦',
           period: 'Februari 2026 – Maret 2026',
           tag: 'Python · OpenCV · MediaPipe · NumPy',
-          desc: 'Game kamera interaktif berbasis Computer Vision untuk tren viral TikTok (Touch Your Nose Detection) yang mendeteksi sentuhan jari pada hidung secara real-time dan menampilkan efek partikel fisik dinamis.',
+          desc: 'Game kamera interaktif berbasis Computer Vision untuk tren viral TikTok (Touch Your Nose Detection) yang mendeteksi sentuhan jari pada hidung secara real-time dengan efek partikel fisik.',
           points: [
             'Menggunakan MediaPipe Hands & Face Mesh untuk mendeteksi koordinat spasial 3D secara presisi',
             'Pengolahan video feed webcam real-time berlatensi rendah dengan library OpenCV',
-            'Simulasi Sistem Partikel Fisika kustom (gravitasi, pudar, warna acak) sebagai visual feedback sentuhan',
-            'Dilengkapi fitur gameplay interaktif: penghitung skor (score tracker), reset skor, dan visualizer FPS'
+            'Simulasi Sistem Partikel Fisika kustom (gravitasi, pudar, warna acak) sebagai visual feedback',
+            'Dilengkapi fitur gameplay interaktif: penghitung skor (score tracker), reset skor, dan FPS visualizer'
           ]
         }
       ],
@@ -147,16 +173,16 @@ export const translations = {
       p2: 'Passionate about operational efficiency and administration. Able to combine administrative precision with digital automation solutions (Node.js & AI) to accelerate data entry processes.',
       p3: 'A rule-abiding, honest individual ready to contribute to maintaining data record accuracy in an industrial environment.',
       stats: [
-        { label: 'Projects Done', value: '1+' },
+        { label: 'Projects Done', value: '7+' },
         { label: 'Years Learning', value: '2+' },
-        { label: 'Skills', value: '10+' },
+        { label: 'Skills', value: '12+' },
       ],
     },
     skills: {
       title: 'Skills',
       cats: [
         { name: 'Administrative', items: ['Data Entry', 'Microsoft Excel', 'Microsoft Word', 'Daily Reports', 'Document Recording'] },
-        { name: 'IT & Automation', items: ['Node.js', 'JavaScript', 'SQL / SQLite', 'Gemini AI API', 'Telegram Bot'] },
+        { name: 'IT & Automation', items: ['Node.js', 'JavaScript', 'Python', 'SQL / SQLite', 'Gemini AI API', 'Telegram Bot'] },
         { name: 'Character', items: ['High Discipline', 'Data Accuracy', 'Eagerness to Learn', 'Rule Compliance', 'Integrity'] },
       ],
     },
@@ -177,19 +203,45 @@ export const translations = {
           ]
         },
         {
-          title: 'AgentFlow Bot',
+          title: 'AgentFlow Agency ERP',
           icon: '⚡',
           period: 'March 2026 – Present',
-          tag: 'Next.js · Gemini AI · SQLite · Prisma · Puppeteer',
-          desc: 'Autonomous 24/7 AI Agent ERP platform that automates office operations across divisions — Finance, HR, Procurement, Marketing, Legal, and Strategy — in one integrated system.',
+          tag: 'Next.js · Gemini Spark · SQLite · Prisma · Puppeteer',
+          desc: 'Autonomous 24/7 AI Agent ERP platform that automates office operations across 8 divisions — Finance, Warehouse, Logistics, HR, Procurement, IT, and Executive Dashboard.',
           demoUrl: 'http://localhost:3000',
           pptxUrl: '/AgentFlow-PitchDeck.pptx',
           points: [
             'Real-time executive dashboard: tracks hours saved & API token costs',
-            'Ava AI Command Center: autonomous chatbot powered by Obsidian knowledge base',
-            'Workbench & Sandbox: live-test all AI tools (OCR, RFQ, Payroll, etc.)',
-            '8 AI division agents: Finance, HR, Procurement, IT, Legal, Marketing, CS & Strategy',
+            'SOP-Driven Data Contracts (OrderDraft ➔ StockReserved ➔ Official Invoice ➔ Delivery Order)',
+            'Interactive Simulator Hub: live test 8 AI divisions processing orders and generating documents',
+            'Integrated receipt OCR and automated PDF generation for Invoices & Delivery Orders'
           ],
+        },
+        {
+          title: 'NexaBooks (Accounting AI)',
+          icon: '📊',
+          period: 'May 2026 – Present',
+          tag: 'Python · FastAPI · SQLite · Chart.js · Accounting',
+          desc: 'A modern AI-powered bookkeeping and accounting system that automates general ledger entries, trial balances, and daily cashflow reports.',
+          points: [
+            'Automated debit/credit journal entries integrated with SQLite database',
+            'Auto-generated balance sheets, profit & loss, and cash flow reports',
+            'Monthly revenue and operational expense trend visualization via Chart.js',
+            'AI analytics engine for expense anomaly detection and bank reconciliation'
+          ]
+        },
+        {
+          title: 'SakuTracker (PWA Finance)',
+          icon: '📱',
+          period: 'June 2026 – Present',
+          tag: 'React · TypeScript · Tailwind CSS · Dexie.js · PWA',
+          desc: 'A personal & operational finance tracker built as a Progressive Web App (PWA) and Android APK running 100% offline with local IndexedDB storage.',
+          points: [
+            'Fast income and expense logging with local Dexie.js (IndexedDB) storage',
+            'Installable PWA support and Android APK release package (SakuTracker-v1.0.apk)',
+            'Daily budget remaining calculation and expense category breakdown',
+            'Transaction history backup and export to CSV / JSON format'
+          ]
         },
         {
           title: 'Job Scraper Bot',
@@ -205,24 +257,24 @@ export const translations = {
           ]
         },
         {
-          title: 'Robot Sakti (AI Hedge Fund Automated Trading)',
+          title: 'Robot Sakti (AI Trading)',
           icon: '📈',
           period: 'December 2025 – Present',
-          tag: 'Python · MetaTrader 5 · TensorFlow · Stable-Baselines3 · LightGBM · Gemini AI',
+          tag: 'Python · MetaTrader 5 · TensorFlow · Stable-Baselines3 · LightGBM',
           desc: 'Automated multi-asset trading system (Gold, Bitcoin, Forex) integrating machine learning, reinforcement learning, and LLM NLP with MetaTrader 5 execution engine.',
           points: [
             'Integrated MetaTrader 5 API for real-time automated order execution',
             'Trend direction prediction model using LightGBM and feature extraction via Autoencoder',
-            'Portfolio management and order optimization using Deep Reinforcement Learning (Stable-Baselines3)',
+            'Portfolio management and order optimization using Deep Reinforcement Learning',
             'Intelligent trade signal verification using Gemini AI NLP for macro and news sentiment analysis'
           ]
         },
         {
-          title: 'Kicaw Mania (OpenCV Interactive Camera Game)',
+          title: 'Kicaw Mania (Game Vision)',
           icon: '🐦',
           period: 'February 2026 – March 2026',
           tag: 'Python · OpenCV · MediaPipe · NumPy',
-          desc: 'An interactive Computer Vision game built for a viral TikTok trend (Touch Your Nose Detection), detecting finger-to-nose touches in real-time and rendering dynamic physical particle effects.',
+          desc: 'An interactive Computer Vision game built for a viral TikTok trend (Touch Your Nose Detection), detecting finger-to-nose touches in real-time with physical particle effects.',
           points: [
             'Utilized MediaPipe Hands and Face Mesh to track 3D spatial hand and face landmarks precisely',
             'Processed real-time webcam video feeds with low latency using the OpenCV library',
