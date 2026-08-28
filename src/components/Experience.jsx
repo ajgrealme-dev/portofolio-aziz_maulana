@@ -102,7 +102,7 @@ export default function Experience() {
   const { theme, t } = useApp();
   const isDark = theme === 'dark';
   const ref = useRef();
-  const inView = useInView(ref, { once: true, margin: '-80px' });
+  const inView = useInView(ref, { once: true, margin: '0px' });
   const accentColor = isDark ? '#00f5ff' : '#6366f1';
   const textColor = isDark ? '#e2e8f0' : '#1e293b';
 

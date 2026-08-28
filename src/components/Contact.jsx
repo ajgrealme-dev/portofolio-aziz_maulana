@@ -6,7 +6,7 @@ export default function Contact() {
   const { theme, t } = useApp();
   const isDark = theme === 'dark';
   const ref = useRef();
-  const inView = useInView(ref, { once: true, margin: '-80px' });
+  const inView = useInView(ref, { once: true, margin: '0px' });
 
   const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState('idle'); // idle | sending | success | error
