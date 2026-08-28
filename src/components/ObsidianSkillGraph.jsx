@@ -409,10 +409,10 @@ export default function ObsidianSkillGraph({ isDark }) {
         position: 'relative',
         borderRadius: '24px',
         overflow: 'hidden',
-        border: `1px solid ${isDark ? 'rgba(0, 245, 255, 0.2)' : 'rgba(99, 102, 241, 0.25)'}`,
-        background: isDark ? 'rgba(10, 15, 30, 0.85)' : 'rgba(255, 255, 255, 0.85)',
-        boxShadow: isDark ? '0 20px 60px rgba(0, 0, 0, 0.6)' : '0 20px 60px rgba(99, 102, 241, 0.15)',
-        backdropFilter: 'blur(16px)',
+        border: `1px solid ${isDark ? 'rgba(0, 245, 255, 0.15)' : 'rgba(99, 102, 241, 0.2)'}`,
+        background: isDark ? 'rgba(0, 245, 255, 0.03)' : 'rgba(99, 102, 241, 0.04)',
+        boxShadow: isDark ? '0 20px 60px rgba(0, 245, 255, 0.05)' : '0 20px 60px rgba(99, 102, 241, 0.08)',
+        backdropFilter: 'blur(10px)',
       }}
     >
       <canvas
