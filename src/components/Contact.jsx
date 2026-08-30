@@ -118,7 +118,7 @@ export default function Contact() {
   ];
 
   return (
-    <section id="contact" ref={ref} style={{ padding: '120px 2rem 80px', position: 'relative', zIndex: 10 }}>
+    <section id="contact" ref={ref} style={{ padding: 'clamp(80px, 10vh, 120px) clamp(1rem, 4vw, 2rem) 80px', position: 'relative', zIndex: 10 }}>
       <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
         <motion.div initial={{ opacity: 0, y: 40 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }} style={{ textAlign: 'center', marginBottom: '4rem' }}>
           <span style={{ color: accentColor, fontFamily: 'JetBrains Mono, monospace', fontSize: '0.85rem', letterSpacing: '3px', fontWeight: 600 }}>{'<contact>'}</span>
@@ -127,7 +127,7 @@ export default function Contact() {
           <p style={{ color: subColor }}>{t.contact.sub}</p>
         </motion.div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 290px), 1fr))', gap: '2rem' }}>
           {/* Contact info */}
           <motion.div initial={{ opacity: 0, x: -40 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.2, duration: 0.7 }} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {contacts.map((c, i) => {

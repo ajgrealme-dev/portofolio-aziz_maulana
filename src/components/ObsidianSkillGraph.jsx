@@ -85,6 +85,7 @@ const GRAPH_DATA = {
 
 export default function ObsidianSkillGraph({ isDark }) {
   const canvasRef = useRef(null);
+  const containerRef = useRef(null);
   const [hoveredNode, setHoveredNode] = useState(null);
 
   // Physics simulation state (Nodes with velocities and home anchors)
@@ -102,6 +103,7 @@ export default function ObsidianSkillGraph({ isDark }) {
 
   const draggedNodeRef = useRef(null);
   const mousePosRef = useRef({ x: 0, y: 0 });
+  const scaleFactorRef = useRef(1);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -115,6 +117,16 @@ export default function ObsidianSkillGraph({ isDark }) {
       canvas.width = rect.width * dpr;
       canvas.height = rect.height * dpr;
       ctx.scale(dpr, dpr);
+
+      // Adaptive scaling: on mobile (width < 620px), scale down coordinate spread proportionally
+      const scale = Math.min(1.0, Math.max(0.52, rect.width / 640));
+      scaleFactorRef.current = scale;
+
+      // Update home anchors with responsive scale
+      nodesRef.current.forEach(n => {
+        n.anchorX = n.x * scale;
+        n.anchorY = n.y * scale;
+      });
     };
 
     resizeCanvas();
@@ -128,6 +140,7 @@ export default function ObsidianSkillGraph({ isDark }) {
       const height = rect.height;
       const centerX = width / 2;
       const centerY = height / 2;
+      const scale = scaleFactorRef.current;
 
       ctx.clearRect(0, 0, width, height);
 
@@ -140,7 +153,7 @@ export default function ObsidianSkillGraph({ isDark }) {
       // ==========================================
 
       // 1. Link Spring Forces (Tension pulling connected nodes)
-      const SPRING_K = 0.045; // Spring tension
+      const SPRING_K = 0.045;
       GRAPH_DATA.links.forEach(link => {
         const a = nodeMap.get(link.source);
         const b = nodeMap.get(link.target);
@@ -149,7 +162,7 @@ export default function ObsidianSkillGraph({ isDark }) {
         const dx = b.currentX - a.currentX;
         const dy = b.currentY - a.currentY;
         const dist = Math.hypot(dx, dy) || 1;
-        const restLen = link.length || 100;
+        const restLen = (link.length || 100) * scale;
         const force = (dist - restLen) * SPRING_K;
 
         const fx = (dx / dist) * force;
@@ -165,7 +178,7 @@ export default function ObsidianSkillGraph({ isDark }) {
         }
       });
 
-      // 2. Coulomb Repulsion between all nodes (prevents overlap)
+      // 2. Coulomb Repulsion between all nodes
       for (let i = 0; i < nodes.length; i++) {
         for (let j = i + 1; j < nodes.length; j++) {
           const a = nodes[i];
@@ -173,7 +186,7 @@ export default function ObsidianSkillGraph({ isDark }) {
           const dx = b.currentX - a.currentX;
           const dy = b.currentY - a.currentY;
           const dist = Math.hypot(dx, dy) || 1;
-          const minDist = (a.radius + b.radius) + 30;
+          const minDist = ((a.radius + b.radius) + 24) * scale;
 
           if (dist < minDist) {
             const repelForce = ((minDist - dist) / dist) * 0.4;
@@ -193,29 +206,25 @@ export default function ObsidianSkillGraph({ isDark }) {
       }
 
       // 3. Anchor Gravity + Ambient Float + Position Integration
-      const HOME_GRAVITY_K = 0.025; // Gentle return home gravity
-      const DAMPING = 0.85; // Air friction
+      const HOME_GRAVITY_K = 0.028;
+      const DAMPING = 0.85;
 
       nodes.forEach((n, idx) => {
         if (draggedNodeRef.current === n) {
-          // Dragged node follows mouse directly
           n.currentX = mousePosRef.current.x;
           n.currentY = mousePosRef.current.y;
           n.vx = 0;
           n.vy = 0;
         } else {
-          // Ambient breathing motion
           const floatX = Math.sin(time + idx * 0.7) * 0.15;
           const floatY = Math.cos(time + idx * 0.5) * 0.15;
 
-          // Pull back towards home anchor
           const anchorDx = n.anchorX - n.currentX;
           const anchorDy = n.anchorY - n.currentY;
 
           n.vx += anchorDx * HOME_GRAVITY_K + floatX;
           n.vy += anchorDy * HOME_GRAVITY_K + floatY;
 
-          // Apply velocity and damping
           n.vx *= DAMPING;
           n.vy *= DAMPING;
           n.currentX += n.vx;
@@ -253,7 +262,6 @@ export default function ObsidianSkillGraph({ isDark }) {
           : (isDark ? 'rgba(0, 245, 255, 0.32)' : 'rgba(99, 102, 241, 0.32)');
         ctx.stroke();
 
-        // Pulsing energy particle along active link
         if (isRelated) {
           const pulseT = (time * 1.6) % 1;
           const px = sx + (tx - sx) * pulseT;
@@ -286,19 +294,19 @@ export default function ObsidianSkillGraph({ isDark }) {
 
         const nx = centerX + node.currentX;
         const ny = centerY + node.currentY;
-        const nr = node.radius * (isHighlighted ? 1.25 : 1.0);
+        const nodeRadius = node.radius * Math.max(0.75, scale) * (isHighlighted ? 1.25 : 1.0);
 
         // Halo Glow
         if (isHighlighted || (!isDimmed && node.category === 'root')) {
           ctx.beginPath();
-          ctx.arc(nx, ny, nr * 1.8, 0, Math.PI * 2);
+          ctx.arc(nx, ny, nodeRadius * 1.8, 0, Math.PI * 2);
           ctx.fillStyle = `${node.color}35`;
           ctx.fill();
         }
 
         // Node Circle Body
         ctx.beginPath();
-        ctx.arc(nx, ny, Math.max(3, nr), 0, Math.PI * 2);
+        ctx.arc(nx, ny, Math.max(3, nodeRadius), 0, Math.PI * 2);
         ctx.fillStyle = isDimmed ? `${node.color}40` : node.color;
         if (isHighlighted) {
           ctx.shadowBlur = 20;
@@ -309,18 +317,19 @@ export default function ObsidianSkillGraph({ isDark }) {
 
         // Border Ring
         ctx.beginPath();
-        ctx.arc(nx, ny, Math.max(3, nr), 0, Math.PI * 2);
+        ctx.arc(nx, ny, Math.max(3, nodeRadius), 0, Math.PI * 2);
         ctx.lineWidth = isHighlighted ? 2.5 : 1.4;
         ctx.strokeStyle = isHighlighted ? '#ffffff' : `${node.color}99`;
         ctx.stroke();
 
-        // Text Label
-        const fontSize = node.category === 'root' ? 13.5 : node.category.startsWith('hub') ? 11.5 : 9.5;
+        // Responsive Text Label
+        const baseFontSize = node.category === 'root' ? 13.5 : node.category.startsWith('hub') ? 11.5 : 9.5;
+        const fontSize = Math.max(8.5, baseFontSize * Math.max(0.8, scale));
         ctx.font = `${node.category === 'root' ? 'bold' : '600'} ${fontSize}px "JetBrains Mono", monospace`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'top';
 
-        const textY = ny + nr + 5;
+        const textY = ny + nodeRadius + 4;
         ctx.fillStyle = isDimmed
           ? (isDark ? 'rgba(226, 232, 240, 0.25)' : 'rgba(30, 41, 59, 0.25)')
           : isHighlighted
@@ -344,18 +353,20 @@ export default function ObsidianSkillGraph({ isDark }) {
     };
   }, [isDark, hoveredNode]);
 
-  // Pointer Handling for Dragging and Spring Cascade
+  // Pointer & Touch Handling
   const getNodeAtPos = useCallback((clientX, clientY) => {
     const canvas = canvasRef.current;
     if (!canvas) return null;
     const rect = canvas.getBoundingClientRect();
     const x = clientX - rect.left - rect.width / 2;
     const y = clientY - rect.top - rect.height / 2;
+    const scale = scaleFactorRef.current;
 
     for (let i = nodesRef.current.length - 1; i >= 0; i--) {
       const node = nodesRef.current[i];
       const dist = Math.hypot(x - node.currentX, y - node.currentY);
-      if (dist <= node.radius + 12) {
+      const hitRadius = (node.radius * Math.max(0.75, scale)) + 16; // Generous touch target
+      if (dist <= hitRadius) {
         return node;
       }
     }
@@ -401,11 +412,48 @@ export default function ObsidianSkillGraph({ isDark }) {
     }
   };
 
+  // Touch Event Handlers with Smart Scroll Passthrough
+  const handleTouchStart = (e) => {
+    if (e.touches.length === 1) {
+      const touch = e.touches[0];
+      const node = getNodeAtPos(touch.clientX, touch.clientY);
+      if (node) {
+        e.preventDefault(); // Prevent page scroll only when dragging a node
+        draggedNodeRef.current = node;
+        setHoveredNode(node);
+        const rect = canvasRef.current.getBoundingClientRect();
+        mousePosRef.current = {
+          x: touch.clientX - rect.left - rect.width / 2,
+          y: touch.clientY - rect.top - rect.height / 2,
+        };
+      }
+    }
+  };
+
+  const handleTouchMove = (e) => {
+    if (draggedNodeRef.current && e.touches.length === 1) {
+      e.preventDefault(); // Lock dragging smoothly
+      const touch = e.touches[0];
+      const rect = canvasRef.current.getBoundingClientRect();
+      mousePosRef.current = {
+        x: touch.clientX - rect.left - rect.width / 2,
+        y: touch.clientY - rect.top - rect.height / 2,
+      };
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (draggedNodeRef.current) {
+      draggedNodeRef.current = null;
+    }
+  };
+
   return (
     <div
+      ref={containerRef}
       style={{
         width: '100%',
-        height: '520px',
+        height: 'clamp(400px, 55vh, 520px)',
         position: 'relative',
         borderRadius: '24px',
         overflow: 'hidden',
@@ -421,7 +469,11 @@ export default function ObsidianSkillGraph({ isDark }) {
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerLeave={handlePointerUp}
-        style={{ width: '100%', height: '100%', display: 'block', touchAction: 'none' }}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        onTouchCancel={handleTouchEnd}
+        style={{ width: '100%', height: '100%', display: 'block' }}
       />
     </div>
   );
