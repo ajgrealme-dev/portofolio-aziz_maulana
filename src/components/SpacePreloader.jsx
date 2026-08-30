@@ -1,74 +1,48 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 export default function SpacePreloader({ onComplete }) {
   const [progress, setProgress] = useState(0);
-  const [telemetry, setTelemetry] = useState('[SYSTEM_INIT] Calibrating thruster vectoring...');
-  const [isWarping, setIsWarping] = useState(false);
+  const [statusText, setStatusText] = useState('CALIBRATING GRAVITATIONAL LENS...');
+  const [isExpanding, setIsExpanding] = useState(false);
   const canvasRef = useRef(null);
   const animFrameId = useRef(null);
+  const mouseRef = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
 
-  // Astronaut flight coordinates calculated based on progress
-  // Starts at bottom-left, ascends gracefully across center towards top-right
-  const getAstronautPos = (p) => {
-    if (p < 85) {
-      const norm = p / 85;
-      // Curved trajectory from bottom left (-20vw, 30vh) to center-right (15vw, -10vh)
-      const x = -30 + norm * 45; // -30vw to 15vw
-      const y = 35 - norm * 45;  // 35vh to -10vh
-      const rot = -15 + norm * 25; // -15deg to 10deg
-      const scale = 0.8 + norm * 0.25;
-      return { x: `${x}vw`, y: `${y}vh`, rot, scale };
-    } else {
-      // Warp dash out of screen to top-right
-      const warpNorm = (p - 85) / 15;
-      const x = 15 + warpNorm * 75; // shoots to 90vw+
-      const y = -10 - warpNorm * 70; // shoots to -80vh
-      const rot = 10 + warpNorm * 35;
-      const scale = 1.05 + warpNorm * 0.8;
-      return { x: `${x}vw`, y: `${y}vh`, rot, scale };
-    }
-  };
-
-  const currentPos = getAstronautPos(progress);
-
-  // Loading progress driver
+  // Progress timer: ~2.4s smooth non-linear acceleration
   useEffect(() => {
     let currentP = 0;
     const interval = setInterval(() => {
-      // Smooth non-linear progress
-      const increment = currentP < 30 ? 1.8 : currentP < 70 ? 1.4 : currentP < 90 ? 1.1 : 2.5;
-      currentP += increment;
+      const step = currentP < 30 ? 1.6 : currentP < 75 ? 1.3 : currentP < 92 ? 1.1 : 2.8;
+      currentP += step;
 
       if (currentP >= 100) {
         currentP = 100;
         setProgress(100);
-        setTelemetry('[WARP_EXPULSION] Entering portfolio space horizon!');
-        setIsWarping(true);
+        setStatusText('HORIZON BREACH // ENTERING PORTFOLIO');
+        setIsExpanding(true);
         clearInterval(interval);
 
-        // Allow warp finish animation then complete
+        // Transition seamlessly to Hero
         setTimeout(() => {
           if (onComplete) onComplete();
-        }, 700);
+        }, 650);
       } else {
-        setProgress(Math.floor(currentP));
-        if (currentP < 25) {
-          setTelemetry('[SYSTEM_INIT] Calibrating thrusters & life support...');
-        } else if (currentP < 50) {
-          setTelemetry('[WARP_ENGAGE] Calculating orbital trajectory (Ciruas → Orbit)...');
-        } else if (currentP < 75) {
-          setTelemetry('[AI_CORE_ONLINE] Loading project portfolio & skills graph...');
-        } else if (currentP < 92) {
-          setTelemetry('[HYPERSPACE_READY] Engaging quantum warp drive...');
+        const floorP = Math.floor(currentP);
+        setProgress(floorP);
+        if (floorP < 25) {
+          setStatusText('INITIATING SINGULARITY ACCRETION...');
+        } else if (floorP < 55) {
+          setStatusText('BENDING RELATIVISTIC PHOTON SPHERES...');
+        } else if (floorP < 85) {
+          setStatusText('CALIBRATING WARP MATRICES & SKILLS GRAPH...');
         } else {
-          setTelemetry('[WARP_EXPULSION] Entering portfolio space horizon!');
-          setIsWarping(true);
+          setStatusText('CONVERGING EVENT HORIZON...');
         }
       }
-    }, 40);
+    }, 32);
 
-    // Lock body scroll during preloader
+    // Lock body scroll
     document.body.style.overflow = 'hidden';
 
     return () => {
@@ -77,7 +51,35 @@ export default function SpacePreloader({ onComplete }) {
     };
   }, [onComplete]);
 
-  // 3D Canvas Cosmic Warp Starfield & Jetpack Sparks
+  // Mouse & Touch Parallax tracking
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const nx = (e.clientX / window.innerWidth - 0.5) * 2;
+      const ny = (e.clientY / window.innerHeight - 0.5) * 2;
+      mouseRef.current.targetX = nx;
+      mouseRef.current.targetY = ny;
+    };
+
+    const handleTouchMove = (e) => {
+      if (e.touches && e.touches[0]) {
+        const t = e.touches[0];
+        const nx = (t.clientX / window.innerWidth - 0.5) * 2;
+        const ny = (t.clientY / window.innerHeight - 0.5) * 2;
+        mouseRef.current.targetX = nx;
+        mouseRef.current.targetY = ny;
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('touchmove', handleTouchMove);
+    };
+  }, []);
+
+  // 60FPS 3D Procedural Black Hole Singularity Canvas Engine
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -92,114 +94,137 @@ export default function SpacePreloader({ onComplete }) {
     };
     window.addEventListener('resize', handleResize);
 
-    // Starfield particles
-    const numStars = 220;
+    // Generate ~650 relativistic accretion disk particles
+    const particleCount = 650;
+    const particles = [];
+    for (let i = 0; i < particleCount; i++) {
+      const radius = 60 + Math.pow(Math.random(), 1.8) * Math.min(width, height) * 0.42;
+      const angle = Math.random() * Math.PI * 2;
+      const speed = (0.012 + (350 / (radius + 80)) * 0.018) * (Math.random() > 0.5 ? 1 : 1);
+      const elevation = (Math.random() - 0.5) * 28; // 3D disk thickness
+      const size = Math.random() * 2 + 0.6;
+      
+      // Color palette: Cyan, Electric Violet, Neon Green, Golden Amber
+      const colorRand = Math.random();
+      const color = colorRand > 0.65 
+        ? '#00f5ff' 
+        : colorRand > 0.35 
+        ? '#a855f7' 
+        : colorRand > 0.15 
+        ? '#39ff14' 
+        : '#f59e0b';
+
+      particles.push({ radius, angle, speed, elevation, size, color, alpha: Math.random() * 0.7 + 0.3 });
+    }
+
+    // Distant background starfield
+    const starCount = 180;
     const stars = [];
-    for (let i = 0; i < numStars; i++) {
+    for (let i = 0; i < starCount; i++) {
       stars.push({
-        x: (Math.random() - 0.5) * width * 2,
-        y: (Math.random() - 0.5) * height * 2,
-        z: Math.random() * width,
-        size: Math.random() * 1.8 + 0.5,
-        color: Math.random() > 0.3 ? '#00f5ff' : Math.random() > 0.5 ? '#a855f7' : '#ffffff',
+        x: Math.random() * width,
+        y: Math.random() * height,
+        size: Math.random() * 1.5 + 0.3,
+        alpha: Math.random() * 0.8 + 0.2,
+        twinkleSpeed: Math.random() * 0.03 + 0.01,
       });
     }
 
-    // Jetpack sparks
-    const sparks = [];
+    let frame = 0;
 
     const render = () => {
-      ctx.fillStyle = isWarping ? 'rgba(3, 5, 14, 0.4)' : 'rgba(3, 5, 14, 0.25)';
+      frame++;
+
+      // Smooth mouse lerp
+      mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.06;
+      mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * 0.06;
+
+      const tiltX = mouseRef.current.x * 0.25;
+      const tiltY = mouseRef.current.y * 0.2;
+
+      // Clear with dark space trail
+      ctx.fillStyle = isExpanding ? 'rgba(3, 5, 15, 0.45)' : 'rgba(3, 5, 15, 0.28)';
       ctx.fillRect(0, 0, width, height);
 
       const cx = width / 2;
       const cy = height / 2;
-      const speed = isWarping ? 38 : 3.5;
 
-      // Draw & update 3D stars
-      for (let i = 0; i < numStars; i++) {
+      // 1. Draw background twinkling stars
+      for (let i = 0; i < starCount; i++) {
         const star = stars[i];
-        star.z -= speed;
-
-        if (star.z <= 0) {
-          star.z = width;
-          star.x = (Math.random() - 0.5) * width * 2;
-          star.y = (Math.random() - 0.5) * height * 2;
-        }
-
-        const k = 280 / star.z;
-        const px = star.x * k + cx;
-        const py = star.y * k + cy;
-
-        if (px >= 0 && px <= width && py >= 0 && py <= height) {
-          const s = (1 - star.z / width) * star.size * (isWarping ? 2.5 : 1.2);
-          ctx.beginPath();
-
-          if (isWarping) {
-            // Draw warp speed streak
-            const prevK = 280 / (star.z + speed * 2.5);
-            const prevPx = star.x * prevK + cx;
-            const prevPy = star.y * prevK + cy;
-            ctx.moveTo(prevPx, prevPy);
-            ctx.lineTo(px, py);
-            ctx.strokeStyle = star.color;
-            ctx.lineWidth = s;
-            ctx.stroke();
-          } else {
-            ctx.arc(px, py, Math.max(0.5, s), 0, Math.PI * 2);
-            ctx.fillStyle = star.color;
-            ctx.shadowBlur = 8;
-            ctx.shadowColor = star.color;
-            ctx.fill();
-            ctx.shadowBlur = 0;
-          }
-        }
+        star.alpha += Math.sin(frame * star.twinkleSpeed) * 0.015;
+        const boundedAlpha = Math.max(0.1, Math.min(0.9, star.alpha));
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${boundedAlpha * 0.6})`;
+        ctx.fill();
       }
 
-      // Add jetpack thruster spark particles around astronaut position
-      if (progress < 100) {
-        // Calculate astronaut screen position
-        const pNorm = Math.min(progress, 85) / 85;
-        const astroScreenX = width * (0.2 + pNorm * 0.45);
-        const astroScreenY = height * (0.85 - pNorm * 0.55);
+      // 2. Draw 3D Gravitational Accretion Disk Particles
+      const diskTiltAngle = Math.PI / 3.4 + tiltY * 0.4;
+      const rotationMultiplier = isExpanding ? 4.5 : 1 + (progress / 100) * 1.2;
+      const expansionScale = isExpanding ? 1 + (progress - 95) * 0.15 : 1;
 
-        // Emit 3-5 sparks per frame from bottom-left of astronaut
-        for (let j = 0; j < 3; j++) {
-          sparks.push({
-            x: astroScreenX - 45 + (Math.random() - 0.5) * 20,
-            y: astroScreenY + 45 + (Math.random() - 0.5) * 20,
-            vx: -Math.random() * 4 - 2,
-            vy: Math.random() * 4 + 2,
-            life: 1,
-            decay: Math.random() * 0.04 + 0.02,
-            size: Math.random() * 3 + 1.5,
-            color: Math.random() > 0.4 ? '#ff9900' : Math.random() > 0.5 ? '#ff4400' : '#00f5ff',
-          });
-        }
-      }
+      for (let i = 0; i < particleCount; i++) {
+        const p = particles[i];
+        p.angle += p.speed * rotationMultiplier;
 
-      // Draw & update sparks
-      for (let sIdx = sparks.length - 1; sIdx >= 0; sIdx--) {
-        const sp = sparks[sIdx];
-        sp.x += sp.vx;
-        sp.y += sp.vy;
-        sp.life -= sp.decay;
+        // Calculate 3D rotated coordinates (inclined accretion disk)
+        const currentR = p.radius * expansionScale;
+        const x3d = Math.cos(p.angle) * currentR;
+        const y3d = Math.sin(p.angle) * currentR;
+        const z3d = p.elevation + Math.sin(p.angle * 2) * 8;
 
-        if (sp.life <= 0) {
-          sparks.splice(sIdx, 1);
-          continue;
-        }
+        // Apply disk perspective tilt
+        const projX = cx + x3d * Math.cos(tiltX) - (y3d * Math.sin(diskTiltAngle) * Math.sin(tiltX));
+        const projY = cy + y3d * Math.cos(diskTiltAngle) + z3d * Math.sin(diskTiltAngle);
+
+        // Gravitational lensing depth scale
+        const depthFactor = (Math.sin(p.angle) + 1.2) / 2.2;
+        const particleSize = p.size * (0.8 + depthFactor * 0.6) * (isExpanding ? 1.8 : 1);
+        const particleAlpha = p.alpha * (0.4 + depthFactor * 0.6);
 
         ctx.beginPath();
-        ctx.arc(sp.x, sp.y, sp.size * sp.life, 0, Math.PI * 2);
-        ctx.fillStyle = sp.color;
+        ctx.arc(projX, projY, Math.max(0.4, particleSize), 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = isExpanding ? particleAlpha * 1.5 : particleAlpha;
         ctx.shadowBlur = 10;
-        ctx.shadowColor = sp.color;
-        ctx.globalAlpha = sp.life;
+        ctx.shadowColor = p.color;
         ctx.fill();
         ctx.shadowBlur = 0;
         ctx.globalAlpha = 1;
       }
+
+      // 3. Central Event Horizon Glowing Aura & Dark Void
+      const coreRadius = (45 + Math.sin(frame * 0.05) * 3) * (isExpanding ? 2.5 : 1);
+      
+      // Outer neon photon ring
+      const photonGradient = ctx.createRadialGradient(cx, cy, coreRadius * 0.8, cx, cy, coreRadius * 2.8);
+      photonGradient.addColorStop(0, 'rgba(0, 245, 255, 0.45)');
+      photonGradient.addColorStop(0.3, 'rgba(168, 85, 247, 0.25)');
+      photonGradient.addColorStop(0.7, 'rgba(57, 255, 20, 0.12)');
+      photonGradient.addColorStop(1, 'rgba(3, 5, 15, 0)');
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, coreRadius * 2.8, 0, Math.PI * 2);
+      ctx.fillStyle = photonGradient;
+      ctx.fill();
+
+      // Sharp glowing photon boundary ring
+      ctx.beginPath();
+      ctx.arc(cx, cy, coreRadius, 0, Math.PI * 2);
+      ctx.strokeStyle = isExpanding ? '#00f5ff' : 'rgba(0, 245, 255, 0.65)';
+      ctx.lineWidth = isExpanding ? 3.5 : 1.8;
+      ctx.shadowBlur = isExpanding ? 30 : 16;
+      ctx.shadowColor = '#00f5ff';
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      // Pitch black singularity core
+      ctx.beginPath();
+      ctx.arc(cx, cy, coreRadius - 1, 0, Math.PI * 2);
+      ctx.fillStyle = '#020308';
+      ctx.fill();
 
       animFrameId.current = requestAnimationFrame(render);
     };
@@ -210,15 +235,15 @@ export default function SpacePreloader({ onComplete }) {
       window.removeEventListener('resize', handleResize);
       if (animFrameId.current) cancelAnimationFrame(animFrameId.current);
     };
-  }, [isWarping, progress]);
+  }, [isExpanding, progress]);
 
   return (
     <motion.div
       initial={{ opacity: 1 }}
       exit={{ 
         opacity: 0,
-        scale: 1.12,
-        filter: 'blur(16px)',
+        scale: 1.15,
+        filter: 'blur(20px)',
         transition: { duration: 0.75, ease: [0.76, 0, 0.24, 1] } 
       }}
       style={{
@@ -236,7 +261,7 @@ export default function SpacePreloader({ onComplete }) {
         userSelect: 'none',
       }}
     >
-      {/* 3D Warp Canvas Background */}
+      {/* 3D Black Hole Canvas */}
       <canvas
         ref={canvasRef}
         style={{
@@ -248,32 +273,7 @@ export default function SpacePreloader({ onComplete }) {
         }}
       />
 
-      {/* Cosmic Nebula Glow Overlays */}
-      <div style={{
-        position: 'absolute',
-        top: '10%',
-        left: '15%',
-        width: '450px',
-        height: '450px',
-        background: 'radial-gradient(circle, rgba(0, 245, 255, 0.12) 0%, rgba(168, 85, 247, 0.06) 50%, transparent 70%)',
-        filter: 'blur(60px)',
-        pointerEvents: 'none',
-        zIndex: 2,
-      }} />
-
-      <div style={{
-        position: 'absolute',
-        bottom: '15%',
-        right: '10%',
-        width: '500px',
-        height: '500px',
-        background: 'radial-gradient(circle, rgba(57, 255, 20, 0.08) 0%, rgba(0, 245, 255, 0.05) 50%, transparent 70%)',
-        filter: 'blur(70px)',
-        pointerEvents: 'none',
-        zIndex: 2,
-      }} />
-
-      {/* Top HUD Mission Telemetry */}
+      {/* Top Header: System Status & Skip */}
       <div style={{
         width: '100%',
         maxWidth: '1200px',
@@ -288,18 +288,18 @@ export default function SpacePreloader({ onComplete }) {
             width: '8px',
             height: '8px',
             borderRadius: '50%',
-            background: '#39ff14',
-            boxShadow: '0 0 10px #39ff14',
-            animation: 'pulse 1.5s infinite',
+            background: '#00f5ff',
+            boxShadow: '0 0 10px #00f5ff',
+            animation: 'pulse 1.2s infinite',
           }} />
           <span style={{
             color: '#00f5ff',
             fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '0.75rem',
-            letterSpacing: '2px',
+            fontSize: '0.72rem',
+            letterSpacing: '2.5px',
             fontWeight: 700,
           }}>
-            MISSION CONTROL // AZIZ_ORBIT_2026
+            3D QUANTUM GRAVITY // RELATIVISTIC ENGINE
           </span>
         </div>
 
@@ -310,94 +310,79 @@ export default function SpacePreloader({ onComplete }) {
           }}
           style={{
             background: 'rgba(0, 245, 255, 0.08)',
-            border: '1px solid rgba(0, 245, 255, 0.3)',
+            border: '1px solid rgba(0, 245, 255, 0.35)',
             borderRadius: '100px',
-            padding: '4px 14px',
-            color: '#94a3b8',
+            padding: '5px 16px',
+            color: '#cbd5e1',
             fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '0.7rem',
+            fontSize: '0.72rem',
             cursor: 'pointer',
             backdropFilter: 'blur(8px)',
             transition: 'all 0.2s',
+            fontWeight: 600,
           }}
         >
           SKIP ➔
         </button>
       </div>
 
-      {/* Center 3D Flying Spaceman Entity */}
+      {/* Center Monogram Typography at the Heart of the Singularity */}
       <div
         style={{
-          position: 'absolute',
-          inset: 0,
+          position: 'relative',
+          zIndex: 10,
           display: 'flex',
+          flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
           pointerEvents: 'none',
-          zIndex: 15,
+          textAlign: 'center',
         }}
       >
         <motion.div
           animate={{
-            x: currentPos.x,
-            y: currentPos.y,
-            rotate: currentPos.rot,
-            scale: currentPos.scale,
+            scale: isExpanding ? 1.4 : [1, 1.03, 1],
+            opacity: isExpanding ? 0 : 1,
           }}
           transition={{
-            type: 'spring',
-            damping: 24,
-            stiffness: 90,
-            mass: 0.8,
-          }}
-          style={{
-            position: 'relative',
-            width: 'clamp(140px, 20vw, 220px)',
-            height: 'clamp(140px, 20vw, 220px)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            filter: isWarping 
-              ? 'drop-shadow(0 0 40px #00f5ff) drop-shadow(0 0 80px #39ff14)' 
-              : 'drop-shadow(0 0 25px rgba(0, 245, 255, 0.6))',
+            scale: { repeat: isExpanding ? 0 : Infinity, duration: 3, ease: 'easeInOut' },
+            opacity: { duration: 0.3 },
           }}
         >
-          {/* Jetpack Plasma Thruster Aura */}
-          <div style={{
-            position: 'absolute',
-            bottom: '5%',
-            left: '0%',
-            width: '60px',
-            height: '60px',
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, #ff9900 0%, #ff4400 50%, transparent 80%)',
-            filter: 'blur(12px)',
-            opacity: 0.85,
-            animation: 'pulse 0.4s infinite alternate',
-          }} />
-
-          {/* Transparent Spaceman Cutout Image */}
-          <img
-            src="/spaceman.png"
-            alt="Flying Astronaut"
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'contain',
-              display: 'block',
-            }}
-          />
+          <span style={{
+            fontFamily: 'JetBrains Mono, monospace',
+            fontSize: '0.75rem',
+            letterSpacing: '5px',
+            color: '#00f5ff',
+            textTransform: 'uppercase',
+            fontWeight: 600,
+            display: 'block',
+            marginBottom: '0.3rem',
+          }}>
+            PORTFOLIO OF
+          </span>
+          <h1 style={{
+            fontFamily: 'Playfair Display, serif',
+            fontSize: 'clamp(2.2rem, 5vw, 3.8rem)',
+            color: '#f8fafc',
+            margin: 0,
+            lineHeight: 1.1,
+            letterSpacing: '1px',
+            textShadow: '0 0 35px rgba(0, 245, 255, 0.6), 0 0 70px rgba(168, 85, 247, 0.35)',
+          }}>
+            Aziz Maulana
+          </h1>
         </motion.div>
       </div>
 
-      {/* Bottom Mission HUD: Percentage Counter & Progress Line */}
+      {/* Bottom Minimalist Luxury HUD: Percentage Counter & Progress Line */}
       <div style={{
         width: '100%',
-        maxWidth: '560px',
+        maxWidth: '520px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        gap: '0.85rem',
+        gap: '0.75rem',
         position: 'relative',
         zIndex: 10,
       }}>
@@ -408,18 +393,18 @@ export default function SpacePreloader({ onComplete }) {
           gap: '6px',
         }}>
           <span style={{
-            fontFamily: 'Playfair Display, serif',
-            fontSize: 'clamp(2.8rem, 6vw, 4rem)',
+            fontFamily: 'JetBrains Mono, monospace',
+            fontSize: 'clamp(2.4rem, 5.5vw, 3.4rem)',
             fontWeight: 800,
-            color: '#e2e8f0',
+            color: '#f8fafc',
             lineHeight: 1,
-            textShadow: '0 0 30px rgba(0, 245, 255, 0.6)',
+            textShadow: '0 0 25px rgba(0, 245, 255, 0.7)',
           }}>
             {progress < 10 ? `0${progress}` : progress}
           </span>
           <span style={{
             fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '1.2rem',
+            fontSize: '1.1rem',
             fontWeight: 700,
             color: '#00f5ff',
           }}>
@@ -427,15 +412,15 @@ export default function SpacePreloader({ onComplete }) {
           </span>
         </div>
 
-        {/* High-Precision Progress Bar */}
+        {/* Ultra-Thin 1.5px Laser Progress Bar */}
         <div style={{
           width: '100%',
-          height: '4px',
+          height: '2px',
           background: 'rgba(255, 255, 255, 0.08)',
-          borderRadius: '4px',
+          borderRadius: '2px',
           overflow: 'hidden',
           position: 'relative',
-          border: '1px solid rgba(0, 245, 255, 0.2)',
+          border: '1px solid rgba(0, 245, 255, 0.25)',
         }}>
           <motion.div
             style={{
@@ -443,25 +428,26 @@ export default function SpacePreloader({ onComplete }) {
               width: `${progress}%`,
               background: 'linear-gradient(90deg, #00f5ff, #39ff14, #a855f7)',
               boxShadow: '0 0 15px #00f5ff',
-              borderRadius: '4px',
-              transition: 'width 0.08s linear',
+              borderRadius: '2px',
+              transition: 'width 0.06s linear',
             }}
           />
         </div>
 
-        {/* Dynamic Space Telemetry Log */}
+        {/* Dynamic Orbital Status */}
         <div style={{
           color: '#94a3b8',
           fontFamily: 'JetBrains Mono, monospace',
-          fontSize: '0.78rem',
+          fontSize: '0.74rem',
           textAlign: 'center',
-          minHeight: '20px',
+          minHeight: '18px',
+          letterSpacing: '1px',
           display: 'flex',
           alignItems: 'center',
           gap: '6px',
         }}>
           <span style={{ color: '#00f5ff' }}>▸</span>
-          <span>{telemetry}</span>
+          <span>{statusText}</span>
         </div>
       </div>
     </motion.div>
