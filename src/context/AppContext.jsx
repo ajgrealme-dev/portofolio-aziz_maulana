@@ -19,7 +19,7 @@ export const translations = {
       p2: 'Memiliki minat besar dalam efisiensi operasional dan administrasi. Mampu mengombinasikan ketelitian administratif dengan solusi otomasi digital (Node.js & AI) untuk mempercepat proses input data.',
       p3: 'Pribadi yang patuh pada aturan, jujur, dan siap berkontribusi menjaga akurasi catatan data di lingkungan industri.',
       stats: [
-        { label: 'Proyek Selesai', value: '7+' },
+        { label: 'Proyek Selesai', value: '8+' },
         { label: 'Tahun Belajar', value: '2+' },
         { label: 'Keahlian', value: '12+' },
       ],
@@ -35,6 +35,21 @@ export const translations = {
     projects: {
       title: 'Proyek Mandiri',
       items: [
+        {
+          title: 'ShopAtChey (Luxury E-Commerce)',
+          icon: '🛍️',
+          period: 'Agustus 2026 – Sekarang',
+          image: './project_shopatchey.png',
+          tag: 'Next.js 15 · React 19 · Tailwind CSS · Framer Motion · Supabase · Shopee API',
+          desc: 'Platform e-commerce tas & fashion wanita mewah dengan pengalaman visual interaktif — dilengkapi Luxury Calligraphy Intro Preloader, integrasi multi-platform (Web resmi & Shopee Store), asisten virtual "Tanya Chey AI", serta sistem keranjang belanja dan checkout dinamis.',
+          demoUrl: 'http://localhost:3000',
+          points: [
+            'Intro Preloader Luxury 60fps dengan animasi shimmer rose-gold dan curtain reveal',
+            'Katalog interaktif 150+ produk dengan 3D Card Tilt, modal detail, dan Shopee flash sale',
+            'Asisten belanja virtual "Tanya Chey AI" untuk rekomendasi produk personal secara instan',
+            'Drawer keranjang belanja real-time dan alur checkout pesanan terintegrasi'
+          ]
+        },
         {
           title: 'AgentFlow B2B Makelar',
           icon: '🤝',
@@ -180,7 +195,7 @@ export const translations = {
       p2: 'Passionate about operational efficiency and administration. Able to combine administrative precision with digital automation solutions (Node.js & AI) to accelerate data entry processes.',
       p3: 'A rule-abiding, honest individual ready to contribute to maintaining data record accuracy in an industrial environment.',
       stats: [
-        { label: 'Projects Done', value: '7+' },
+        { label: 'Projects Done', value: '8+' },
         { label: 'Years Learning', value: '2+' },
         { label: 'Skills', value: '12+' },
       ],
@@ -196,6 +211,21 @@ export const translations = {
     projects: {
       title: 'Personal Projects',
       items: [
+        {
+          title: 'ShopAtChey (Luxury E-Commerce)',
+          icon: '🛍️',
+          period: 'August 2026 – Present',
+          image: './project_shopatchey.png',
+          tag: 'Next.js 15 · React 19 · Tailwind CSS · Framer Motion · Supabase · Shopee API',
+          desc: 'A luxury handbag & fashion e-commerce storefront featuring an Italian Calligraphy Intro Preloader, multi-platform sync (Official Web & Shopee Store), "Tanya Chey AI" shopping assistant, and dynamic cart & checkout.',
+          demoUrl: 'http://localhost:3000',
+          points: [
+            '60fps Luxury Intro Preloader with rose-gold metallic shimmer & curtain reveal',
+            'Interactive catalog with 150+ products, 3D Card Tilt, detail modals, and Shopee vouchers',
+            'Built-in "Tanya Chey AI" virtual chatbot for real-time shopping guidance',
+            'Real-time interactive shopping cart drawer and seamless checkout modal'
+          ]
+        },
         {
           title: 'AgentFlow B2B Broker',
           icon: '🤝',
