@@ -32,9 +32,9 @@ function FlipCard({ project, isDark, scrollVelocity = 0, onOpenLightbox }) {
       style={{ 
         perspective: '1200px', 
         cursor: 'pointer', 
-        height: '620px', 
-        width: 'min(380px, 86vw)', 
-        flex: '0 0 min(380px, 86vw)', 
+        height: '530px', 
+        width: 'min(360px, 86vw)', 
+        flex: '0 0 min(360px, 86vw)', 
         scrollSnapAlign: 'center',
         ...tiltStyle
       }}
@@ -51,8 +51,8 @@ function FlipCard({ project, isDark, scrollVelocity = 0, onOpenLightbox }) {
             ? 'linear-gradient(145deg, rgba(15, 23, 42, 0.75), rgba(7, 10, 25, 0.85))'
             : 'linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(241, 245, 249, 0.85))',
           border: `1px solid ${isDark ? 'rgba(0,245,255,0.22)' : 'rgba(99,102,241,0.2)'}`,
-          borderRadius: '26px',
-          padding: '1.4rem',
+          borderRadius: '24px',
+          padding: '1.15rem',
           display: 'flex', flexDirection: 'column',
           justifyContent: 'space-between',
           backdropFilter: 'blur(16px)',
@@ -118,12 +118,12 @@ function FlipCard({ project, isDark, scrollVelocity = 0, onOpenLightbox }) {
           <div style={{
             position: 'relative',
             width: '100%',
-            borderRadius: '16px',
+            borderRadius: '14px',
             overflow: 'hidden',
-            margin: '0.6rem 0',
+            margin: '0.35rem 0',
             border: `1px solid ${isDark ? 'rgba(0, 245, 255, 0.35)' : 'rgba(99, 102, 241, 0.3)'}`,
             background: '#04060e',
-            boxShadow: isDark ? '0 10px 30px rgba(0,0,0,0.8), inset 0 0 15px rgba(0, 245, 255, 0.05)' : '0 10px 25px rgba(0,0,0,0.1)',
+            boxShadow: isDark ? '0 8px 24px rgba(0,0,0,0.7), inset 0 0 15px rgba(0, 245, 255, 0.05)' : '0 8px 20px rgba(0,0,0,0.1)',
             flexShrink: 0,
             display: 'flex',
             flexDirection: 'column',
