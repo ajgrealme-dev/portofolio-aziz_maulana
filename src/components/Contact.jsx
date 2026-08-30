@@ -37,12 +37,12 @@ export default function Contact() {
 
   const inputStyle = (focused) => ({
     width: '100%',
-    padding: 'clamp(0.6rem, 1.2vw, 1rem) clamp(0.75rem, 1.5vw, 1.25rem)',
+    padding: '0.85rem 1.1rem',
     background: inputBg,
     border: `1px solid ${focused ? accentColor : inputBorder}`,
-    borderRadius: '12px',
+    borderRadius: '14px',
     color: textColor,
-    fontSize: 'clamp(0.78rem, 1vw, 0.9rem)',
+    fontSize: '0.9rem',
     outline: 'none',
     transition: 'border-color 0.2s, box-shadow 0.2s',
     boxShadow: focused ? (isDark ? `0 0 15px ${accentColor}30` : `0 0 15px rgba(99,102,241,0.2)`) : 'none',
@@ -61,7 +61,7 @@ export default function Contact() {
       value: 'ajgrealme@gmail.com',
       href: 'https://mail.google.com/mail/?view=cm&fs=1&to=ajgrealme@gmail.com',
       icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="#EA4335">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="#EA4335">
           <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z" />
         </svg>
       )
@@ -73,7 +73,7 @@ export default function Contact() {
       value: '+62 822-5805-0509',
       onClick: () => setPhoneModalOpen(true),
       icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={accentColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={accentColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
         </svg>
       )
@@ -85,7 +85,7 @@ export default function Contact() {
       value: '@_aziizz_',
       href: 'https://instagram.com/_aziizz_',
       icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22">
           <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0z" fill="url(#ig-grad)"/>
           <path d="M12 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a4 4 0 1 1 0-8 4 4 0 0 1 0 8z" fill="url(#ig-grad)"/>
           <circle cx="18.406" cy="5.595" r="1.44" fill="url(#ig-grad)"/>
@@ -108,7 +108,7 @@ export default function Contact() {
       value: 'Aziz Maulana',
       href: 'https://www.linkedin.com/in/aziz-maulana-',
       icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22">
           <path d="M22.23 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.72V1.72C24 .77 23.2 0 22.23 0zM7.06 20.45H3.56V9h3.5v11.45zM5.31 7.55c-1.12 0-2.03-.91-2.03-2.03s.91-2.03 2.03-2.03 2.03.91 2.03 2.03-.91 2.03-2.03 2.03zM20.45 20.45h-3.5v-5.6c0-1.34-.03-3.06-1.87-3.06-1.87 0-2.15 1.46-2.15 2.96v5.7H9.44V9h3.36v1.56h.05c.47-.89 1.62-1.83 3.33-1.83 3.56 0 4.22 2.34 4.22 5.39v6.33z" fill="#0A66C2"/>
         </svg>
       )
@@ -122,18 +122,33 @@ export default function Contact() {
           <span style={{ color: accentColor, fontFamily: 'JetBrains Mono, monospace', fontSize: '0.85rem', letterSpacing: '3px', fontWeight: 600 }}>{'<contact>'}</span>
           <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(1.8rem, 4.5vw, 3rem)', color: textColor, margin: '0.5rem 0' }}>{t.contact.title}</h2>
           <div style={{ width: '60px', height: '3px', background: `linear-gradient(90deg, ${accentColor}, ${isDark ? '#39ff14' : '#8b5cf6'})`, margin: '0 auto 1rem', borderRadius: '2px', boxShadow: isDark ? `0 0 10px ${accentColor}` : 'none' }} />
-          <p style={{ color: subColor, fontSize: 'clamp(0.8rem, 1.1vw, 0.95rem)' }}>{t.contact.sub}</p>
+          <p style={{ color: subColor, fontSize: '0.9rem' }}>{t.contact.sub}</p>
+          <p style={{ color: isDark ? '#94a3b8' : '#64748b', marginTop: '0.5rem', fontSize: '0.82rem' }}>
+            {isDark ? '← Geser untuk mengisi formulir pesan →' : '← Swipe to fill the contact form →'}
+          </p>
         </motion.div>
 
-        {/* 🌟 2-Column Side-by-Side Grid 🌟 */}
-        <div className="contact-main-grid">
+        {/* 🌟 Horizontal Swipe Scroll for Contact on Mobile, 2-Col Grid on Desktop 🌟 */}
+        <div className="contact-scroll-container">
           {/* Contact info on the Left */}
-          <motion.div initial={{ opacity: 0, x: -40 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.2, duration: 0.7 }} style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(0.6rem, 1.2vw, 1rem)' }}>
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ delay: 0.2, duration: 0.7 }}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1rem',
+              flex: '0 0 min(350px, 86vw)',
+              minWidth: 'min(350px, 86vw)',
+              scrollSnapAlign: 'center',
+            }}
+          >
             {contacts.map((c, i) => {
               const content = (
                 <>
                   <div style={{
-                    width: 'clamp(36px, 4vw, 48px)', height: 'clamp(36px, 4vw, 48px)', borderRadius: '12px',
+                    width: '46px', height: '46px', borderRadius: '12px',
                     background: `${accentColor}20`, border: `1px solid ${accentColor}40`,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     flexShrink: 0,
@@ -142,16 +157,16 @@ export default function Contact() {
                     {c.icon}
                   </div>
                   <div style={{ overflow: 'hidden', minWidth: 0 }}>
-                    <div style={{ color: accentColor, fontSize: 'clamp(0.65rem, 0.85vw, 0.75rem)', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '2px' }}>{c.label}</div>
-                    <div style={{ color: textColor, fontWeight: 600, fontSize: 'clamp(0.78rem, 1.1vw, 0.95rem)', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>{c.value}</div>
+                    <div style={{ color: accentColor, fontSize: '0.72rem', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '2px' }}>{c.label}</div>
+                    <div style={{ color: textColor, fontWeight: 600, fontSize: '0.92rem', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>{c.value}</div>
                   </div>
                 </>
               );
 
               const itemStyle = {
-                display: 'flex', alignItems: 'center', gap: 'clamp(0.6rem, 1.2vw, 1rem)',
+                display: 'flex', alignItems: 'center', gap: '1rem',
                 background: cardBg, border: `1px solid ${cardBorder}`,
-                borderRadius: '16px', padding: 'clamp(0.75rem, 1.5vw, 1.25rem)',
+                borderRadius: '18px', padding: '1.15rem 1.35rem',
                 textDecoration: 'none',
                 backdropFilter: 'blur(10px)',
                 transition: 'box-shadow 0.3s',
@@ -193,8 +208,8 @@ export default function Contact() {
               style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
                 background: `linear-gradient(135deg, ${accentColor}, ${isDark ? '#39ff14' : '#8b5cf6'})`,
-                color: '#05050f', fontWeight: 700, padding: 'clamp(0.75rem, 1.2vw, 1rem)',
-                borderRadius: '14px', textDecoration: 'none', fontSize: 'clamp(0.78rem, 1vw, 0.9rem)',
+                color: '#05050f', fontWeight: 700, padding: '0.95rem',
+                borderRadius: '14px', textDecoration: 'none', fontSize: '0.9rem',
                 boxShadow: isDark ? `0 0 25px ${accentColor}40` : '0 10px 25px rgba(99,102,241,0.3)',
                 marginTop: '0.25rem',
               }}
@@ -208,15 +223,18 @@ export default function Contact() {
             initial={{ opacity: 0, x: 40 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.3, duration: 0.7 }}
             style={{
               background: cardBg, border: `1px solid ${cardBorder}`,
-              borderRadius: '24px', padding: 'clamp(1rem, 2vw, 2rem)',
+              borderRadius: '24px', padding: '1.75rem',
               backdropFilter: 'blur(10px)',
-              display: 'flex', flexDirection: 'column', gap: 'clamp(0.75rem, 1.5vw, 1.25rem)',
+              display: 'flex', flexDirection: 'column', gap: '1.15rem',
               position: 'relative', overflow: 'hidden',
+              flex: '0 0 min(350px, 86vw)',
+              minWidth: 'min(350px, 86vw)',
+              scrollSnapAlign: 'center',
             }}>
             <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: `linear-gradient(90deg, transparent, ${accentColor}, transparent)` }} />
 
             <div>
-              <label style={{ display: 'block', color: accentColor, fontSize: 'clamp(0.68rem, 0.9vw, 0.75rem)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, marginBottom: '4px', letterSpacing: '1px', textTransform: 'uppercase' }}>
+              <label style={{ display: 'block', color: accentColor, fontSize: '0.75rem', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, marginBottom: '4px', letterSpacing: '1px', textTransform: 'uppercase' }}>
                 {t.contact.name}
               </label>
               <input type="text" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })}
@@ -226,7 +244,7 @@ export default function Contact() {
             </div>
 
             <div>
-              <label style={{ display: 'block', color: accentColor, fontSize: 'clamp(0.68rem, 0.9vw, 0.75rem)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, marginBottom: '4px', letterSpacing: '1px', textTransform: 'uppercase' }}>
+              <label style={{ display: 'block', color: accentColor, fontSize: '0.75rem', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, marginBottom: '4px', letterSpacing: '1px', textTransform: 'uppercase' }}>
                 {t.contact.email}
               </label>
               <input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })}
@@ -236,7 +254,7 @@ export default function Contact() {
             </div>
 
             <div>
-              <label style={{ display: 'block', color: accentColor, fontSize: 'clamp(0.68rem, 0.9vw, 0.75rem)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, marginBottom: '4px', letterSpacing: '1px', textTransform: 'uppercase' }}>
+              <label style={{ display: 'block', color: accentColor, fontSize: '0.75rem', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, marginBottom: '4px', letterSpacing: '1px', textTransform: 'uppercase' }}>
                 {t.contact.message}
               </label>
               <textarea rows={4} value={form.message} onChange={e => setForm({ ...form, message: e.target.value })}
@@ -249,8 +267,8 @@ export default function Contact() {
               whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
               style={{
                 background: `linear-gradient(135deg, ${accentColor}, ${isDark ? '#39ff14' : '#8b5cf6'})`,
-                color: '#05050f', border: 'none', borderRadius: '12px',
-                padding: 'clamp(0.75rem, 1.2vw, 1rem)', fontWeight: 700, fontSize: 'clamp(0.78rem, 1vw, 0.95rem)',
+                color: '#05050f', border: 'none', borderRadius: '14px',
+                padding: '0.95rem', fontWeight: 700, fontSize: '0.95rem',
                 cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
                 boxShadow: isDark ? `0 0 25px ${accentColor}50` : '0 10px 25px rgba(99,102,241,0.3)',
                 transition: 'opacity 0.2s', opacity: loading ? 0.7 : 1,
