@@ -15,17 +15,19 @@ function SkillTag({ name, isDark, delay }) {
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
       style={{
-        padding: '8px 16px',
-        borderRadius: '10px',
+        padding: 'clamp(4px, 0.8vw, 8px) clamp(6px, 1.2vw, 16px)',
+        borderRadius: '8px',
         border: `1px solid ${hovered ? accentColor : accentColor + '40'}`,
         background: hovered ? (isDark ? 'rgba(0,245,255,0.15)' : 'rgba(99,102,241,0.15)') : (isDark ? 'rgba(0,245,255,0.05)' : 'rgba(99,102,241,0.05)'),
         color: hovered ? accentColor : isDark ? '#a8c5d9' : '#4b5563',
-        fontSize: '0.85rem',
+        fontSize: 'clamp(0.65rem, 0.95vw, 0.85rem)',
         fontWeight: 600,
         cursor: 'default',
         transition: 'all 0.2s ease',
         boxShadow: hovered ? (isDark ? `0 0 15px ${accentColor}40` : `0 5px 20px rgba(99,102,241,0.25)`) : 'none',
         transformStyle: 'preserve-3d',
+        whiteSpace: 'normal',
+        wordBreak: 'break-word',
       }}
     >
       {name}
@@ -72,30 +74,33 @@ function SkillCategory({ cat, isDark, inView, catIndex }) {
       style={{
         background: cardBg,
         border: `1px solid ${cardBorder}`,
-        borderRadius: '24px',
-        padding: '2rem',
+        borderRadius: '20px',
+        padding: 'clamp(0.75rem, 2vw, 2rem)',
         transformStyle: 'preserve-3d',
         transition: 'box-shadow 0.3s ease',
         backdropFilter: 'blur(10px)',
         rotateX,
         rotateY,
         perspective: '1000px',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.4rem, 1vw, 0.75rem)', marginBottom: 'clamp(0.75rem, 1.5vw, 1.5rem)' }}>
         <div style={{
-          width: '44px', height: '44px', borderRadius: '12px',
+          width: 'clamp(28px, 3.5vw, 44px)', height: 'clamp(28px, 3.5vw, 44px)', borderRadius: '10px',
           background: `linear-gradient(135deg, ${accentColor}30, ${isDark ? '#39ff14' : '#8b5cf6'}20)`,
           border: `1px solid ${accentColor}40`,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: '1.3rem',
+          fontSize: 'clamp(0.9rem, 1.3vw, 1.3rem)',
+          flexShrink: 0,
         }}>
           {icons[catIndex]}
         </div>
-        <h3 style={{ color: textColor, fontWeight: 700, fontSize: '1.1rem' }}>{cat.name}</h3>
+        <h3 style={{ color: textColor, fontWeight: 700, fontSize: 'clamp(0.78rem, 1.2vw, 1.1rem)' }}>{cat.name}</h3>
       </div>
 
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'clamp(0.3rem, 0.6vw, 0.5rem)' }}>
         {cat.items.map((item, j) => (
           <SkillTag key={item} name={item} isDark={isDark} delay={catIndex * 0.1 + j * 0.05} />
         ))}
@@ -114,15 +119,16 @@ export default function Skills() {
   const textColor = isDark ? '#e2e8f0' : '#1e293b';
 
   return (
-    <section id="skills" ref={ref} style={{ padding: 'clamp(80px, 10vh, 120px) clamp(1rem, 4vw, 2rem)', position: 'relative', zIndex: 10 }}>
+    <section id="skills" ref={ref} style={{ padding: 'clamp(70px, 9vh, 120px) clamp(0.75rem, 3vw, 2rem)', position: 'relative', zIndex: 10 }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        <motion.div initial={{ opacity: 0, y: 40 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }} style={{ textAlign: 'center', marginBottom: '4rem' }}>
+        <motion.div initial={{ opacity: 0, y: 40 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }} style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
           <span style={{ color: accentColor, fontFamily: 'JetBrains Mono, monospace', fontSize: '0.85rem', letterSpacing: '3px', fontWeight: 600 }}>{'<skills>'}</span>
-          <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(2rem, 5vw, 3rem)', color: textColor, margin: '0.5rem 0' }}>{t.skills.title}</h2>
+          <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(1.8rem, 4.5vw, 3rem)', color: textColor, margin: '0.5rem 0' }}>{t.skills.title}</h2>
           <div style={{ width: '60px', height: '3px', background: `linear-gradient(90deg, ${accentColor}, ${isDark ? '#39ff14' : '#8b5cf6'})`, margin: '0 auto', borderRadius: '2px', boxShadow: isDark ? `0 0 10px ${accentColor}` : 'none' }} />
         </motion.div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '1.5rem', marginBottom: '3.5rem' }}>
+        {/* 🌟 3 Categories strictly Side-by-Side in 1 Row 🌟 */}
+        <div className="skills-categories-grid" style={{ marginBottom: '3.5rem' }}>
           {t.skills.cats.map((cat, i) => (
             <SkillCategory key={cat.name} cat={cat} isDark={isDark} inView={inView} catIndex={i} />
           ))}

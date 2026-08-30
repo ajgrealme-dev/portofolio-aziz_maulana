@@ -7,13 +7,29 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 70px;
+  background-color: #05050f;
+  overflow-x: hidden;
+  max-width: 100%;
+  overscroll-behavior-x: none;
 }
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #05050f;
+  color: #e2e8f0;
   overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+  overscroll-behavior-x: none;
+}
+
+#root {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+  background-color: transparent;
 }
 
 ::-webkit-scrollbar {
@@ -51,6 +67,7 @@ img { max-width: 100%; height: auto; }
 /* Custom scrollbar for horizontal project list */
 .projects-scroll-container {
   scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
 }
 
 .dark .projects-scroll-container {
@@ -62,7 +79,7 @@ img { max-width: 100%; height: auto; }
 }
 
 .projects-scroll-container::-webkit-scrollbar {
-  height: 8px;
+  height: 6px;
 }
 
 .dark .projects-scroll-container::-webkit-scrollbar-track {
@@ -85,49 +102,30 @@ img { max-width: 100%; height: auto; }
   border-radius: 10px;
 }
 
-@media (max-width: 600px) {
-  .soft-skills-grid {
-    grid-template-columns: 1fr !important;
-    gap: 1.5rem !important;
-  }
-  .soft-skills-divider {
-    display: none !important;
-  }
-  .soft-skills-grid > div {
-    padding-left: 0 !important;
-    text-align: center !important;
-    align-items: center !important;
-  }
-}
-
 .about-grid {
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
-  gap: 3rem;
+  gap: clamp(1rem, 3vw, 3rem);
   align-items: center;
 }
 
-@media (max-width: 900px) {
-  .about-grid {
-    grid-template-columns: 1fr !important;
-    gap: 2rem !important;
-    text-align: center !important;
-  }
+.skills-categories-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(0.75rem, 2vw, 1.5rem);
 }
 
-.skills-bottom-grid {
+.experience-timeline-grid {
+  display: grid;
+  grid-template-columns: 1fr clamp(30px, 5vw, 60px) 1fr;
+  align-items: start;
+  gap: 0;
+}
+
+.contact-main-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2.5rem;
-  margin-top: 3rem;
-  align-items: stretch;
-}
-
-@media (max-width: 900px) {
-  .skills-bottom-grid {
-    grid-template-columns: 1fr !important;
-    gap: 2rem !important;
-  }
+  gap: clamp(1rem, 3vw, 2.5rem);
 }
 
 @media (min-width: 769px) {
