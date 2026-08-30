@@ -217,7 +217,7 @@ export default function Contact() {
 
             <div>
               <label style={{ display: 'block', color: accentColor, fontSize: 'clamp(0.68rem, 0.9vw, 0.75rem)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, marginBottom: '4px', letterSpacing: '1px', textTransform: 'uppercase' }}>
-                {t.contact.form.name}
+                {t.contact.name}
               </label>
               <input type="text" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })}
                 placeholder={isDark ? 'Nama lengkap Anda' : 'Your full name'} required
@@ -227,7 +227,7 @@ export default function Contact() {
 
             <div>
               <label style={{ display: 'block', color: accentColor, fontSize: 'clamp(0.68rem, 0.9vw, 0.75rem)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, marginBottom: '4px', letterSpacing: '1px', textTransform: 'uppercase' }}>
-                {t.contact.form.email}
+                {t.contact.email}
               </label>
               <input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })}
                 placeholder="email@contoh.com" required
@@ -237,7 +237,7 @@ export default function Contact() {
 
             <div>
               <label style={{ display: 'block', color: accentColor, fontSize: 'clamp(0.68rem, 0.9vw, 0.75rem)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700, marginBottom: '4px', letterSpacing: '1px', textTransform: 'uppercase' }}>
-                {t.contact.form.msg}
+                {t.contact.message}
               </label>
               <textarea rows={4} value={form.message} onChange={e => setForm({ ...form, message: e.target.value })}
                 placeholder={isDark ? 'Tulis pesan Anda di sini...' : 'Type your message here...'} required
@@ -255,7 +255,7 @@ export default function Contact() {
                 boxShadow: isDark ? `0 0 25px ${accentColor}50` : '0 10px 25px rgba(99,102,241,0.3)',
                 transition: 'opacity 0.2s', opacity: loading ? 0.7 : 1,
               }}>
-              {loading ? (isDark ? 'Membuka Email...' : 'Opening Email...') : `🚀 ${t.contact.form.send}`}
+              {loading ? (isDark ? 'Membuka Email...' : 'Opening Email...') : `🚀 ${t.contact.send}`}
             </motion.button>
 
             {status === 'success' && (
