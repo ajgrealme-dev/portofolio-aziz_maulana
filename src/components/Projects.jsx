@@ -19,7 +19,7 @@ function FlipCard({ project, isDark, scrollVelocity = 0, onOpenLightbox }) {
       style={{ 
         perspective: '1200px', 
         cursor: 'pointer', 
-        height: '560px', 
+        height: '580px', 
         width: 'min(360px, 86vw)', 
         flex: '0 0 min(360px, 86vw)', 
         scrollSnapAlign: 'center',
@@ -54,7 +54,7 @@ function FlipCard({ project, isDark, scrollVelocity = 0, onOpenLightbox }) {
 
           {/* Top content: Icon, Badge, Title, Period & Description */}
           <div style={{ flexShrink: 0, marginBottom: '0.4rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.45rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
               <div style={{
                 width: '38px', height: '38px', borderRadius: '10px',
                 background: `linear-gradient(135deg, ${accentColor}30, ${isDark ? '#39ff14' : '#8b5cf6'}20)`,
@@ -79,7 +79,7 @@ function FlipCard({ project, isDark, scrollVelocity = 0, onOpenLightbox }) {
             position: 'relative',
             width: '100%',
             flex: '1 1 0',
-            minHeight: '180px',
+            minHeight: '140px',
             borderRadius: '14px',
             overflow: 'hidden',
             margin: '0.4rem 0',
@@ -136,8 +136,8 @@ function FlipCard({ project, isDark, scrollVelocity = 0, onOpenLightbox }) {
           </div>
 
           {/* Bottom: Teknologi / Tech stack tags & flip prompt (Dibawah Foto) */}
-          <div style={{ flexShrink: 0, marginTop: 'auto', paddingTop: '0.25rem' }}>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.3rem', marginBottom: '0.5rem', maxHeight: '55px', overflow: 'hidden' }}>
+          <div style={{ flexShrink: 0, marginTop: 'auto', paddingTop: '0.2rem' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.3rem', marginBottom: '0.45rem', maxHeight: '55px', overflow: 'hidden' }}>
               {project.tag.split(' · ').map(tag => (
                 <span key={tag} style={{
                   background: isDark ? 'rgba(0,245,255,0.08)' : 'rgba(99,102,241,0.1)',
