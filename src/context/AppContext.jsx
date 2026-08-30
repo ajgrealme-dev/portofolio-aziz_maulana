@@ -39,19 +39,21 @@ export const translations = {
           title: 'AgentFlow B2B Makelar',
           icon: '🤝',
           period: 'Agustus 2026 – Sekarang',
+          image: './project_agentflow_makelar.png',
           tag: 'Node.js · Playwright · Gemini AI · OSINT',
           desc: 'Mesin AI Makelar B2B end-to-end yang mengotomatisasi pencarian pabrik (buyer & supplier), negosiasi, dan tender harga (RFQ) secara mandiri menggunakan teknologi web scraping dan OSINT.',
           points: [
-            'Scraping direktori bisnis (Google Maps) untuk memetakan pabrik target berdasarkan wilayah',
-            'Pencarian dan ekstraksi alamat email B2B asli menggunakan teknik OSINT (Open Source Intelligence)',
-            'Validasi DNS MX Record ketat untuk memastikan zero-bounce pada email campaign',
-            'Sistem Tender Terbuka (RFQ) otomatis ke berbagai supplier untuk mengunci harga grosir termurah'
+            'Scraping direktori bisnis (Google Maps) untuk pemetaan pabrik target per wilayah',
+            'Pencarian dan ekstraksi alamat email B2B autentik menggunakan teknik OSINT',
+            'Validasi ketat DNS MX Record untuk menjamin zero-bounce rate pada pengiriman email',
+            'Sistem Open Tender (RFQ) otomatis ke banyak supplier untuk mengunci harga grosir termurah'
           ]
         },
         {
           title: 'AgentFlow Agency ERP',
           icon: '⚡',
           period: 'Maret 2026 – Sekarang',
+          image: './project_agentflow_erp.png',
           tag: 'Next.js · Gemini Spark · SQLite · Prisma · Puppeteer',
           desc: 'Platform ERP berbasis AI Agent otonom 24/7 yang mengotomasi operasional kantor lintas 8 divisi — Finance, Gudang, Logistik, HR, Pengadaan, IT, hingga Dashboard Eksekutif.',
           demoUrl: 'http://localhost:3000',
@@ -67,6 +69,7 @@ export const translations = {
           title: 'NexaBooks (Accounting AI)',
           icon: '📊',
           period: 'Mei 2026 – Sekarang',
+          image: './project_nexabooks.png',
           tag: 'Python · FastAPI · SQLite · Chart.js · Accounting',
           desc: 'Sistem akuntansi & pembukuan modern berbasis AI yang mengotomasi pencatatan jurnal umum, buku besar, neraca saldo, dan laporan arus kas harian.',
           points: [
@@ -80,6 +83,7 @@ export const translations = {
           title: 'SakuTracker (PWA Finance)',
           icon: '📱',
           period: 'Juni 2026 – Sekarang',
+          image: './project_sakutracker.png',
           tag: 'React · TypeScript · Tailwind CSS · Dexie.js · PWA',
           desc: 'Aplikasi pelacak keuangan pribadi & operasional berbasis Progressive Web App (PWA) dan Android APK yang berjalan 100% offline dengan IndexedDB.',
           points: [
@@ -93,6 +97,7 @@ export const translations = {
           title: 'Job Scraper Bot',
           icon: '🕷️',
           period: 'Juli 2026 – Sekarang',
+          image: './project_jobscraper.png',
           tag: 'Python · BeautifulSoup · Pandas · SMTP',
           desc: 'Bot pencari kerja dan pengirim lamaran otomatis yang mengekstrak data dari berbagai portal lowongan kerja dan memverifikasi validitas email via SMTP.',
           points: [
@@ -106,6 +111,7 @@ export const translations = {
           title: 'Robot Sakti (AI Trading)',
           icon: '📈',
           period: 'Desember 2025 – Sekarang',
+          image: './project_robotsakti.png',
           tag: 'Python · MetaTrader 5 · TensorFlow · Stable-Baselines3 · LightGBM',
           desc: 'Sistem trading multi-asset otomatis (Gold, Bitcoin, Forex) yang mengintegrasikan kecerdasan buatan (Machine Learning & Reinforcement Learning) dengan execution engine MetaTrader 5.',
           points: [
@@ -119,6 +125,7 @@ export const translations = {
           title: 'Kicaw Mania (Game Vision)',
           icon: '🐦',
           period: 'Februari 2026 – Maret 2026',
+          image: './project_kicawmania.png',
           tag: 'Python · OpenCV · MediaPipe · NumPy',
           desc: 'Game kamera interaktif berbasis Computer Vision untuk tren viral TikTok (Touch Your Nose Detection) yang mendeteksi sentuhan jari pada hidung secara real-time dengan efek partikel fisik.',
           points: [
@@ -193,6 +200,7 @@ export const translations = {
           title: 'AgentFlow B2B Broker',
           icon: '🤝',
           period: 'August 2026 – Present',
+          image: './project_agentflow_makelar.png',
           tag: 'Node.js · Playwright · Gemini AI · OSINT',
           desc: 'An end-to-end B2B Broker AI engine that automates factory discovery (buyers & suppliers), negotiation, and open tender (RFQ) pricing using web scraping and OSINT technologies.',
           points: [
@@ -206,6 +214,7 @@ export const translations = {
           title: 'AgentFlow Agency ERP',
           icon: '⚡',
           period: 'March 2026 – Present',
+          image: './project_agentflow_erp.png',
           tag: 'Next.js · Gemini Spark · SQLite · Prisma · Puppeteer',
           desc: 'Autonomous 24/7 AI Agent ERP platform that automates office operations across 8 divisions — Finance, Warehouse, Logistics, HR, Procurement, IT, and Executive Dashboard.',
           demoUrl: 'http://localhost:3000',
@@ -221,6 +230,7 @@ export const translations = {
           title: 'NexaBooks (Accounting AI)',
           icon: '📊',
           period: 'May 2026 – Present',
+          image: './project_nexabooks.png',
           tag: 'Python · FastAPI · SQLite · Chart.js · Accounting',
           desc: 'A modern AI-powered bookkeeping and accounting system that automates general ledger entries, trial balances, and daily cashflow reports.',
           points: [
@@ -234,6 +244,7 @@ export const translations = {
           title: 'SakuTracker (PWA Finance)',
           icon: '📱',
           period: 'June 2026 – Present',
+          image: './project_sakutracker.png',
           tag: 'React · TypeScript · Tailwind CSS · Dexie.js · PWA',
           desc: 'A personal & operational finance tracker built as a Progressive Web App (PWA) and Android APK running 100% offline with local IndexedDB storage.',
           points: [
@@ -247,6 +258,7 @@ export const translations = {
           title: 'Job Scraper Bot',
           icon: '🕷️',
           period: 'July 2026 – Present',
+          image: './project_jobscraper.png',
           tag: 'Python · BeautifulSoup · Pandas · SMTP',
           desc: 'An automated job search and application bot that extracts data from various job portals and verifies email validity via SMTP.',
           points: [
@@ -260,6 +272,7 @@ export const translations = {
           title: 'Robot Sakti (AI Trading)',
           icon: '📈',
           period: 'December 2025 – Present',
+          image: './project_robotsakti.png',
           tag: 'Python · MetaTrader 5 · TensorFlow · Stable-Baselines3 · LightGBM',
           desc: 'Automated multi-asset trading system (Gold, Bitcoin, Forex) integrating machine learning, reinforcement learning, and LLM NLP with MetaTrader 5 execution engine.',
           points: [
@@ -273,6 +286,7 @@ export const translations = {
           title: 'Kicaw Mania (Game Vision)',
           icon: '🐦',
           period: 'February 2026 – March 2026',
+          image: './project_kicawmania.png',
           tag: 'Python · OpenCV · MediaPipe · NumPy',
           desc: 'An interactive Computer Vision game built for a viral TikTok trend (Touch Your Nose Detection), detecting finger-to-nose touches in real-time with physical particle effects.',
           points: [
