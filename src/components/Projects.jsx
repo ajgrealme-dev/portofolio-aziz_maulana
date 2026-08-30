@@ -53,8 +53,30 @@ function FlipCard({ project, isDark, scrollVelocity = 0, onOpenLightbox }) {
             boxShadow: isDark ? `0 0 20px ${accentColor}` : 'none',
           }} />
 
-          {/* Top: GUI Screenshot Image Banner */}
-          <div style={{ position: 'relative', width: '100%', height: '150px', borderRadius: '16px', overflow: 'hidden', marginBottom: '0.85rem', border: `1px solid ${accentColor}35`, background: '#070913' }}>
+          {/* Top content: Icon, Badge, Title, Period & Description */}
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.65rem' }}>
+              <div style={{
+                width: '42px', height: '42px', borderRadius: '12px',
+                background: `linear-gradient(135deg, ${accentColor}30, ${isDark ? '#39ff14' : '#8b5cf6'}20)`,
+                border: `1px solid ${accentColor}40`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: '1.3rem',
+              }}>{project.icon || '🤖'}</div>
+              <span style={{
+                background: `${accentColor}15`, border: `1px solid ${accentColor}35`,
+                color: accentColor, fontSize: '0.68rem', fontFamily: 'JetBrains Mono, monospace',
+                padding: '3px 10px', borderRadius: '100px', fontWeight: 600,
+              }}>Personal Project</span>
+            </div>
+
+            <h3 style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.2rem', lineHeight: 1.25, color: textColor, marginBottom: '0.25rem' }}>{project.title}</h3>
+            <p style={{ color: accentColor, fontFamily: 'JetBrains Mono, monospace', fontSize: '0.68rem', marginBottom: '0.45rem' }}>{project.period}</p>
+            <p style={{ color: subColor, lineHeight: 1.45, fontSize: '0.8rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', marginBottom: '0.75rem' }}>{project.desc}</p>
+          </div>
+
+          {/* Middle: GUI Screenshot Image Banner (Dibawah Judul & Deskripsi, Diatas Teknologi) */}
+          <div style={{ position: 'relative', width: '100%', height: '145px', borderRadius: '16px', overflow: 'hidden', marginBottom: '0.75rem', border: `1px solid ${accentColor}35`, background: '#070913' }}>
             <img
               src={project.image}
               alt={project.title}
@@ -91,7 +113,7 @@ function FlipCard({ project, isDark, scrollVelocity = 0, onOpenLightbox }) {
               title="Perbesar Screenshot GUI"
               style={{
                 position: 'absolute', bottom: '8px', right: '8px',
-                background: 'rgba(0,0,0,0.7)',
+                background: 'rgba(0,0,0,0.75)',
                 border: '1px solid rgba(255,255,255,0.2)',
                 borderRadius: '8px', padding: '4px 8px',
                 color: '#fff', fontSize: '0.7rem',
@@ -103,23 +125,8 @@ function FlipCard({ project, isDark, scrollVelocity = 0, onOpenLightbox }) {
             </button>
           </div>
 
-          {/* Middle content area */}
-          <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
-              <h3 style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.15rem', lineHeight: 1.25, color: textColor, margin: 0 }}>{project.title}</h3>
-              <span style={{
-                background: `${accentColor}15`, border: `1px solid ${accentColor}35`,
-                color: accentColor, fontSize: '0.65rem', fontFamily: 'JetBrains Mono, monospace',
-                padding: '2px 8px', borderRadius: '100px', fontWeight: 600, flexShrink: 0,
-              }}>Personal</span>
-            </div>
-
-            <p style={{ color: accentColor, fontFamily: 'JetBrains Mono, monospace', fontSize: '0.68rem', marginBottom: '0.5rem' }}>{project.period}</p>
-            <p style={{ color: subColor, lineHeight: 1.45, fontSize: '0.8rem', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{project.desc}</p>
-          </div>
-
-          {/* Bottom tags & flip prompt */}
-          <div style={{ marginTop: 'auto', paddingTop: '0.65rem' }}>
+          {/* Bottom: Teknologi / Tech stack tags & flip prompt (Dibawah Foto) */}
+          <div style={{ marginTop: 'auto' }}>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem', marginBottom: '0.65rem', maxHeight: '55px', overflow: 'hidden' }}>
               {project.tag.split(' · ').map(tag => (
                 <span key={tag} style={{
