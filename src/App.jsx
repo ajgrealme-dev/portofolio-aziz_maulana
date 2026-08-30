@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
-import { AnimatePresence } from 'framer-motion';
 import { AppProvider, useApp } from './context/AppContext';
 import BackgroundCanvas from './components/BackgroundCanvas';
 import CustomCursor from './components/CustomCursor';
-import SpacePreloader from './components/SpacePreloader';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -55,7 +53,6 @@ function AppContent() {
   const { theme } = useApp();
   const isDark = theme === 'dark';
   const [activeSection, setActiveSection] = useState('hero');
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const sections = ['hero', 'about', 'skills', 'projects', 'experience', 'contact'];
@@ -67,39 +64,31 @@ function AppContent() {
   }, []);
 
   return (
-    <>
-      <AnimatePresence mode="wait">
-        {loading && (
-          <SpacePreloader onComplete={() => setLoading(false)} />
-        )}
-      </AnimatePresence>
-
-      <div 
-        className={isDark ? 'dark' : 'light'}
-        style={{
-          minHeight: '100vh',
-          background: isDark
-            ? 'linear-gradient(180deg, #05050f 0%, #080818 30%, #040415 70%, #05050f 100%)'
-            : 'linear-gradient(180deg, #f0f4ff 0%, #e8f0ff 30%, #f5f0ff 70%, #f0f4ff 100%)',
-          transition: 'background 0.5s ease',
-          colorScheme: isDark ? 'dark' : 'light',
-        }}
-      >
-        <CustomCursor />
-        <ScrollProgress />
-        <BackgroundCanvas isDark={isDark} />
-        <Navbar activeSection={activeSection} />
-        <main>
-          <Hero />
-          <About />
-          <Skills />
-          <Projects />
-          <Experience />
-          <Contact />
-        </main>
-        <Footer />
-      </div>
-    </>
+    <div 
+      className={isDark ? 'dark' : 'light'}
+      style={{
+        minHeight: '100vh',
+        background: isDark
+          ? 'linear-gradient(180deg, #05050f 0%, #080818 30%, #040415 70%, #05050f 100%)'
+          : 'linear-gradient(180deg, #f0f4ff 0%, #e8f0ff 30%, #f5f0ff 70%, #f0f4ff 100%)',
+        transition: 'background 0.5s ease',
+        colorScheme: isDark ? 'dark' : 'light',
+      }}
+    >
+      <CustomCursor />
+      <ScrollProgress />
+      <BackgroundCanvas isDark={isDark} />
+      <Navbar activeSection={activeSection} />
+      <main>
+        <Hero />
+        <About />
+        <Skills />
+        <Projects />
+        <Experience />
+        <Contact />
+      </main>
+      <Footer />
+    </div>
   );
 }
 
