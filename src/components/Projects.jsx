@@ -39,9 +39,8 @@ function FlipCard({ project, isDark, scrollVelocity = 0, onOpenLightbox }) {
             : 'linear-gradient(135deg, rgba(99,102,241,0.06), rgba(139,92,246,0.04))',
           border: `1px solid ${isDark ? 'rgba(0,245,255,0.2)' : 'rgba(99,102,241,0.2)'}`,
           borderRadius: '24px',
-          padding: '1.4rem',
+          padding: '1.25rem',
           display: 'flex', flexDirection: 'column',
-          justifyContent: 'space-between',
           backdropFilter: 'blur(10px)',
           overflow: 'hidden',
         }}>
@@ -54,29 +53,40 @@ function FlipCard({ project, isDark, scrollVelocity = 0, onOpenLightbox }) {
           }} />
 
           {/* Top content: Icon, Badge, Title, Period & Description */}
-          <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.65rem' }}>
+          <div style={{ flexShrink: 0, marginBottom: '0.4rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.45rem' }}>
               <div style={{
-                width: '42px', height: '42px', borderRadius: '12px',
+                width: '38px', height: '38px', borderRadius: '10px',
                 background: `linear-gradient(135deg, ${accentColor}30, ${isDark ? '#39ff14' : '#8b5cf6'}20)`,
                 border: `1px solid ${accentColor}40`,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: '1.3rem',
+                fontSize: '1.2rem',
               }}>{project.icon || '🤖'}</div>
               <span style={{
                 background: `${accentColor}15`, border: `1px solid ${accentColor}35`,
-                color: accentColor, fontSize: '0.68rem', fontFamily: 'JetBrains Mono, monospace',
-                padding: '3px 10px', borderRadius: '100px', fontWeight: 600,
+                color: accentColor, fontSize: '0.65rem', fontFamily: 'JetBrains Mono, monospace',
+                padding: '2px 8px', borderRadius: '100px', fontWeight: 600,
               }}>Personal Project</span>
             </div>
 
-            <h3 style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.2rem', lineHeight: 1.25, color: textColor, marginBottom: '0.25rem' }}>{project.title}</h3>
-            <p style={{ color: accentColor, fontFamily: 'JetBrains Mono, monospace', fontSize: '0.68rem', marginBottom: '0.45rem' }}>{project.period}</p>
-            <p style={{ color: subColor, lineHeight: 1.45, fontSize: '0.8rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', marginBottom: '0.75rem' }}>{project.desc}</p>
+            <h3 style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.15rem', lineHeight: 1.2, color: textColor, marginBottom: '0.2rem' }}>{project.title}</h3>
+            <p style={{ color: accentColor, fontFamily: 'JetBrains Mono, monospace', fontSize: '0.65rem', marginBottom: '0.35rem' }}>{project.period}</p>
+            <p style={{ color: subColor, lineHeight: 1.4, fontSize: '0.78rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', margin: 0 }}>{project.desc}</p>
           </div>
 
-          {/* Middle: GUI Screenshot Image Banner (Dibawah Judul & Deskripsi, Diatas Teknologi) */}
-          <div style={{ position: 'relative', width: '100%', height: '145px', borderRadius: '16px', overflow: 'hidden', marginBottom: '0.75rem', border: `1px solid ${accentColor}35`, background: '#070913' }}>
+          {/* Middle: Fully Expanding GUI Screenshot Image Banner (Mengisi seluruh ruang kosong) */}
+          <div style={{
+            position: 'relative',
+            width: '100%',
+            flex: '1 1 0',
+            minHeight: '180px',
+            borderRadius: '14px',
+            overflow: 'hidden',
+            margin: '0.4rem 0',
+            border: `1px solid ${accentColor}35`,
+            background: '#070913',
+            display: 'flex',
+          }}>
             <img
               src={project.image}
               alt={project.title}
@@ -126,8 +136,8 @@ function FlipCard({ project, isDark, scrollVelocity = 0, onOpenLightbox }) {
           </div>
 
           {/* Bottom: Teknologi / Tech stack tags & flip prompt (Dibawah Foto) */}
-          <div style={{ marginTop: 'auto' }}>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem', marginBottom: '0.65rem', maxHeight: '55px', overflow: 'hidden' }}>
+          <div style={{ flexShrink: 0, marginTop: 'auto', paddingTop: '0.25rem' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.3rem', marginBottom: '0.5rem', maxHeight: '55px', overflow: 'hidden' }}>
               {project.tag.split(' · ').map(tag => (
                 <span key={tag} style={{
                   background: isDark ? 'rgba(0,245,255,0.08)' : 'rgba(99,102,241,0.1)',
