@@ -19,6 +19,7 @@ export default function Navbar({ activeSection }) {
     { key: 'about', href: '#about' },
     { key: 'skills', href: '#skills' },
     { key: 'projects', href: '#projects' },
+    { key: 'credentials', href: '#credentials' },
     { key: 'experience', href: '#experience' },
     { key: 'contact', href: '#contact' },
   ];

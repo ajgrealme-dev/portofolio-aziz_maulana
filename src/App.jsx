@@ -7,6 +7,7 @@ import Hero from './components/Hero';
 import About from './components/About';
 import Skills from './components/Skills';
 import Projects from './components/Projects';
+import Credentials from './components/Credentials';
 import Experience from './components/Experience';
 import Contact from './components/Contact';
 import TerminalDemo from './components/TerminalDemo';
@@ -55,7 +56,7 @@ function AppContent() {
   const [activeSection, setActiveSection] = useState('hero');
 
   useEffect(() => {
-    const sections = ['hero', 'about', 'skills', 'projects', 'experience', 'contact'];
+    const sections = ['hero', 'about', 'skills', 'projects', 'credentials', 'experience', 'contact'];
     const obs = new IntersectionObserver((entries) => {
       entries.forEach(e => { if (e.isIntersecting) setActiveSection(e.target.id); });
     }, { threshold: 0.3 });
@@ -84,6 +85,7 @@ function AppContent() {
         <About />
         <Skills />
         <Projects />
+        <Credentials />
         <Experience />
         <Contact />
       </main>

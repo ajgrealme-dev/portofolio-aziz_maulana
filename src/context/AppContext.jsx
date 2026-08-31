@@ -4,7 +4,7 @@ const AppContext = createContext();
 
 export const translations = {
   id: {
-    nav: { home: 'Beranda', about: 'Tentang', skills: 'Keahlian', projects: 'Proyek', experience: 'Pengalaman', contact: 'Kontak' },
+    nav: { home: 'Beranda', about: 'Tentang', skills: 'Keahlian', projects: 'Proyek', credentials: 'Kredensial', experience: 'Pengalaman', contact: 'Kontak' },
     hero: {
       greeting: 'Halo, saya',
       name: 'Aziz Maulana',
@@ -152,6 +152,98 @@ export const translations = {
         }
       ],
     },
+    credentials: {
+      title: 'Kompetensi Terverifikasi',
+      subtitle: 'Piagam Akreditasi Kredensial & Rekam Jejak Arsitektur Perangkat Lunak',
+      verifyBtn: 'Verifikasi Kredensial',
+      modalTitle: 'Piagam Akreditasi Kompetensi Resmi',
+      issuedTo: 'Diberikan Kepada',
+      credentialId: 'Credential ID',
+      masteryLevel: 'Tingkat Kemahiran',
+      verifiedModules: 'Modul Arsitektur Terverifikasi',
+      linkedCodebase: 'Basis Kode Terkait',
+      viewGithub: 'Lihat Repositori GitHub',
+      viewDemo: 'Coba Live Demo',
+      closeBtn: 'Tutup Piagam',
+      items: [
+        {
+          id: 'AM-CRE-2026-AI01',
+          title: 'Autonomous Multi-Agent AI Systems',
+          category: 'Artificial Intelligence & Multi-Agent Swarm',
+          level: 'Production-Ready Architecture',
+          issueDate: 'Agustus 2026',
+          icon: '🤖',
+          badgeColor: '#00f5ff',
+          summary: 'Perancangan dan orkestrasi arsitektur multi-agent otonom tingkat lanjut dengan AST Graph, inter-agent messaging protocol, automated B2B RFQ matchmaking, dan real-time execution simulation.',
+          modules: [
+            'Multi-Agent Swarm Orchestration & Message Dispatching',
+            'AST Codebase Knowledge Graphing (Graphify Engine)',
+            'Autonomous B2B RFQ Matchmaker & OSINT Intelligence',
+            'Stateful Workflow Isolation & Terminal Emulation'
+          ],
+          codebases: 'AgentFlow Agency ERP & B2B Makelar AI',
+          githubUrl: 'https://github.com/ajgrealme-dev/portofolio-aziz_maulana',
+          demoUrl: 'https://azizmaulana-portfolio.vercel.app/?demo=makelar'
+        },
+        {
+          id: 'AM-CRE-2026-FS02',
+          title: 'Modern Fullstack Web & App Architecture',
+          category: 'Fullstack Web & Reactive Applications',
+          level: 'Advanced Fullstack Engineering',
+          issueDate: 'Juli 2026',
+          icon: '⚡',
+          badgeColor: '#8b5cf6',
+          summary: 'Pengembangan aplikasi web fullstack berperforma tinggi dengan Next.js 15 App Router, React 19, Tailwind CSS modern, sistem cache terdesentralisasi, PWA Service Worker offline-first, dan database SQLite/Prisma.',
+          modules: [
+            'Next.js 15 & React 19 Server/Client Hybrid Components',
+            'Offline-First PWA Storage & Background Sync Engine',
+            'Type-Safe State Management & Reusable UI Design Systems',
+            'High-Performance Indexed Database Modeling (Prisma ORM)'
+          ],
+          codebases: 'NexaBooks Accounting & SakuTracker PWA',
+          githubUrl: 'https://github.com/ajgrealme-dev/portofolio-aziz_maulana',
+          demoUrl: 'https://azizmaulana-portfolio.vercel.app'
+        },
+        {
+          id: 'AM-CRE-2026-QT03',
+          title: 'Quantitative Algorithmic Trading & Risk Engineering',
+          category: 'Quantitative Finance & Market Systems',
+          level: 'Algorithmic Risk Management',
+          issueDate: 'Juni 2026',
+          icon: '📈',
+          badgeColor: '#39ff14',
+          summary: 'Sistem trading kuantitatif berbasis aturan ketat Smart Money Concepts (SMC/ICT), integrasi jembatan MetaTrader 5 (MT5), machine learning regresi pola pasar, serta protokol manajemen risiko Drawdown & Value-at-Risk (VaR).',
+          modules: [
+            'MetaTrader 5 Native Execution & Socket Bridge',
+            'SMC/ICT Liquidity Recognition & Order Block Detection',
+            'Dynamic Lot Sizing & Value-at-Risk (VaR) Circuit Breakers',
+            'Automated Economic Calendar Blackout & Position Hedging'
+          ],
+          codebases: 'Robot Sakti Algo Trading Bot',
+          githubUrl: 'https://github.com/ajgrealme-dev/portofolio-aziz_maulana',
+          demoUrl: 'https://azizmaulana-portfolio.vercel.app/?demo=trading'
+        },
+        {
+          id: 'AM-CRE-2026-EC04',
+          title: 'Scalable E-Commerce & Digital Commerce Systems',
+          category: 'Digital Commerce & Omnichannel Retail',
+          level: 'Commercial Production Standard',
+          issueDate: 'Agustus 2026',
+          icon: '🛍️',
+          badgeColor: '#f59e0b',
+          summary: 'Pembangunan platform e-commerce omnichannel modern dengan animasi mewah 60fps, keranjang belanja real-time, sinkronisasi marketplace Shopee API, integrasi AI chatbot rekomendasi produk, dan checkout multi-kanal.',
+          modules: [
+            'Luxury Motion Preloader & 3D Interactive Catalog Viewers',
+            'Real-time Shopping Cart & Inventory Stock Locking',
+            'Shopee Open Platform API & Flash Sale Voucher Sync',
+            'Conversational Shopping AI Assistant (Tanya Chey AI)'
+          ],
+          codebases: 'ShopAtChey Luxury E-Commerce',
+          githubUrl: 'https://github.com/ajgrealme-dev/portofolio-aziz_maulana',
+          demoUrl: 'https://azizmaulana-portfolio.vercel.app'
+        }
+      ]
+    },
     experience: {
       title: 'Pengalaman',
       items: [
@@ -180,7 +272,7 @@ export const translations = {
     },
   },
   en: {
-    nav: { home: 'Home', about: 'About', skills: 'Skills', projects: 'Projects', experience: 'Experience', contact: 'Contact' },
+    nav: { home: 'Home', about: 'About', skills: 'Skills', projects: 'Projects', credentials: 'Credentials', experience: 'Experience', contact: 'Contact' },
     hero: {
       greeting: "Hi, I'm",
       name: 'Aziz Maulana',
@@ -327,6 +419,98 @@ export const translations = {
           ]
         }
       ],
+    },
+    credentials: {
+      title: 'Verified Competencies',
+      subtitle: 'Official Accreditation Credentials & Software Architecture Milestones',
+      verifyBtn: 'Verify Credential',
+      modalTitle: 'Official Competency Accreditation Certificate',
+      issuedTo: 'Issued To',
+      credentialId: 'Credential ID',
+      masteryLevel: 'Mastery Level',
+      verifiedModules: 'Verified Architecture Modules',
+      linkedCodebase: 'Linked Codebase',
+      viewGithub: 'View GitHub Repository',
+      viewDemo: 'Explore Live Demo',
+      closeBtn: 'Close Certificate',
+      items: [
+        {
+          id: 'AM-CRE-2026-AI01',
+          title: 'Autonomous Multi-Agent AI Systems',
+          category: 'Artificial Intelligence & Multi-Agent Swarm',
+          level: 'Production-Ready Architecture',
+          issueDate: 'August 2026',
+          icon: '🤖',
+          badgeColor: '#00f5ff',
+          summary: 'Advanced multi-agent autonomous system design and orchestration featuring AST Graphs, inter-agent messaging protocols, automated B2B RFQ matchmaking, and real-time execution simulation.',
+          modules: [
+            'Multi-Agent Swarm Orchestration & Message Dispatching',
+            'AST Codebase Knowledge Graphing (Graphify Engine)',
+            'Autonomous B2B RFQ Matchmaker & OSINT Intelligence',
+            'Stateful Workflow Isolation & Terminal Emulation'
+          ],
+          codebases: 'AgentFlow Agency ERP & B2B Makelar AI',
+          githubUrl: 'https://github.com/ajgrealme-dev/portofolio-aziz_maulana',
+          demoUrl: 'https://azizmaulana-portfolio.vercel.app/?demo=makelar'
+        },
+        {
+          id: 'AM-CRE-2026-FS02',
+          title: 'Modern Fullstack Web & App Architecture',
+          category: 'Fullstack Web & Reactive Applications',
+          level: 'Advanced Fullstack Engineering',
+          issueDate: 'July 2026',
+          icon: '⚡',
+          badgeColor: '#8b5cf6',
+          summary: 'High-performance fullstack web development with Next.js 15 App Router, React 19, modern Tailwind CSS, decentralized caching, offline-first PWA Service Workers, and SQLite/Prisma ORM databases.',
+          modules: [
+            'Next.js 15 & React 19 Server/Client Hybrid Components',
+            'Offline-First PWA Storage & Background Sync Engine',
+            'Type-Safe State Management & Reusable UI Design Systems',
+            'High-Performance Indexed Database Modeling (Prisma ORM)'
+          ],
+          codebases: 'NexaBooks Accounting & SakuTracker PWA',
+          githubUrl: 'https://github.com/ajgrealme-dev/portofolio-aziz_maulana',
+          demoUrl: 'https://azizmaulana-portfolio.vercel.app'
+        },
+        {
+          id: 'AM-CRE-2026-QT03',
+          title: 'Quantitative Algorithmic Trading & Risk Engineering',
+          category: 'Quantitative Finance & Market Systems',
+          level: 'Algorithmic Risk Management',
+          issueDate: 'June 2026',
+          icon: '📈',
+          badgeColor: '#39ff14',
+          summary: 'Quantitative trading system governed by strict Smart Money Concepts (SMC/ICT) rules, MetaTrader 5 (MT5) bridge integration, regression pattern ML, and Drawdown / Value-at-Risk (VaR) risk management protocols.',
+          modules: [
+            'MetaTrader 5 Native Execution & Socket Bridge',
+            'SMC/ICT Liquidity Recognition & Order Block Detection',
+            'Dynamic Lot Sizing & Value-at-Risk (VaR) Circuit Breakers',
+            'Automated Economic Calendar Blackout & Position Hedging'
+          ],
+          codebases: 'Robot Sakti Algo Trading Bot',
+          githubUrl: 'https://github.com/ajgrealme-dev/portofolio-aziz_maulana',
+          demoUrl: 'https://azizmaulana-portfolio.vercel.app/?demo=trading'
+        },
+        {
+          id: 'AM-CRE-2026-EC04',
+          title: 'Scalable E-Commerce & Digital Commerce Systems',
+          category: 'Digital Commerce & Omnichannel Retail',
+          level: 'Commercial Production Standard',
+          issueDate: 'August 2026',
+          icon: '🛍️',
+          badgeColor: '#f59e0b',
+          summary: 'Modern omnichannel e-commerce platform featuring luxury 60fps animations, real-time shopping cart, Shopee Marketplace API sync, conversational shopping AI assistant, and multi-channel checkout.',
+          modules: [
+            'Luxury Motion Preloader & 3D Interactive Catalog Viewers',
+            'Real-time Shopping Cart & Inventory Stock Locking',
+            'Shopee Open Platform API & Flash Sale Voucher Sync',
+            'Conversational Shopping AI Assistant (Tanya Chey AI)'
+          ],
+          codebases: 'ShopAtChey Luxury E-Commerce',
+          githubUrl: 'https://github.com/ajgrealme-dev/portofolio-aziz_maulana',
+          demoUrl: 'https://azizmaulana-portfolio.vercel.app'
+        }
+      ]
     },
     experience: {
       title: 'Experience',
