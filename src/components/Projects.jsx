@@ -1,17 +1,12 @@
 import { useRef, useState, useEffect } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useApp } from '../context/AppContext';
 
-function FlipCard({ project, isDark, scrollVelocity = 0, onOpenLightbox, dragDistance }) {
+function FlipCard({ project, isDark, onOpenLightbox }) {
   const [flipped, setFlipped] = useState(false);
   const accentColor = isDark ? '#00f5ff' : '#6366f1';
   const textColor = isDark ? '#e2e8f0' : '#1e293b';
   const subColor = isDark ? '#94a3b8' : '#64748b';
-
-  const tiltStyle = {
-    transform: `rotateY(${scrollVelocity}deg) skewX(${-scrollVelocity * 0.25}deg)`,
-    transition: 'transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-  };
 
   // Derive a nice mockup url domain
   const getDomain = (title) => {
@@ -28,20 +23,16 @@ function FlipCard({ project, isDark, scrollVelocity = 0, onOpenLightbox, dragDis
   };
 
   return (
-    <div
-      onClick={() => {
-        if (!dragDistance || dragDistance.current < 10) {
-          setFlipped(!flipped);
-        }
-      }}
+    <motion.div
+      onClick={() => setFlipped(!flipped)}
+      whileHover={{ y: -6, transition: { duration: 0.2 } }}
       style={{ 
         perspective: '1200px', 
         cursor: 'pointer', 
-        height: '530px', 
+        height: 'clamp(460px, 58vh, 520px)', 
         width: 'min(360px, 86vw)', 
         flex: '0 0 min(360px, 86vw)', 
         scrollSnapAlign: 'center',
-        ...tiltStyle
       }}
     >
       <motion.div
@@ -340,254 +331,406 @@ function FlipCard({ project, isDark, scrollVelocity = 0, onOpenLightbox, dragDis
           </div>
         </div>
       </motion.div>
-    </div>
+    </motion.div>
   );
 }
 
 export default function Projects() {
   const { theme, t } = useApp();
   const isDark = theme === 'dark';
-  const ref = useRef();
-  const inView = useInView(ref, { once: true, margin: '0px' });
-  const scrollRef = useRef();
 
   const [lightboxImg, setLightboxImg] = useState(null);
   const [lightboxTitle, setLightboxTitle] = useState('');
-  const [isGrabbed, setIsGrabbed] = useState(false);
-  const [isWheeling, setIsWheeling] = useState(false);
-  const [scrollVelocity, setScrollVelocity] = useState(0);
+  const [isDesktop, setIsDesktop] = useState(() => typeof window !== 'undefined' ? window.innerWidth >= 900 : true);
 
-  const isDragging = useRef(false);
-  const startX = useRef(0);
-  const startScrollLeft = useRef(0);
-  const dragDistance = useRef(0);
-  const targetScroll = useRef(0);
-  const isAnimating = useRef(false);
-  const snapTimer = useRef();
-  const lastScrollLeft = useRef(0);
-  const velocityTimer = useRef();
+  const targetRef = useRef(null);
+  const trackRef = useRef(null);
+  const [maxScroll, setMaxScroll] = useState(0);
+  const maxScrollRef = useRef(0);
 
   const accentColor = isDark ? '#00f5ff' : '#6366f1';
   const textColor = isDark ? '#e2e8f0' : '#1e293b';
 
-  const checkScroll = () => {
-    if (!scrollRef.current) return;
-    const { scrollLeft } = scrollRef.current;
-    const delta = scrollLeft - lastScrollLeft.current;
-    lastScrollLeft.current = scrollLeft;
-    const clampedVelocity = Math.max(-12, Math.min(12, delta * 0.4));
-    setScrollVelocity(clampedVelocity);
-
-    clearTimeout(velocityTimer.current);
-    velocityTimer.current = setTimeout(() => setScrollVelocity(0), 100);
-  };
-
+  // Responsive breakpoint detection
   useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-
-    targetScroll.current = el.scrollLeft;
-    el.addEventListener('scroll', checkScroll, { passive: true });
-
-    // 🌟 Smooth Inertial Momentum Lerp (60fps Butter-Smooth Wheel Navigation)
-    const startLerp = () => {
-      if (isAnimating.current) return;
-      isAnimating.current = true;
-
-      const tick = () => {
-        if (!el) {
-          isAnimating.current = false;
-          return;
-        }
-        const diff = targetScroll.current - el.scrollLeft;
-        if (Math.abs(diff) > 0.5) {
-          el.scrollLeft += diff * 0.095;
-          requestAnimationFrame(tick);
-        } else {
-          el.scrollLeft = targetScroll.current;
-          isAnimating.current = false;
-        }
-      };
-      requestAnimationFrame(tick);
+    const checkDesktop = () => {
+      setIsDesktop(window.innerWidth >= 900);
     };
+    checkDesktop();
+    window.addEventListener('resize', checkDesktop);
+    return () => window.removeEventListener('resize', checkDesktop);
+  }, []);
 
-    const onWheel = (e) => {
-      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-        const atStart = el.scrollLeft <= 5 && e.deltaY < 0;
-        const maxScroll = el.scrollWidth - el.clientWidth;
-        const atEnd = el.scrollLeft >= maxScroll - 5 && e.deltaY > 0;
+  // Calculate track travel distance on Desktop
+  useEffect(() => {
+    if (!isDesktop) return;
 
-        if (!atStart && !atEnd) {
-          e.preventDefault();
-          setIsWheeling(true);
-          targetScroll.current = Math.max(0, Math.min(maxScroll, targetScroll.current + e.deltaY * 1.35));
-          startLerp();
-
-          clearTimeout(snapTimer.current);
-          snapTimer.current = setTimeout(() => {
-            setIsWheeling(false);
-          }, 300);
-        }
+    const updateMaxScroll = () => {
+      if (trackRef.current) {
+        const trackWidth = trackRef.current.scrollWidth;
+        const viewportWidth = window.innerWidth;
+        // 80px buffer ensures the last card has spacious right padding and is 100% visible
+        const dist = Math.max(0, trackWidth - viewportWidth + 80);
+        maxScrollRef.current = dist;
+        setMaxScroll(dist);
       }
     };
 
-    el.addEventListener('wheel', onWheel, { passive: false });
+    updateMaxScroll();
+    const t1 = setTimeout(updateMaxScroll, 200);
+    const t2 = setTimeout(updateMaxScroll, 600);
+    const t3 = setTimeout(updateMaxScroll, 1200);
+    window.addEventListener('resize', updateMaxScroll);
 
     return () => {
-      el.removeEventListener('scroll', checkScroll);
-      el.removeEventListener('wheel', onWheel);
-      clearTimeout(snapTimer.current);
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      window.removeEventListener('resize', updateMaxScroll);
     };
-  }, []);
+  }, [t.projects.items, isDesktop]);
 
-  const handleMouseDown = (e) => {
-    if (!scrollRef.current) return;
-    isDragging.current = true;
-    setIsGrabbed(true);
-    dragDistance.current = 0;
-    startX.current = e.pageX - scrollRef.current.offsetLeft;
-    startScrollLeft.current = scrollRef.current.scrollLeft;
-    targetScroll.current = scrollRef.current.scrollLeft;
-  };
+  // Framer Motion Sticky-Pinned Scroll Progress (0 to 1 during the 380vh scroll)
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
+    offset: ['start start', 'end end'],
+  });
 
-  const handleMouseMove = (e) => {
-    if (!isDragging.current || !scrollRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - scrollRef.current.offsetLeft;
-    const walk = (x - startX.current) * 1.4;
-    dragDistance.current = Math.abs(walk);
-    scrollRef.current.scrollLeft = startScrollLeft.current - walk;
-    targetScroll.current = scrollRef.current.scrollLeft;
-  };
+  const rawX = useTransform(scrollYProgress, (progress) => {
+    const dist = maxScrollRef.current || maxScroll;
+    const clamped = Math.max(0, Math.min(1, progress));
+    return -clamped * dist;
+  });
 
-  const handleMouseUp = () => {
-    isDragging.current = false;
-    setIsGrabbed(false);
-  };
+  const smoothX = useSpring(rawX, {
+    stiffness: 120,
+    damping: 26,
+    mass: 0.2,
+    restDelta: 0.001,
+  });
 
   return (
-    <section 
-      id="projects" 
-      ref={ref} 
-      style={{ 
-        position: 'relative', 
-        padding: 'clamp(70px, 9vh, 120px) 0', 
-        zIndex: 10, 
-        background: 'transparent', 
-        width: '100%', 
-        overflow: 'hidden' 
-      }}
-    >
-      <motion.div
-        initial={{ opacity: 0, y: 40, scale: 0.98 }}
-        whileInView={{ opacity: 1, y: 0, scale: 1 }}
-        viewport={{ once: true, amount: 0.1 }}
-        transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
-      >
-        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 4.5rem)' }}>
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7 }}
-            style={{ textAlign: 'center', marginBottom: '2.5rem' }}
-          >
-            <span style={{ color: accentColor, fontFamily: 'JetBrains Mono, monospace', fontSize: '0.85rem', letterSpacing: '3px', fontWeight: 600 }}>{'<projects>'}</span>
-            <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(1.8rem, 4.5vw, 3rem)', color: textColor, margin: '0.5rem 0' }}>{t.projects.title}</h2>
-            <div style={{ width: '60px', height: '3px', background: `linear-gradient(90deg, ${accentColor}, ${isDark ? '#39ff14' : '#8b5cf6'})`, margin: '0 auto 0.75rem', borderRadius: '2px', boxShadow: isDark ? `0 0 10px ${accentColor}` : 'none' }} />
-            <p style={{ color: isDark ? '#94a3b8' : '#64748b', fontSize: '0.85rem' }}>
-              {isDark ? '← Geser atau gunakan roda scroll mouse untuk menjelajahi proyek · Klik untuk balik kartu →' : '← Swipe or use mouse scroll wheel to explore projects · Click to flip card →'}
-            </p>
-          </motion.div>
-        </div>
-
-        {/* Horizontal Snap Scroll Container */}
-        <div
-          ref={scrollRef}
-          className="projects-scroll-container"
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
+    <>
+      {isDesktop ? (
+        /* DESKTOP: True Sticky-Pinned Horizontal Scroll */
+        <section
+          id="projects"
+          ref={targetRef}
           style={{
-            display: 'flex',
-            gap: '1.4rem',
-            overflowX: 'auto',
-            scrollSnapType: (isGrabbed || isWheeling) ? 'none' : 'x mandatory',
-            padding: '1.2rem clamp(1.5rem, 5vw, 4.5rem) 2.5rem',
+            position: 'relative',
+            height: '380vh',
+            background: 'transparent',
             width: '100%',
-            boxSizing: 'border-box',
-            scrollbarWidth: 'none',
-            cursor: isGrabbed ? 'grabbing' : 'grab',
-            userSelect: isGrabbed ? 'none' : 'auto',
           }}
         >
-          {t.projects.items.map((proj, i) => (
-            <FlipCard
-              key={proj.title}
-              project={proj}
-              isDark={isDark}
-              scrollVelocity={scrollVelocity}
-              dragDistance={dragDistance}
-              onOpenLightbox={(img, title) => {
-                setLightboxImg(img);
-                setLightboxTitle(title);
+          {/* Sticky Viewport Container pinned at top: 0 below Navbar */}
+          <div
+            style={{
+              position: 'sticky',
+              top: 0,
+              height: '100vh',
+              paddingTop: '70px',
+              overflow: 'hidden',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              boxSizing: 'border-box',
+              width: '100%',
+              zIndex: 10,
+            }}
+          >
+            {/* Header: Centered & Perfectly Framed */}
+            <div
+              style={{
+                maxWidth: '1200px',
+                width: '100%',
+                margin: '0 auto',
+                padding: '0 clamp(1.5rem, 5vw, 4.5rem)',
+                textAlign: 'center',
+                marginBottom: 'clamp(0.8rem, 2vh, 1.6rem)',
+                flexShrink: 0,
+              }}
+            >
+              <span
+                style={{
+                  color: accentColor,
+                  fontFamily: 'JetBrains Mono, monospace',
+                  fontSize: '0.85rem',
+                  letterSpacing: '3px',
+                  fontWeight: 600,
+                }}
+              >
+                {'<projects>'}
+              </span>
+              <h2
+                style={{
+                  fontFamily: 'Playfair Display, serif',
+                  fontSize: 'clamp(1.6rem, 3.5vw, 2.6rem)',
+                  color: textColor,
+                  margin: '0.25rem 0',
+                }}
+              >
+                {t.projects.title}
+              </h2>
+              <div
+                style={{
+                  width: '60px',
+                  height: '3px',
+                  background: `linear-gradient(90deg, ${accentColor}, ${isDark ? '#39ff14' : '#8b5cf6'})`,
+                  margin: '0 auto 0.5rem',
+                  borderRadius: '2px',
+                  boxShadow: isDark ? `0 0 10px ${accentColor}` : 'none',
+                }}
+              />
+              <p
+                style={{
+                  color: isDark ? '#94a3b8' : '#64748b',
+                  fontSize: '0.82rem',
+                  margin: 0,
+                }}
+              >
+                {isDark
+                  ? '← Gulir mouse / touchpad untuk menjelajahi proyek · Klik kartu untuk fitur lengkap →'
+                  : '← Scroll mouse / touchpad to explore projects · Click card for details →'}
+              </p>
+            </div>
+
+            {/* Horizontal Track Container */}
+            <div
+              style={{
+                width: '100%',
+                overflow: 'hidden',
+                padding: '0.5rem 0 1.2rem',
+                flexShrink: 0,
+              }}
+            >
+              <motion.div
+                ref={trackRef}
+                style={{
+                  x: smoothX,
+                  display: 'flex',
+                  gap: '1.4rem',
+                  padding: '0 clamp(2rem, 5vw, 5rem)',
+                  width: 'max-content',
+                  willChange: 'transform',
+                }}
+              >
+                {t.projects.items.map((proj) => (
+                  <FlipCard
+                    key={proj.title}
+                    project={proj}
+                    isDark={isDark}
+                    onOpenLightbox={(img, title) => {
+                      setLightboxImg(img);
+                      setLightboxTitle(title);
+                    }}
+                  />
+                ))}
+              </motion.div>
+            </div>
+          </div>
+        </section>
+      ) : (
+        /* MOBILE: Natural Touch Swipe Horizontal Scroll */
+        <section
+          id="projects"
+          style={{
+            position: 'relative',
+            padding: 'clamp(70px, 9vh, 100px) 0 60px',
+            zIndex: 10,
+            background: 'transparent',
+            width: '100%',
+            overflow: 'hidden',
+          }}
+        >
+          <div
+            style={{
+              maxWidth: '1200px',
+              width: '100%',
+              margin: '0 auto',
+              padding: '0 clamp(1.5rem, 5vw, 4.5rem)',
+              textAlign: 'center',
+              marginBottom: '2rem',
+            }}
+          >
+            <span
+              style={{
+                color: accentColor,
+                fontFamily: 'JetBrains Mono, monospace',
+                fontSize: '0.85rem',
+                letterSpacing: '3px',
+                fontWeight: 600,
+              }}
+            >
+              {'<projects>'}
+            </span>
+            <h2
+              style={{
+                fontFamily: 'Playfair Display, serif',
+                fontSize: 'clamp(1.8rem, 4.5vw, 3rem)',
+                color: textColor,
+                margin: '0.5rem 0',
+              }}
+            >
+              {t.projects.title}
+            </h2>
+            <div
+              style={{
+                width: '60px',
+                height: '3px',
+                background: `linear-gradient(90deg, ${accentColor}, ${isDark ? '#39ff14' : '#8b5cf6'})`,
+                margin: '0 auto 0.75rem',
+                borderRadius: '2px',
+                boxShadow: isDark ? `0 0 10px ${accentColor}` : 'none',
               }}
             />
-          ))}
-        </div>
-      </motion.div>
+            <p
+              style={{
+                color: isDark ? '#94a3b8' : '#64748b',
+                fontSize: '0.85rem',
+              }}
+            >
+              {isDark
+                ? '← Geser kartu ke samping untuk menjelajahi proyek · Klik kartu untuk balik →'
+                : '← Swipe cards to explore projects · Click card to flip →'}
+            </p>
+          </div>
 
-      {/* Lightbox Modal for Full GUI Preview */}
+          <div
+            className="projects-scroll-container"
+            style={{
+              display: 'flex',
+              gap: '1.2rem',
+              overflowX: 'auto',
+              scrollSnapType: 'x mandatory',
+              padding: '0.5rem clamp(1.5rem, 5vw, 3rem) 2rem',
+              width: '100%',
+              boxSizing: 'border-box',
+              scrollbarWidth: 'none',
+              WebkitOverflowScrolling: 'touch',
+            }}
+          >
+            {t.projects.items.map((proj) => (
+              <FlipCard
+                key={proj.title}
+                project={proj}
+                isDark={isDark}
+                onOpenLightbox={(img, title) => {
+                  setLightboxImg(img);
+                  setLightboxTitle(title);
+                }}
+              />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Lightbox Modal for Full HD GUI Preview */}
       {lightboxImg && (
         <div
           onClick={() => setLightboxImg(null)}
           style={{
-            position: 'fixed', inset: 0, zIndex: 9999,
-            background: 'rgba(0,0,0,0.88)', backdropFilter: 'blur(14px)',
-            display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+            position: 'fixed',
+            inset: 0,
+            zIndex: 9999,
+            background: 'rgba(0,0,0,0.88)',
+            backdropFilter: 'blur(14px)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
             padding: '1.5rem',
           }}
         >
           <div
             onClick={(e) => e.stopPropagation()}
             style={{
-              position: 'relative', maxWidth: '1050px', width: '100%',
-              background: '#070913', border: `1px solid ${accentColor}60`,
-              borderRadius: '22px', overflow: 'hidden',
+              position: 'relative',
+              maxWidth: '1050px',
+              width: '100%',
+              background: '#070913',
+              border: `1px solid ${accentColor}60`,
+              borderRadius: '22px',
+              overflow: 'hidden',
               boxShadow: `0 0 60px ${accentColor}35`,
             }}
           >
-            <div style={{
-              padding: '14px 22px', background: '#0c1022', borderBottom: `1px solid ${accentColor}30`,
-              display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-            }}>
-              <div style={{ color: textColor, fontWeight: 700, fontSize: '1.05rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                📸 <span>{lightboxTitle}</span> 
-                <span style={{ fontSize: '0.72rem', color: accentColor, border: `1px solid ${accentColor}50`, padding: '2px 10px', borderRadius: '12px', background: `${accentColor}10` }}>
+            <div
+              style={{
+                padding: '14px 22px',
+                background: '#0c1022',
+                borderBottom: `1px solid ${accentColor}30`,
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              <div
+                style={{
+                  color: textColor,
+                  fontWeight: 700,
+                  fontSize: '1.05rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                }}
+              >
+                📸 <span>{lightboxTitle}</span>
+                <span
+                  style={{
+                    fontSize: '0.72rem',
+                    color: accentColor,
+                    border: `1px solid ${accentColor}50`,
+                    padding: '2px 10px',
+                    borderRadius: '12px',
+                    background: `${accentColor}10`,
+                  }}
+                >
                   Tampilan Antarmuka Asli (HD)
                 </span>
               </div>
               <button
                 onClick={() => setLightboxImg(null)}
                 style={{
-                  background: 'rgba(255,255,255,0.1)', border: 'none',
-                  color: '#fff', width: '34px', height: '34px', borderRadius: '50%',
-                  cursor: 'pointer', fontSize: '1.1rem', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  background: 'rgba(255,255,255,0.1)',
+                  border: 'none',
+                  color: '#fff',
+                  width: '34px',
+                  height: '34px',
+                  borderRadius: '50%',
+                  cursor: 'pointer',
+                  fontSize: '1.1rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
               >
                 ✕
               </button>
             </div>
-            <div style={{ padding: '10px', background: '#03050c', display: 'flex', justifyContent: 'center' }}>
+            <div
+              style={{
+                padding: '10px',
+                background: '#03050c',
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
               <img
                 src={lightboxImg}
                 alt={lightboxTitle}
-                style={{ width: '100%', maxHeight: '72vh', objectFit: 'contain', borderRadius: '14px', display: 'block' }}
+                style={{
+                  width: '100%',
+                  maxHeight: '72vh',
+                  objectFit: 'contain',
+                  borderRadius: '14px',
+                  display: 'block',
+                }}
               />
             </div>
           </div>
         </div>
       )}
-    </section>
+    </>
   );
 }
