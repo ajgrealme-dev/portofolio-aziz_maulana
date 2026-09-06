@@ -351,33 +351,28 @@ export default function Projects() {
   const inView = useInView(ref, { once: true, margin: '0px' });
   const scrollRef = useRef();
 
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
-  const [scrollVelocity, setScrollVelocity] = useState(0);
-  const lastScrollLeft = useRef(0);
-  const velocityTimer = useRef();
-
   const [lightboxImg, setLightboxImg] = useState(null);
   const [lightboxTitle, setLightboxTitle] = useState('');
   const [isGrabbed, setIsGrabbed] = useState(false);
+  const [isWheeling, setIsWheeling] = useState(false);
+  const [scrollVelocity, setScrollVelocity] = useState(0);
 
   const isDragging = useRef(false);
   const startX = useRef(0);
   const startScrollLeft = useRef(0);
   const dragDistance = useRef(0);
+  const targetScroll = useRef(0);
+  const isAnimating = useRef(false);
+  const snapTimer = useRef();
+  const lastScrollLeft = useRef(0);
+  const velocityTimer = useRef();
 
   const accentColor = isDark ? '#00f5ff' : '#6366f1';
   const textColor = isDark ? '#e2e8f0' : '#1e293b';
 
   const checkScroll = () => {
     if (!scrollRef.current) return;
-    const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-    setCanScrollLeft(scrollLeft > 20);
-    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 20);
-    const maxScroll = scrollWidth - clientWidth;
-    setScrollProgress(maxScroll > 0 ? (scrollLeft / maxScroll) * 100 : 0);
-
+    const { scrollLeft } = scrollRef.current;
     const delta = scrollLeft - lastScrollLeft.current;
     lastScrollLeft.current = scrollLeft;
     const clampedVelocity = Math.max(-12, Math.min(12, delta * 0.4));
@@ -391,12 +386,31 @@ export default function Projects() {
     const el = scrollRef.current;
     if (!el) return;
 
+    targetScroll.current = el.scrollLeft;
     el.addEventListener('scroll', checkScroll, { passive: true });
-    checkScroll();
 
-    // 🌟 Mouse Wheel Horizontal Scroll Redirection:
-    // When hovering over the projects carousel, vertical scroll wheel moves cards horizontally.
-    // When the end or beginning is reached, scroll naturally continues down/up without trapping!
+    // 🌟 Smooth Inertial Momentum Lerp (60fps Butter-Smooth Wheel Navigation)
+    const startLerp = () => {
+      if (isAnimating.current) return;
+      isAnimating.current = true;
+
+      const tick = () => {
+        if (!el) {
+          isAnimating.current = false;
+          return;
+        }
+        const diff = targetScroll.current - el.scrollLeft;
+        if (Math.abs(diff) > 0.5) {
+          el.scrollLeft += diff * 0.095;
+          requestAnimationFrame(tick);
+        } else {
+          el.scrollLeft = targetScroll.current;
+          isAnimating.current = false;
+        }
+      };
+      requestAnimationFrame(tick);
+    };
+
     const onWheel = (e) => {
       if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
         const atStart = el.scrollLeft <= 5 && e.deltaY < 0;
@@ -405,7 +419,14 @@ export default function Projects() {
 
         if (!atStart && !atEnd) {
           e.preventDefault();
-          el.scrollBy({ left: e.deltaY * 1.3, behavior: 'auto' });
+          setIsWheeling(true);
+          targetScroll.current = Math.max(0, Math.min(maxScroll, targetScroll.current + e.deltaY * 1.35));
+          startLerp();
+
+          clearTimeout(snapTimer.current);
+          snapTimer.current = setTimeout(() => {
+            setIsWheeling(false);
+          }, 300);
         }
       }
     };
@@ -415,6 +436,7 @@ export default function Projects() {
     return () => {
       el.removeEventListener('scroll', checkScroll);
       el.removeEventListener('wheel', onWheel);
+      clearTimeout(snapTimer.current);
     };
   }, []);
 
@@ -425,25 +447,22 @@ export default function Projects() {
     dragDistance.current = 0;
     startX.current = e.pageX - scrollRef.current.offsetLeft;
     startScrollLeft.current = scrollRef.current.scrollLeft;
+    targetScroll.current = scrollRef.current.scrollLeft;
   };
 
   const handleMouseMove = (e) => {
     if (!isDragging.current || !scrollRef.current) return;
     e.preventDefault();
     const x = e.pageX - scrollRef.current.offsetLeft;
-    const walk = (x - startX.current) * 1.3;
+    const walk = (x - startX.current) * 1.4;
     dragDistance.current = Math.abs(walk);
     scrollRef.current.scrollLeft = startScrollLeft.current - walk;
+    targetScroll.current = scrollRef.current.scrollLeft;
   };
 
   const handleMouseUp = () => {
     isDragging.current = false;
     setIsGrabbed(false);
-  };
-
-  const scrollByAmount = (amount) => {
-    if (!scrollRef.current) return;
-    scrollRef.current.scrollBy({ left: amount, behavior: 'smooth' });
   };
 
   return (
@@ -476,25 +495,9 @@ export default function Projects() {
             <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(1.8rem, 4.5vw, 3rem)', color: textColor, margin: '0.5rem 0' }}>{t.projects.title}</h2>
             <div style={{ width: '60px', height: '3px', background: `linear-gradient(90deg, ${accentColor}, ${isDark ? '#39ff14' : '#8b5cf6'})`, margin: '0 auto 0.75rem', borderRadius: '2px', boxShadow: isDark ? `0 0 10px ${accentColor}` : 'none' }} />
             <p style={{ color: isDark ? '#94a3b8' : '#64748b', fontSize: '0.85rem' }}>
-              {isDark ? '← Geser kartu dengan roda mouse, swipe, atau drag · Klik untuk balik kartu →' : '← Swipe cards with mouse wheel, touch, or drag · Click to flip card →'}
+              {isDark ? '← Geser atau gunakan roda scroll mouse untuk menjelajahi proyek · Klik untuk balik kartu →' : '← Swipe or use mouse scroll wheel to explore projects · Click to flip card →'}
             </p>
           </motion.div>
-        </div>
-
-        {/* Progress Line */}
-        <div style={{ maxWidth: '1200px', margin: '0 auto 1.5rem', padding: '0 clamp(1.5rem, 5vw, 4.5rem)' }}>
-          <div style={{ width: '100%', height: '3px', background: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.06)', borderRadius: '3px', position: 'relative', overflow: 'hidden' }}>
-            <motion.div
-              style={{
-                position: 'absolute', top: 0, left: 0, bottom: 0,
-                width: `${scrollProgress}%`,
-                background: `linear-gradient(90deg, ${accentColor}, ${isDark ? '#39ff14' : '#8b5cf6'})`,
-                boxShadow: isDark ? `0 0 10px ${accentColor}` : 'none',
-                borderRadius: '3px',
-                transition: 'width 0.1s ease',
-              }}
-            />
-          </div>
         </div>
 
         {/* Horizontal Snap Scroll Container */}
@@ -509,11 +512,11 @@ export default function Projects() {
             display: 'flex',
             gap: '1.4rem',
             overflowX: 'auto',
-            scrollSnapType: isGrabbed ? 'none' : 'x mandatory',
-            padding: '1rem clamp(1.5rem, 5vw, 4.5rem) 2rem',
+            scrollSnapType: (isGrabbed || isWheeling) ? 'none' : 'x mandatory',
+            padding: '1.2rem clamp(1.5rem, 5vw, 4.5rem) 2.5rem',
             width: '100%',
             boxSizing: 'border-box',
-            scrollbarWidth: 'thin',
+            scrollbarWidth: 'none',
             cursor: isGrabbed ? 'grabbing' : 'grab',
             userSelect: isGrabbed ? 'none' : 'auto',
           }}
@@ -533,44 +536,6 @@ export default function Projects() {
           ))}
         </div>
       </motion.div>
-
-      {/* Desktop Navigation Arrows */}
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginTop: '1rem' }}>
-        <button
-          onClick={() => scrollByAmount(-400)}
-          disabled={!canScrollLeft}
-          aria-label="Previous Projects"
-          style={{
-            width: '44px', height: '44px', borderRadius: '50%',
-            background: isDark ? 'rgba(0,245,255,0.08)' : 'rgba(99,102,241,0.08)',
-            border: `1px solid ${accentColor}40`,
-            color: accentColor, fontSize: '1.1rem',
-            cursor: canScrollLeft ? 'pointer' : 'default',
-            opacity: canScrollLeft ? 1 : 0.3,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            transition: 'all 0.2s',
-          }}
-        >
-          ←
-        </button>
-        <button
-          onClick={() => scrollByAmount(400)}
-          disabled={!canScrollRight}
-          aria-label="Next Projects"
-          style={{
-            width: '44px', height: '44px', borderRadius: '50%',
-            background: isDark ? 'rgba(0,245,255,0.08)' : 'rgba(99,102,241,0.08)',
-            border: `1px solid ${accentColor}40`,
-            color: accentColor, fontSize: '1.1rem',
-            cursor: canScrollRight ? 'pointer' : 'default',
-            opacity: canScrollRight ? 1 : 0.3,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            transition: 'all 0.2s',
-          }}
-        >
-          →
-        </button>
-      </div>
 
       {/* Lightbox Modal for Full GUI Preview */}
       {lightboxImg && (

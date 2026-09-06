@@ -20,8 +20,8 @@ function SuperWhiteStarfield() {
 
   useFrame((state) => {
     if (ref.current) {
-      ref.current.rotation.y = state.clock.elapsedTime * 0.006;
-      ref.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.003) * 0.015;
+      ref.current.rotation.y = state.clock.elapsedTime * 0.05;
+      ref.current.rotation.x = state.clock.elapsedTime * 0.035;
     }
   });
 
@@ -30,7 +30,7 @@ function SuperWhiteStarfield() {
       <PointMaterial
         transparent
         color="#ffffff"
-        size={0.045}
+        size={0.048}
         sizeAttenuation
         depthWrite={false}
         opacity={0.9}
@@ -56,7 +56,8 @@ function SuperNeonParticles({ isDark }) {
 
   useFrame((state) => {
     if (ref.current) {
-      ref.current.rotation.y = -state.clock.elapsedTime * 0.01;
+      ref.current.rotation.y = -state.clock.elapsedTime * 0.06;
+      ref.current.rotation.x = state.clock.elapsedTime * 0.04;
     }
   });
 
@@ -65,10 +66,10 @@ function SuperNeonParticles({ isDark }) {
       <PointMaterial
         transparent
         color={isDark ? '#00f5ff' : '#6366f1'}
-        size={0.055}
+        size={0.058}
         sizeAttenuation
         depthWrite={false}
-        opacity={0.75}
+        opacity={0.8}
       />
     </Points>
   );
@@ -91,8 +92,8 @@ function NebulaGlowDust({ isDark }) {
 
   useFrame((state) => {
     if (ref.current) {
-      ref.current.rotation.x = state.clock.elapsedTime * 0.008;
-      ref.current.rotation.z = state.clock.elapsedTime * 0.005;
+      ref.current.rotation.x = state.clock.elapsedTime * 0.045;
+      ref.current.rotation.z = state.clock.elapsedTime * 0.035;
     }
   });
 
@@ -111,55 +112,58 @@ function NebulaGlowDust({ isDark }) {
 }
 
 // 🌟 3D Wireframe Floating Geometries
-function SmallGeo({ position, color, speed = 0.5, size = 0.45 }) {
+function SmallGeo({ position, color, speed = 0.8, size = 0.5 }) {
   const ref = useRef();
   useFrame((state) => {
     if (ref.current) {
-      ref.current.rotation.x = state.clock.elapsedTime * speed;
-      ref.current.rotation.y = state.clock.elapsedTime * speed * 0.7;
+      ref.current.rotation.x = state.clock.elapsedTime * 0.4 * speed;
+      ref.current.rotation.y = state.clock.elapsedTime * 0.6 * speed;
+      ref.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * speed * 0.8) * 0.25;
     }
   });
   return (
-    <Float speed={speed * 2} rotationIntensity={0.6} floatIntensity={0.4}>
+    <Float speed={speed * 2.5} rotationIntensity={1} floatIntensity={0.8}>
       <mesh ref={ref} position={position}>
         <octahedronGeometry args={[size, 0]} />
-        <meshStandardMaterial color={color} wireframe transparent opacity={0.7} emissive={color} emissiveIntensity={0.45} />
-      </mesh>
-    </Float>
-  );
-}
-
-function SmallRing({ position, color, speed = 0.5, size = 0.75 }) {
-  const ref = useRef();
-  useFrame((state) => {
-    if (ref.current) {
-      ref.current.rotation.x = state.clock.elapsedTime * speed * 0.8;
-      ref.current.rotation.y = state.clock.elapsedTime * speed * 0.5;
-    }
-  });
-  return (
-    <Float speed={speed * 2} rotationIntensity={0.7} floatIntensity={0.45}>
-      <mesh ref={ref} position={position}>
-        <torusGeometry args={[size, 0.055, 14, 52]} />
         <meshStandardMaterial color={color} wireframe transparent opacity={0.75} emissive={color} emissiveIntensity={0.5} />
       </mesh>
     </Float>
   );
 }
 
-function SmallIcosa({ position, color, speed = 0.5, size = 0.45 }) {
+function SmallRing({ position, color, speed = 0.8, size = 0.8 }) {
   const ref = useRef();
   useFrame((state) => {
     if (ref.current) {
-      ref.current.rotation.y = state.clock.elapsedTime * speed;
-      ref.current.rotation.z = state.clock.elapsedTime * speed * 0.6;
+      ref.current.rotation.x = state.clock.elapsedTime * 0.5 * speed;
+      ref.current.rotation.z = state.clock.elapsedTime * 0.35 * speed;
+      ref.current.position.y = position[1] + Math.cos(state.clock.elapsedTime * speed * 0.7) * 0.25;
     }
   });
   return (
-    <Float speed={speed * 2} rotationIntensity={0.6} floatIntensity={0.4}>
+    <Float speed={speed * 2.5} rotationIntensity={1.2} floatIntensity={0.8}>
+      <mesh ref={ref} position={position}>
+        <torusGeometry args={[size, 0.055, 14, 52]} />
+        <meshStandardMaterial color={color} wireframe transparent opacity={0.8} emissive={color} emissiveIntensity={0.55} />
+      </mesh>
+    </Float>
+  );
+}
+
+function SmallIcosa({ position, color, speed = 0.8, size = 0.5 }) {
+  const ref = useRef();
+  useFrame((state) => {
+    if (ref.current) {
+      ref.current.rotation.y = state.clock.elapsedTime * 0.45 * speed;
+      ref.current.rotation.z = state.clock.elapsedTime * 0.35 * speed;
+      ref.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * speed * 0.6) * 0.25;
+    }
+  });
+  return (
+    <Float speed={speed * 2.5} rotationIntensity={1} floatIntensity={0.8}>
       <mesh ref={ref} position={position}>
         <icosahedronGeometry args={[size, 1]} />
-        <meshStandardMaterial color={color} wireframe transparent opacity={0.7} emissive={color} emissiveIntensity={0.4} />
+        <meshStandardMaterial color={color} wireframe transparent opacity={0.75} emissive={color} emissiveIntensity={0.45} />
       </mesh>
     </Float>
   );
