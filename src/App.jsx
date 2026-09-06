@@ -28,7 +28,7 @@ function Footer() {
       zIndex: 10,
       width: '100%',
       maxWidth: '100%',
-      background: isDark ? '#03040a' : '#ffffff',
+      background: 'transparent',
     }}>
       <span>Made with </span>
       <span style={{ color: '#ef4444' }}>❤️</span>

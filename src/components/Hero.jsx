@@ -48,7 +48,7 @@ export default function Hero() {
     : ['IT Operations & Automation Specialist', 'Junior Specialist', 'Operations Admin', 'Bot Developer'];
 
   return (
-    <section id="hero" style={{ position: 'sticky', top: 0, minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', padding: '0 clamp(1.5rem, 5vw, 4.5rem)', zIndex: 1, width: '100%' }}>
+    <section id="hero" style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', padding: '0 clamp(1.5rem, 5vw, 4.5rem)', zIndex: 1, width: '100%' }}>
       <HeroCanvas isDark={isDark} />
 
 

@@ -396,26 +396,15 @@ export default function Projects() {
       id="projects" 
       ref={ref} 
       style={{ 
-        position: 'sticky', 
-        top: 0, 
-        minHeight: '100vh', 
-        display: 'flex', 
-        flexDirection: 'column', 
-        justifyContent: 'center', 
+        position: 'relative', 
         padding: 'clamp(70px, 9vh, 120px) 0', 
-        zIndex: 4, 
-        background: isDark 
-          ? 'linear-gradient(180deg, rgba(5, 5, 15, 0.96) 0%, rgba(8, 12, 28, 0.98) 100%)' 
-          : 'linear-gradient(180deg, rgba(240, 244, 255, 0.96) 0%, rgba(232, 240, 255, 0.98) 100%)', 
-        backdropFilter: 'blur(20px)', 
-        WebkitBackdropFilter: 'blur(20px)', 
-        borderTop: isDark ? '1px solid rgba(0, 245, 255, 0.2)' : '1px solid rgba(99, 102, 241, 0.2)', 
-        boxShadow: '0 -20px 50px rgba(0,0,0,0.5)', 
+        zIndex: 10, 
+        background: 'transparent', 
         width: '100%', 
         overflow: 'hidden' 
       }}
     >
-      <div style={{ width: '100%', maxWidth: '100%', margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 4.5rem)' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 4.5rem)' }}>
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -432,7 +421,7 @@ export default function Projects() {
       </div>
 
       {/* Progress Line */}
-      <div style={{ width: '100%', maxWidth: '100%', margin: '0 auto 1.5rem', padding: '0 clamp(1.5rem, 5vw, 4.5rem)' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto 1.5rem', padding: '0 clamp(1.5rem, 5vw, 4.5rem)' }}>
         <div style={{ width: '100%', height: '3px', background: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.06)', borderRadius: '3px', position: 'relative', overflow: 'hidden' }}>
           <motion.div
             style={{

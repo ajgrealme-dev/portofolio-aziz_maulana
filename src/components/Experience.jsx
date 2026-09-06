@@ -24,6 +24,9 @@ function TimelineItem({ item, isDark, index, inView }) {
         transition: 'box-shadow 0.3s ease',
         textAlign: isLeft ? 'right' : 'left',
         width: '100%',
+        maxWidth: '440px',
+        marginLeft: isLeft ? 'auto' : '0',
+        marginRight: isLeft ? '0' : 'auto',
       }}
     >
       <span style={{
@@ -112,25 +115,14 @@ export default function Experience() {
       id="experience" 
       ref={ref} 
       style={{ 
-        position: 'sticky', 
-        top: 0, 
-        minHeight: '100vh', 
-        display: 'flex', 
-        flexDirection: 'column', 
-        justifyContent: 'center', 
+        position: 'relative', 
         padding: 'clamp(70px, 9vh, 120px) clamp(1.5rem, 5vw, 4.5rem)', 
-        zIndex: 5, 
-        background: isDark 
-          ? 'linear-gradient(180deg, rgba(6, 8, 20, 0.96) 0%, rgba(5, 5, 15, 0.98) 100%)' 
-          : 'linear-gradient(180deg, rgba(235, 240, 255, 0.96) 0%, rgba(245, 240, 255, 0.98) 100%)', 
-        backdropFilter: 'blur(20px)', 
-        WebkitBackdropFilter: 'blur(20px)', 
-        borderTop: isDark ? '1px solid rgba(168, 85, 247, 0.2)' : '1px solid rgba(99, 102, 241, 0.2)', 
-        boxShadow: '0 -20px 50px rgba(0,0,0,0.5)', 
+        zIndex: 10, 
+        background: 'transparent', 
         width: '100%' 
       }}
     >
-      <div style={{ width: '100%', maxWidth: '100%', margin: '0 auto' }}>
+      <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
         <motion.div initial={{ opacity: 0, y: 40 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }} style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
           <span style={{ color: accentColor, fontFamily: 'JetBrains Mono, monospace', fontSize: '0.85rem', letterSpacing: '3px', fontWeight: 600 }}>{'<experience>'}</span>
           <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(1.8rem, 4.5vw, 3rem)', color: textColor, margin: '0.5rem 0' }}>{t.experience.title}</h2>
