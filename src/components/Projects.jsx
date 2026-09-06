@@ -421,6 +421,7 @@ export default function Projects() {
             height: '380vh',
             background: 'transparent',
             width: '100%',
+            scrollMarginTop: 0,
           }}
         >
           {/* Sticky Viewport Container pinned at top: 0 below Navbar */}
