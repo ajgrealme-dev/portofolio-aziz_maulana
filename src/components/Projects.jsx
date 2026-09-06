@@ -369,8 +369,8 @@ export default function Projects() {
       if (trackRef.current) {
         const trackWidth = trackRef.current.scrollWidth;
         const viewportWidth = window.innerWidth;
-        // 80px buffer ensures the last card has spacious right padding and is 100% visible
-        const dist = Math.max(0, trackWidth - viewportWidth + 80);
+        // 120px buffer ensures the last card has spacious right padding and is 100% visible
+        const dist = Math.max(0, trackWidth - viewportWidth + 120);
         maxScrollRef.current = dist;
         setMaxScroll(dist);
       }
@@ -390,22 +390,29 @@ export default function Projects() {
     };
   }, [t.projects.items, isDesktop]);
 
-  // Framer Motion Sticky-Pinned Scroll Progress (0 to 1 during the 380vh scroll)
+  // Framer Motion Sticky-Pinned Scroll Progress (0 to 1 during the 450vh scroll)
   const { scrollYProgress } = useScroll({
     target: targetRef,
     offset: ['start start', 'end end'],
   });
 
+  // Resting buffer 8% at start and 10% at end: cards stay settled before unpinning
   const rawX = useTransform(scrollYProgress, (progress) => {
     const dist = maxScrollRef.current || maxScroll;
-    const clamped = Math.max(0, Math.min(1, progress));
-    return -clamped * dist;
+    if (progress <= 0.08) {
+      return 0;
+    }
+    if (progress >= 0.90) {
+      return -dist;
+    }
+    const t = (progress - 0.08) / 0.82;
+    return -t * dist;
   });
 
   const smoothX = useSpring(rawX, {
-    stiffness: 120,
-    damping: 26,
-    mass: 0.2,
+    stiffness: 140,
+    damping: 24,
+    mass: 0.18,
     restDelta: 0.001,
   });
 
@@ -418,7 +425,7 @@ export default function Projects() {
           ref={targetRef}
           style={{
             position: 'relative',
-            height: '380vh',
+            height: '450vh',
             background: 'transparent',
             width: '100%',
             scrollMarginTop: 0,
