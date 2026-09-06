@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { useApp } from '../context/AppContext';
 
-function FlipCard({ project, isDark, scrollVelocity = 0, onOpenLightbox }) {
+function FlipCard({ project, isDark, scrollVelocity = 0, onOpenLightbox, dragDistance }) {
   const [flipped, setFlipped] = useState(false);
   const accentColor = isDark ? '#00f5ff' : '#6366f1';
   const textColor = isDark ? '#e2e8f0' : '#1e293b';
@@ -29,7 +29,11 @@ function FlipCard({ project, isDark, scrollVelocity = 0, onOpenLightbox }) {
 
   return (
     <div
-      onClick={() => setFlipped(!flipped)}
+      onClick={() => {
+        if (!dragDistance || dragDistance.current < 10) {
+          setFlipped(!flipped);
+        }
+      }}
       style={{ 
         perspective: '1200px', 
         cursor: 'pointer', 
@@ -356,6 +360,12 @@ export default function Projects() {
 
   const [lightboxImg, setLightboxImg] = useState(null);
   const [lightboxTitle, setLightboxTitle] = useState('');
+  const [isGrabbed, setIsGrabbed] = useState(false);
+
+  const isDragging = useRef(false);
+  const startX = useRef(0);
+  const startScrollLeft = useRef(0);
+  const dragDistance = useRef(0);
 
   const accentColor = isDark ? '#00f5ff' : '#6366f1';
   const textColor = isDark ? '#e2e8f0' : '#1e293b';
@@ -379,12 +389,57 @@ export default function Projects() {
 
   useEffect(() => {
     const el = scrollRef.current;
-    if (el) {
-      el.addEventListener('scroll', checkScroll, { passive: true });
-      checkScroll();
-      return () => el.removeEventListener('scroll', checkScroll);
-    }
+    if (!el) return;
+
+    el.addEventListener('scroll', checkScroll, { passive: true });
+    checkScroll();
+
+    // 🌟 Mouse Wheel Horizontal Scroll Redirection:
+    // When hovering over the projects carousel, vertical scroll wheel moves cards horizontally.
+    // When the end or beginning is reached, scroll naturally continues down/up without trapping!
+    const onWheel = (e) => {
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        const atStart = el.scrollLeft <= 5 && e.deltaY < 0;
+        const maxScroll = el.scrollWidth - el.clientWidth;
+        const atEnd = el.scrollLeft >= maxScroll - 5 && e.deltaY > 0;
+
+        if (!atStart && !atEnd) {
+          e.preventDefault();
+          el.scrollBy({ left: e.deltaY * 1.3, behavior: 'auto' });
+        }
+      }
+    };
+
+    el.addEventListener('wheel', onWheel, { passive: false });
+
+    return () => {
+      el.removeEventListener('scroll', checkScroll);
+      el.removeEventListener('wheel', onWheel);
+    };
   }, []);
+
+  const handleMouseDown = (e) => {
+    if (!scrollRef.current) return;
+    isDragging.current = true;
+    setIsGrabbed(true);
+    dragDistance.current = 0;
+    startX.current = e.pageX - scrollRef.current.offsetLeft;
+    startScrollLeft.current = scrollRef.current.scrollLeft;
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging.current || !scrollRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    const walk = (x - startX.current) * 1.3;
+    dragDistance.current = Math.abs(walk);
+    scrollRef.current.scrollLeft = startScrollLeft.current - walk;
+  };
+
+  const handleMouseUp = () => {
+    isDragging.current = false;
+    setIsGrabbed(false);
+  };
 
   const scrollByAmount = (amount) => {
     if (!scrollRef.current) return;
@@ -404,66 +459,80 @@ export default function Projects() {
         overflow: 'hidden' 
       }}
     >
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 4.5rem)' }}>
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7 }}
-          style={{ textAlign: 'center', marginBottom: '2.5rem' }}
-        >
-          <span style={{ color: accentColor, fontFamily: 'JetBrains Mono, monospace', fontSize: '0.85rem', letterSpacing: '3px', fontWeight: 600 }}>{'<projects>'}</span>
-          <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(1.8rem, 4.5vw, 3rem)', color: textColor, margin: '0.5rem 0' }}>{t.projects.title}</h2>
-          <div style={{ width: '60px', height: '3px', background: `linear-gradient(90deg, ${accentColor}, ${isDark ? '#39ff14' : '#8b5cf6'})`, margin: '0 auto 0.75rem', borderRadius: '2px', boxShadow: isDark ? `0 0 10px ${accentColor}` : 'none' }} />
-          <p style={{ color: isDark ? '#94a3b8' : '#64748b', fontSize: '0.85rem' }}>
-            {isDark ? '← Geser kartu untuk melihat GUI nyata tiap proyek · Klik untuk balik kartu →' : '← Swipe cards to explore real project GUIs · Click to flip card →'}
-          </p>
-        </motion.div>
-      </div>
-
-      {/* Progress Line */}
-      <div style={{ maxWidth: '1200px', margin: '0 auto 1.5rem', padding: '0 clamp(1.5rem, 5vw, 4.5rem)' }}>
-        <div style={{ width: '100%', height: '3px', background: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.06)', borderRadius: '3px', position: 'relative', overflow: 'hidden' }}>
-          <motion.div
-            style={{
-              position: 'absolute', top: 0, left: 0, bottom: 0,
-              width: `${scrollProgress}%`,
-              background: `linear-gradient(90deg, ${accentColor}, ${isDark ? '#39ff14' : '#8b5cf6'})`,
-              boxShadow: isDark ? `0 0 10px ${accentColor}` : 'none',
-              borderRadius: '3px',
-              transition: 'width 0.1s ease',
-            }}
-          />
-        </div>
-      </div>
-
-      {/* Horizontal Snap Scroll Container */}
-      <div
-        ref={scrollRef}
-        className="projects-scroll-container"
-        style={{
-          display: 'flex',
-          gap: '1.4rem',
-          overflowX: 'auto',
-          scrollSnapType: 'x mandatory',
-          padding: '1rem clamp(1.5rem, 5vw, 4.5rem) 2rem',
-          width: '100%',
-          boxSizing: 'border-box',
-          scrollbarWidth: 'thin',
-        }}
+      <motion.div
+        initial={{ opacity: 0, y: 40, scale: 0.98 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: true, amount: 0.1 }}
+        transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
-        {t.projects.items.map((proj, i) => (
-          <FlipCard
-            key={proj.title}
-            project={proj}
-            isDark={isDark}
-            scrollVelocity={scrollVelocity}
-            onOpenLightbox={(img, title) => {
-              setLightboxImg(img);
-              setLightboxTitle(title);
-            }}
-          />
-        ))}
-      </div>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 4.5rem)' }}>
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7 }}
+            style={{ textAlign: 'center', marginBottom: '2.5rem' }}
+          >
+            <span style={{ color: accentColor, fontFamily: 'JetBrains Mono, monospace', fontSize: '0.85rem', letterSpacing: '3px', fontWeight: 600 }}>{'<projects>'}</span>
+            <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(1.8rem, 4.5vw, 3rem)', color: textColor, margin: '0.5rem 0' }}>{t.projects.title}</h2>
+            <div style={{ width: '60px', height: '3px', background: `linear-gradient(90deg, ${accentColor}, ${isDark ? '#39ff14' : '#8b5cf6'})`, margin: '0 auto 0.75rem', borderRadius: '2px', boxShadow: isDark ? `0 0 10px ${accentColor}` : 'none' }} />
+            <p style={{ color: isDark ? '#94a3b8' : '#64748b', fontSize: '0.85rem' }}>
+              {isDark ? '← Geser kartu dengan roda mouse, swipe, atau drag · Klik untuk balik kartu →' : '← Swipe cards with mouse wheel, touch, or drag · Click to flip card →'}
+            </p>
+          </motion.div>
+        </div>
+
+        {/* Progress Line */}
+        <div style={{ maxWidth: '1200px', margin: '0 auto 1.5rem', padding: '0 clamp(1.5rem, 5vw, 4.5rem)' }}>
+          <div style={{ width: '100%', height: '3px', background: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.06)', borderRadius: '3px', position: 'relative', overflow: 'hidden' }}>
+            <motion.div
+              style={{
+                position: 'absolute', top: 0, left: 0, bottom: 0,
+                width: `${scrollProgress}%`,
+                background: `linear-gradient(90deg, ${accentColor}, ${isDark ? '#39ff14' : '#8b5cf6'})`,
+                boxShadow: isDark ? `0 0 10px ${accentColor}` : 'none',
+                borderRadius: '3px',
+                transition: 'width 0.1s ease',
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Horizontal Snap Scroll Container */}
+        <div
+          ref={scrollRef}
+          className="projects-scroll-container"
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
+          style={{
+            display: 'flex',
+            gap: '1.4rem',
+            overflowX: 'auto',
+            scrollSnapType: isGrabbed ? 'none' : 'x mandatory',
+            padding: '1rem clamp(1.5rem, 5vw, 4.5rem) 2rem',
+            width: '100%',
+            boxSizing: 'border-box',
+            scrollbarWidth: 'thin',
+            cursor: isGrabbed ? 'grabbing' : 'grab',
+            userSelect: isGrabbed ? 'none' : 'auto',
+          }}
+        >
+          {t.projects.items.map((proj, i) => (
+            <FlipCard
+              key={proj.title}
+              project={proj}
+              isDark={isDark}
+              scrollVelocity={scrollVelocity}
+              dragDistance={dragDistance}
+              onOpenLightbox={(img, title) => {
+                setLightboxImg(img);
+                setLightboxTitle(title);
+              }}
+            />
+          ))}
+        </div>
+      </motion.div>
 
       {/* Desktop Navigation Arrows */}
       <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginTop: '1rem' }}>

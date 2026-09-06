@@ -24,7 +24,13 @@ export default function Credentials() {
         overflow: 'hidden',
       }}
     >
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 clamp(1rem, 4vw, 2rem)' }}>
+      <motion.div
+        initial={{ opacity: 0, y: 45, scale: 0.98 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
+        style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 clamp(1rem, 4vw, 2rem)' }}
+      >
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 35 }}
@@ -225,7 +231,7 @@ export default function Credentials() {
             );
           })}
         </div>
-      </div>
+      </motion.div>
 
       {/* HD Digital Credential Certificate Modal */}
       <AnimatePresence>

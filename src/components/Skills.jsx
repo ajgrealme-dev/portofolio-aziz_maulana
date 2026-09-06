@@ -132,7 +132,13 @@ export default function Skills() {
         width: '100%' 
       }}
     >
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+      <motion.div
+        initial={{ opacity: 0, y: 45, scale: 0.98 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
+        style={{ maxWidth: '1200px', margin: '0 auto' }}
+      >
         <motion.div initial={{ opacity: 0, y: 40 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }} style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
           <span style={{ color: accentColor, fontFamily: 'JetBrains Mono, monospace', fontSize: '0.85rem', letterSpacing: '3px', fontWeight: 600 }}>{'<skills>'}</span>
           <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(1.8rem, 4.5vw, 3rem)', color: textColor, margin: '0.5rem 0' }}>{t.skills.title}</h2>
@@ -158,7 +164,7 @@ export default function Skills() {
         >
           <ObsidianSkillGraph isDark={isDark} />
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 }

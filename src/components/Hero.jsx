@@ -1,7 +1,6 @@
 import { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useApp } from '../context/AppContext';
-import HeroCanvas from './HeroCanvas';
 
 const TypewriterText = ({ texts, isDark }) => {
   const ref = useRef();
@@ -48,19 +47,7 @@ export default function Hero() {
     : ['IT Operations & Automation Specialist', 'Junior Specialist', 'Operations Admin', 'Bot Developer'];
 
   return (
-    <section id="hero" style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', padding: '0 clamp(1.5rem, 5vw, 4.5rem)', zIndex: 1, width: '100%' }}>
-      <HeroCanvas isDark={isDark} />
-
-
-      {/* Gradient fade bottom */}
-      <div style={{
-        position: 'absolute', bottom: 0, left: 0, right: 0, height: '200px',
-        background: isDark
-          ? 'linear-gradient(transparent, #05050f)'
-          : 'linear-gradient(transparent, #f8faff)',
-        pointerEvents: 'none',
-      }} />
-
+    <section id="hero" style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', padding: '0 clamp(1.5rem, 5vw, 4.5rem)', zIndex: 1, width: '100%', background: 'transparent' }}>
       <div style={{ position: 'relative', zIndex: 10, textAlign: 'center', maxWidth: '1000px', width: '100%' }}>
         <motion.div
           initial={{ opacity: 0, y: 30 }}

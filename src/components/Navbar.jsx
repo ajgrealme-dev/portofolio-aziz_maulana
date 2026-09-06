@@ -25,8 +25,8 @@ export default function Navbar({ activeSection }) {
   ];
 
   const navBg = isDark
-    ? scrolled ? 'rgba(5,5,15,0.92)' : 'transparent'
-    : scrolled ? 'rgba(255,255,255,0.92)' : 'transparent';
+    ? 'rgba(5,5,15,0.88)'
+    : 'rgba(255,255,255,0.88)';
 
   const accentColor = isDark ? '#00f5ff' : '#6366f1';
   const textColor = isDark ? '#e2e8f0' : '#1e293b';
@@ -39,8 +39,10 @@ export default function Navbar({ activeSection }) {
       style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
         background: navBg,
-        backdropFilter: scrolled ? 'blur(20px)' : 'none',
-        borderBottom: scrolled ? `1px solid ${isDark ? 'rgba(0,245,255,0.15)' : 'rgba(99,102,241,0.15)'}` : 'none',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        borderBottom: `1px solid ${isDark ? 'rgba(0,245,255,0.15)' : 'rgba(99,102,241,0.15)'}`,
+        boxShadow: isDark ? '0 10px 30px rgba(0,0,0,0.35)' : '0 10px 30px rgba(99,102,241,0.08)',
         transition: 'all 0.3s ease',
         padding: 0,
       }}
