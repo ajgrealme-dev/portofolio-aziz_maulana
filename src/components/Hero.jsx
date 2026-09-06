@@ -48,7 +48,7 @@ export default function Hero() {
     : ['IT Operations & Automation Specialist', 'Junior Specialist', 'Operations Admin', 'Bot Developer'];
 
   return (
-    <section id="hero" style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', padding: '0 2rem' }}>
+    <section id="hero" style={{ position: 'sticky', top: 0, minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', padding: '0 clamp(1.5rem, 5vw, 4.5rem)', zIndex: 1, width: '100%' }}>
       <HeroCanvas isDark={isDark} />
 
 
@@ -61,7 +61,7 @@ export default function Hero() {
         pointerEvents: 'none',
       }} />
 
-      <div style={{ position: 'relative', zIndex: 10, textAlign: 'center', maxWidth: '900px' }}>
+      <div style={{ position: 'relative', zIndex: 10, textAlign: 'center', maxWidth: '1000px', width: '100%' }}>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}

@@ -19,10 +19,16 @@ function Footer() {
   const accentColor = isDark ? '#00f5ff' : '#6366f1';
   return (
     <footer style={{
-      textAlign: 'center', padding: '2rem',
+      textAlign: 'center', 
+      padding: '2.5rem clamp(1.5rem, 5vw, 4.5rem)',
       borderTop: `1px solid ${isDark ? 'rgba(0,245,255,0.1)' : 'rgba(99,102,241,0.15)'}`,
       color: isDark ? '#4a6b7a' : '#94a3b8',
-      fontSize: '0.85rem', position: 'relative', zIndex: 10,
+      fontSize: '0.85rem', 
+      position: 'relative', 
+      zIndex: 10,
+      width: '100%',
+      maxWidth: '100%',
+      background: isDark ? '#03040a' : '#ffffff',
     }}>
       <span>Made with </span>
       <span style={{ color: '#ef4444' }}>❤️</span>

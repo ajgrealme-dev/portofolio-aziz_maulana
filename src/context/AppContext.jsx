@@ -19,7 +19,7 @@ export const translations = {
       p2: 'Memiliki minat besar dalam efisiensi operasional dan administrasi. Mampu mengombinasikan ketelitian administratif dengan solusi otomasi digital (Node.js & AI) untuk mempercepat proses input data.',
       p3: 'Pribadi yang patuh pada aturan, jujur, dan siap berkontribusi menjaga akurasi catatan data di lingkungan industri.',
       stats: [
-        { label: 'Proyek Selesai', value: '8+' },
+        { label: 'Proyek Selesai', value: '9+' },
         { label: 'Tahun Belajar', value: '2+' },
         { label: 'Keahlian', value: '12+' },
       ],
@@ -35,6 +35,21 @@ export const translations = {
     projects: {
       title: 'Proyek Mandiri',
       items: [
+        {
+          title: 'HOMIE Tour & Travel (PT. Rumah Berkah Wisata)',
+          icon: '⛵',
+          period: 'September 2026 – Sekarang',
+          image: './project_homietour.png',
+          tag: 'React 18 · Tailwind CSS · Framer Motion · Vite · WhatsApp API',
+          desc: 'Platform digital pariwisata & travel terpadu untuk paket wisata domestik (Sailing Phinisi Labuan Bajo & Komodo), Umroh, dan custom trip — dilengkapi kalkulator biaya interaktif, WhatsApp instant booking, dan storytelling animations.',
+          demoUrl: 'http://localhost:5173',
+          points: [
+            'Katalog paket wisata dinamis (Labuan Bajo, Derawan, Bromo, Umroh) dengan filter destinasi & PAX real-time',
+            'Kalkulator Biaya Trip Interaktif untuk estimasi budget perjalanan & custom request secara transparan',
+            'Alur Booking Otomatis terintegrasi langsung dengan WhatsApp Customer Service & Lead Generator',
+            'Arsitektur animasi modern dengan Stacking Cards, Sticky Story, dan Hidden Admin Dashboard'
+          ]
+        },
         {
           title: 'ShopAtChey (Luxury E-Commerce)',
           icon: '🛍️',
@@ -287,7 +302,7 @@ export const translations = {
       p2: 'Passionate about operational efficiency and administration. Able to combine administrative precision with digital automation solutions (Node.js & AI) to accelerate data entry processes.',
       p3: 'A rule-abiding, honest individual ready to contribute to maintaining data record accuracy in an industrial environment.',
       stats: [
-        { label: 'Projects Done', value: '8+' },
+        { label: 'Projects Done', value: '9+' },
         { label: 'Years Learning', value: '2+' },
         { label: 'Skills', value: '12+' },
       ],
@@ -303,6 +318,21 @@ export const translations = {
     projects: {
       title: 'Personal Projects',
       items: [
+        {
+          title: 'HOMIE Tour & Travel (PT. Rumah Berkah Wisata)',
+          icon: '⛵',
+          period: 'September 2026 – Present',
+          image: './project_homietour.png',
+          tag: 'React 18 · Tailwind CSS · Framer Motion · Vite · WhatsApp API',
+          desc: 'An integrated digital tourism & travel booking platform for domestic packages (Sailing Phinisi Labuan Bajo & Komodo), Umrah, and custom trips — equipped with interactive trip budget calculator, direct WhatsApp booking, and storytelling animations.',
+          demoUrl: 'http://localhost:5173',
+          points: [
+            'Dynamic tour package catalog (Labuan Bajo, Derawan, Bromo, Umrah) with real-time destination & PAX filtering',
+            'Interactive Trip Budget Calculator for custom travel estimation with transparent pricing breakdowns',
+            'Automated WhatsApp Direct Booking integration with automated customer lead management',
+            'Modern animation architecture with Stacking Cards, Sticky Story, and Hidden Admin Dashboard'
+          ]
+        },
         {
           title: 'ShopAtChey (Luxury E-Commerce)',
           icon: '🛍️',

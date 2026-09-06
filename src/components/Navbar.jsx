@@ -42,10 +42,10 @@ export default function Navbar({ activeSection }) {
         backdropFilter: scrolled ? 'blur(20px)' : 'none',
         borderBottom: scrolled ? `1px solid ${isDark ? 'rgba(0,245,255,0.15)' : 'rgba(99,102,241,0.15)'}` : 'none',
         transition: 'all 0.3s ease',
-        padding: '0 2rem',
+        padding: 0,
       }}
     >
-      <div style={{ maxWidth: '1200px', margin: '0 auto', height: '70px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div style={{ width: '100%', maxWidth: '100%', padding: '0 clamp(1.2rem, 4vw, 4rem)', margin: '0 auto', height: '70px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         {/* Logo */}
         <motion.a
           href="#hero"

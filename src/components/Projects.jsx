@@ -15,6 +15,7 @@ function FlipCard({ project, isDark, scrollVelocity = 0, onOpenLightbox }) {
 
   // Derive a nice mockup url domain
   const getDomain = (title) => {
+    if (title.includes('HOMIE') || title.includes('Homie')) return 'homietour.travel';
     if (title.includes('ShopAtChey')) return 'shopatchey.store';
     if (title.includes('Makelar')) return 'agentflow.ai/makelar';
     if (title.includes('ERP')) return 'agentflow.ai/erp';
@@ -87,7 +88,11 @@ function FlipCard({ project, isDark, scrollVelocity = 0, onOpenLightbox }) {
                 padding: '3px 10px', borderRadius: '100px', fontWeight: 600,
                 letterSpacing: '0.5px',
               }}>
-                {project.title.includes('ShopAtChey') ? '✨ Featured Store' : 'Personal Project'}
+                {project.title.includes('HOMIE') || project.title.includes('Homie')
+                  ? '✨ Featured Travel'
+                  : project.title.includes('ShopAtChey') 
+                  ? '✨ Featured Store' 
+                  : 'Personal Project'}
               </span>
             </div>
 
@@ -387,8 +392,30 @@ export default function Projects() {
   };
 
   return (
-    <section id="projects" ref={ref} style={{ padding: 'clamp(70px, 9vh, 120px) 0', position: 'relative', zIndex: 10, overflow: 'hidden' }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 clamp(0.75rem, 3vw, 2rem)' }}>
+    <section 
+      id="projects" 
+      ref={ref} 
+      style={{ 
+        position: 'sticky', 
+        top: 0, 
+        minHeight: '100vh', 
+        display: 'flex', 
+        flexDirection: 'column', 
+        justifyContent: 'center', 
+        padding: 'clamp(70px, 9vh, 120px) 0', 
+        zIndex: 4, 
+        background: isDark 
+          ? 'linear-gradient(180deg, rgba(5, 5, 15, 0.96) 0%, rgba(8, 12, 28, 0.98) 100%)' 
+          : 'linear-gradient(180deg, rgba(240, 244, 255, 0.96) 0%, rgba(232, 240, 255, 0.98) 100%)', 
+        backdropFilter: 'blur(20px)', 
+        WebkitBackdropFilter: 'blur(20px)', 
+        borderTop: isDark ? '1px solid rgba(0, 245, 255, 0.2)' : '1px solid rgba(99, 102, 241, 0.2)', 
+        boxShadow: '0 -20px 50px rgba(0,0,0,0.5)', 
+        width: '100%', 
+        overflow: 'hidden' 
+      }}
+    >
+      <div style={{ width: '100%', maxWidth: '100%', margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 4.5rem)' }}>
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -405,7 +432,7 @@ export default function Projects() {
       </div>
 
       {/* Progress Line */}
-      <div style={{ maxWidth: '1200px', margin: '0 auto 1.5rem', padding: '0 clamp(0.75rem, 3vw, 2rem)' }}>
+      <div style={{ width: '100%', maxWidth: '100%', margin: '0 auto 1.5rem', padding: '0 clamp(1.5rem, 5vw, 4.5rem)' }}>
         <div style={{ width: '100%', height: '3px', background: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.06)', borderRadius: '3px', position: 'relative', overflow: 'hidden' }}>
           <motion.div
             style={{
@@ -429,7 +456,7 @@ export default function Projects() {
           gap: '1.4rem',
           overflowX: 'auto',
           scrollSnapType: 'x mandatory',
-          padding: '1rem clamp(0.75rem, 4vw, 3rem) 2rem',
+          padding: '1rem clamp(1.5rem, 5vw, 4.5rem) 2rem',
           width: '100%',
           boxSizing: 'border-box',
           scrollbarWidth: 'thin',

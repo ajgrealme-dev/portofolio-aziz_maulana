@@ -116,8 +116,29 @@ export default function Contact() {
   ];
 
   return (
-    <section id="contact" ref={ref} style={{ padding: 'clamp(70px, 9vh, 120px) clamp(0.75rem, 3vw, 2rem) 80px', position: 'relative', zIndex: 10 }}>
-      <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+    <section 
+      id="contact" 
+      ref={ref} 
+      style={{ 
+        position: 'sticky', 
+        top: 0, 
+        minHeight: '100vh', 
+        display: 'flex', 
+        flexDirection: 'column', 
+        justifyContent: 'center', 
+        padding: 'clamp(70px, 9vh, 120px) clamp(1.5rem, 5vw, 4.5rem) 80px', 
+        zIndex: 6, 
+        background: isDark 
+          ? 'linear-gradient(180deg, rgba(5, 5, 15, 0.98) 0%, #03040a 100%)' 
+          : 'linear-gradient(180deg, rgba(240, 244, 255, 0.98) 0%, #ffffff 100%)', 
+        backdropFilter: 'blur(20px)', 
+        WebkitBackdropFilter: 'blur(20px)', 
+        borderTop: isDark ? '1px solid rgba(0, 245, 255, 0.25)' : '1px solid rgba(99, 102, 241, 0.25)', 
+        boxShadow: '0 -20px 50px rgba(0,0,0,0.6)', 
+        width: '100%' 
+      }}
+    >
+      <div style={{ width: '100%', maxWidth: '1000px', margin: '0 auto' }}>
         <motion.div initial={{ opacity: 0, y: 40 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }} style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
           <span style={{ color: accentColor, fontFamily: 'JetBrains Mono, monospace', fontSize: '0.85rem', letterSpacing: '3px', fontWeight: 600 }}>{'<contact>'}</span>
           <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(1.8rem, 4.5vw, 3rem)', color: textColor, margin: '0.5rem 0' }}>{t.contact.title}</h2>
