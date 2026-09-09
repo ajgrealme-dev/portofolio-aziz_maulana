@@ -31,6 +31,27 @@ export default function Navbar({ activeSection }) {
   const accentColor = isDark ? '#00f5ff' : '#6366f1';
   const textColor = isDark ? '#e2e8f0' : '#1e293b';
 
+  const targetProgressMap = {
+    hero: 0.00,
+    about: 0.18,
+    skills: 0.31,
+    projects: 0.43,
+    credentials: 0.71,
+    experience: 0.83,
+    contact: 0.97,
+  };
+
+  const handleNavClick = (e, sectionId) => {
+    e.preventDefault();
+    const targetP = targetProgressMap[sectionId] ?? 0;
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    window.scrollTo({
+      top: targetP * maxScroll,
+      behavior: 'smooth',
+    });
+    setMenuOpen(false);
+  };
+
   return (
     <motion.nav
       initial={{ y: -80 }}
@@ -51,6 +72,7 @@ export default function Navbar({ activeSection }) {
         {/* Logo */}
         <motion.a
           href="#hero"
+          onClick={(e) => handleNavClick(e, 'hero')}
           whileHover={{ scale: 1.05 }}
           style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '10px' }}
         >
@@ -61,26 +83,31 @@ export default function Navbar({ activeSection }) {
 
         {/* Desktop Nav */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }} className="desktop-nav">
-          {navItems.map((item) => (
-            <motion.a
-              key={item.key}
-              href={item.href}
-              whileHover={{ y: -2 }}
-              style={{
-                textDecoration: 'none',
-                fontSize: '0.875rem',
-                fontWeight: activeSection === item.href.slice(1) ? 600 : 400,
-                color: activeSection === item.href.slice(1) ? accentColor : textColor,
-                transition: 'color 0.2s',
-                letterSpacing: '0.5px',
-              }}
-            >
-              {t.nav[item.key]}
-              {activeSection === item.href.slice(1) && (
-                <motion.div layoutId="navUnderline" style={{ height: '2px', background: accentColor, borderRadius: '1px', marginTop: '2px', boxShadow: `0 0 8px ${accentColor}` }} />
-              )}
-            </motion.a>
-          ))}
+          {navItems.map((item) => {
+            const sectionId = item.href.slice(1);
+            return (
+              <motion.a
+                key={item.key}
+                href={item.href}
+                onClick={(e) => handleNavClick(e, sectionId)}
+                whileHover={{ y: -2 }}
+                style={{
+                  textDecoration: 'none',
+                  fontSize: '0.875rem',
+                  fontWeight: activeSection === sectionId ? 600 : 400,
+                  color: activeSection === sectionId ? accentColor : textColor,
+                  transition: 'color 0.2s',
+                  letterSpacing: '0.5px',
+                  cursor: 'pointer',
+                }}
+              >
+                {t.nav[item.key]}
+                {activeSection === sectionId && (
+                  <motion.div layoutId="navUnderline" style={{ height: '2px', background: accentColor, borderRadius: '1px', marginTop: '2px', boxShadow: `0 0 8px ${accentColor}` }} />
+                )}
+              </motion.a>
+            );
+          })}
 
           {/* Controls */}
           <div style={{ display: 'flex', gap: '0.5rem', marginLeft: '1rem' }}>
@@ -117,12 +144,15 @@ export default function Navbar({ activeSection }) {
               boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
               zIndex: 999
             }}>
-            {navItems.map((item) => (
-              <a key={item.key} href={item.href} onClick={() => setMenuOpen(false)}
-                style={{ display: 'block', padding: '0.75rem 0', color: textColor, textDecoration: 'none', fontSize: '1rem', fontWeight: 500, borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}` }}>
-                {t.nav[item.key]}
-              </a>
-            ))}
+            {navItems.map((item) => {
+              const sectionId = item.href.slice(1);
+              return (
+                <a key={item.key} href={item.href} onClick={(e) => handleNavClick(e, sectionId)}
+                  style={{ display: 'block', padding: '0.75rem 0', color: textColor, textDecoration: 'none', fontSize: '1rem', fontWeight: 500, borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}` }}>
+                  {t.nav[item.key]}
+                </a>
+              );
+            })}
             <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
               <button onClick={toggleLang} style={{ flex: 1, background: `${accentColor}20`, border: `1px solid ${accentColor}40`, color: accentColor, borderRadius: '8px', padding: '8px', cursor: 'pointer', fontWeight: 700 }}>{lang === 'id' ? 'EN' : 'ID'}</button>
               <button onClick={toggleTheme} style={{ flex: 1, background: `${accentColor}20`, border: `1px solid ${accentColor}40`, color: accentColor, borderRadius: '8px', padding: '8px', cursor: 'pointer' }}>{isDark ? '☀️ Light' : '🌙 Dark'}</button>

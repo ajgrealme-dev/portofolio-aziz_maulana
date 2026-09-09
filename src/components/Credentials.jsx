@@ -17,7 +17,7 @@ export default function Credentials() {
     <div
       ref={ref}
       style={{
-        padding: 'clamp(20px, 3vh, 40px) 0',
+        padding: '0',
         position: 'relative',
         width: '100%',
         background: 'transparent',
@@ -35,7 +35,7 @@ export default function Credentials() {
           initial={{ opacity: 0, y: 35 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7 }}
-          style={{ textAlign: 'center', marginBottom: '3rem' }}
+          style={{ textAlign: 'center', marginBottom: '1.6rem' }}
         >
           <span style={{
             color: accentColor,

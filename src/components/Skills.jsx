@@ -125,7 +125,7 @@ export default function Skills() {
       ref={ref} 
       style={{ 
         position: 'relative', 
-        padding: 'clamp(20px, 3vh, 40px) clamp(1.5rem, 5vw, 4.5rem)', 
+        padding: '0 clamp(1.5rem, 5vw, 4.5rem)', 
         background: 'transparent', 
         width: '100%' 
       }}
@@ -137,17 +137,17 @@ export default function Skills() {
         transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
         style={{ maxWidth: '1200px', margin: '0 auto' }}
       >
-        <motion.div initial={{ opacity: 0, y: 40 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }} style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+        <motion.div initial={{ opacity: 0, y: 40 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }} style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
           <span style={{ color: accentColor, fontFamily: 'JetBrains Mono, monospace', fontSize: '0.85rem', letterSpacing: '3px', fontWeight: 600 }}>{'<skills>'}</span>
-          <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(1.8rem, 4.5vw, 3rem)', color: textColor, margin: '0.5rem 0' }}>{t.skills.title}</h2>
+          <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(1.8rem, 4.5vw, 3rem)', color: textColor, margin: '0.3rem 0' }}>{t.skills.title}</h2>
           <div style={{ width: '60px', height: '3px', background: `linear-gradient(90deg, ${accentColor}, ${isDark ? '#39ff14' : '#8b5cf6'})`, margin: '0 auto', borderRadius: '2px', boxShadow: isDark ? `0 0 10px ${accentColor}` : 'none' }} />
-          <p style={{ color: isDark ? '#94a3b8' : '#64748b', marginTop: '0.75rem', fontSize: '0.85rem' }}>
+          <p style={{ color: isDark ? '#94a3b8' : '#64748b', marginTop: '0.5rem', fontSize: '0.82rem' }}>
             {isDark ? '← Geser untuk melihat kategori keahlian →' : '← Swipe to view skill categories →'}
           </p>
         </motion.div>
 
         {/* 🌟 Horizontal Swipe Scroll for Skills on Mobile, 3-Col Grid on Desktop 🌟 */}
-        <div className="skills-scroll-container" style={{ marginBottom: '3rem' }}>
+        <div className="skills-scroll-container" style={{ marginBottom: '1.2rem' }}>
           {t.skills.cats.map((cat, i) => (
             <SkillCategory key={cat.name} cat={cat} isDark={isDark} inView={inView} catIndex={i} />
           ))}
@@ -158,7 +158,7 @@ export default function Skills() {
           initial={{ opacity: 0, y: 50 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.4, duration: 0.8 }}
-          style={{ width: '100%', maxWidth: '1000px', margin: '1rem auto 0' }}
+          style={{ width: '100%', maxWidth: '1000px', margin: '0.5rem auto 0' }}
         >
           <ObsidianSkillGraph isDark={isDark} />
         </motion.div>

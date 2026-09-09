@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
 import { useApp } from '../context/AppContext';
 
 function FlipCard({ project, isDark, onOpenLightbox }) {
@@ -335,7 +335,7 @@ function FlipCard({ project, isDark, onOpenLightbox }) {
   );
 }
 
-export default function Projects() {
+export default function Projects({ progress }) {
   const { theme, t } = useApp();
   const isDark = theme === 'dark';
 
@@ -369,8 +369,8 @@ export default function Projects() {
       if (trackRef.current) {
         const trackWidth = trackRef.current.scrollWidth;
         const viewportWidth = window.innerWidth;
-        // 120px buffer ensures the last card has spacious right padding and is 100% visible
-        const dist = Math.max(0, trackWidth - viewportWidth + 120);
+        // 140px buffer ensures the last card has spacious right padding and is 100% visible
+        const dist = Math.max(0, trackWidth - viewportWidth + 140);
         maxScrollRef.current = dist;
         setMaxScroll(dist);
       }
@@ -390,170 +390,134 @@ export default function Projects() {
     };
   }, [t.projects.items, isDesktop]);
 
-  // Framer Motion Sticky-Pinned Scroll Progress (0 to 1 during the 450vh scroll)
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-    offset: ['start start', 'end end'],
-  });
-
-  // Resting buffer 8% at start and 10% at end: cards stay settled before unpinning
-  const rawX = useTransform(scrollYProgress, (progress) => {
-    const dist = maxScrollRef.current || maxScroll;
-    if (progress <= 0.08) {
-      return 0;
-    }
-    if (progress >= 0.90) {
-      return -dist;
-    }
-    const t = (progress - 0.08) / 0.82;
-    return -t * dist;
-  });
-
-  const smoothX = useSpring(rawX, {
-    stiffness: 140,
+  // Framer Motion spring for horizontal scroll driven by master progress
+  const xMotion = useMotionValue(0);
+  const smoothX = useSpring(xMotion, {
+    stiffness: 130,
     damping: 24,
     mass: 0.18,
-    restDelta: 0.001,
+    restDelta: 0.5,
   });
 
-  const exitOpacity = useTransform(scrollYProgress, [0.93, 0.98], [1, 0]);
-  const exitScale = useTransform(scrollYProgress, [0.93, 0.98], [1, 0.94]);
-  const exitY = useTransform(scrollYProgress, [0.93, 0.98], [0, -25]);
-  const exitVisibility = useTransform(scrollYProgress, (v) => (v >= 0.98 ? 'hidden' : 'visible'));
+  useEffect(() => {
+    if (progress === undefined) return;
+    const dist = maxScrollRef.current || maxScroll;
+    // Projects active scrub window in master timeline: 0.42 to 0.62
+    // Below 0.42: fully resting at first card (0px)
+    // Above 0.62: fully resting at last card (-dist px)
+    const pProj = Math.max(0, Math.min(1, (progress - 0.42) / 0.20));
+    xMotion.set(-pProj * dist);
+  }, [progress, maxScroll, xMotion]);
 
   return (
     <>
       {isDesktop ? (
-        /* DESKTOP: True Sticky-Pinned Horizontal Scroll */
-        <section
+        /* DESKTOP: Master Pinned Fixed Stage Horizontal Track (Zero Jump, "Diam Begitu") */
+        <div
           id="projects"
           ref={targetRef}
           style={{
             position: 'relative',
-            height: '450vh',
-            background: 'transparent',
             width: '100%',
-            scrollMarginTop: 0,
-            zIndex: 40,
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            boxSizing: 'border-box',
+            overflow: 'hidden',
+            background: 'transparent',
           }}
         >
-          {/* Sticky Viewport Container pinned at top: 0 below Navbar */}
-          <motion.div
+          {/* Header: Centered & Perfectly Framed */}
+          <div
             style={{
-              position: 'sticky',
-              top: 0,
-              height: '100vh',
-              paddingTop: '70px',
-              overflow: 'hidden',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              boxSizing: 'border-box',
+              maxWidth: '1200px',
               width: '100%',
-              zIndex: 40,
-              opacity: exitOpacity,
-              scale: exitScale,
-              y: exitY,
-              visibility: exitVisibility,
-              boxShadow: isDark
-                ? '0 -25px 50px rgba(0, 0, 0, 0.5)'
-                : '0 -15px 35px rgba(99, 102, 241, 0.08)',
-              borderTop: isDark
-                ? '1px solid rgba(0, 245, 255, 0.12)'
-                : '1px solid rgba(99, 102, 241, 0.15)',
+              margin: '0 auto',
+              padding: '0 clamp(1.5rem, 5vw, 4.5rem)',
+              textAlign: 'center',
+              marginBottom: 'clamp(0.8rem, 2vh, 1.6rem)',
+              flexShrink: 0,
             }}
           >
-            {/* Header: Centered & Perfectly Framed */}
-            <div
+            <span
               style={{
-                maxWidth: '1200px',
-                width: '100%',
-                margin: '0 auto',
-                padding: '0 clamp(1.5rem, 5vw, 4.5rem)',
-                textAlign: 'center',
-                marginBottom: 'clamp(0.8rem, 2vh, 1.6rem)',
-                flexShrink: 0,
+                color: accentColor,
+                fontFamily: 'JetBrains Mono, monospace',
+                fontSize: '0.85rem',
+                letterSpacing: '3px',
+                fontWeight: 600,
               }}
             >
-              <span
-                style={{
-                  color: accentColor,
-                  fontFamily: 'JetBrains Mono, monospace',
-                  fontSize: '0.85rem',
-                  letterSpacing: '3px',
-                  fontWeight: 600,
-                }}
-              >
-                {'<projects>'}
-              </span>
-              <h2
-                style={{
-                  fontFamily: 'Playfair Display, serif',
-                  fontSize: 'clamp(1.6rem, 3.5vw, 2.6rem)',
-                  color: textColor,
-                  margin: '0.25rem 0',
-                }}
-              >
-                {t.projects.title}
-              </h2>
-              <div
-                style={{
-                  width: '60px',
-                  height: '3px',
-                  background: `linear-gradient(90deg, ${accentColor}, ${isDark ? '#39ff14' : '#8b5cf6'})`,
-                  margin: '0 auto 0.5rem',
-                  borderRadius: '2px',
-                  boxShadow: isDark ? `0 0 10px ${accentColor}` : 'none',
-                }}
-              />
-              <p
-                style={{
-                  color: isDark ? '#94a3b8' : '#64748b',
-                  fontSize: '0.82rem',
-                  margin: 0,
-                }}
-              >
-                {isDark
-                  ? '← Gulir mouse / touchpad untuk menjelajahi proyek · Klik kartu untuk fitur lengkap →'
-                  : '← Scroll mouse / touchpad to explore projects · Click card for details →'}
-              </p>
-            </div>
+              {'<projects>'}
+            </span>
+            <h2
+              style={{
+                fontFamily: 'Playfair Display, serif',
+                fontSize: 'clamp(1.6rem, 3.5vw, 2.6rem)',
+                color: textColor,
+                margin: '0.25rem 0',
+              }}
+            >
+              {t.projects.title}
+            </h2>
+            <div
+              style={{
+                width: '60px',
+                height: '3px',
+                background: `linear-gradient(90deg, ${accentColor}, ${isDark ? '#39ff14' : '#8b5cf6'})`,
+                margin: '0 auto 0.5rem',
+                borderRadius: '2px',
+                boxShadow: isDark ? `0 0 10px ${accentColor}` : 'none',
+              }}
+            />
+            <p
+              style={{
+                color: isDark ? '#94a3b8' : '#64748b',
+                fontSize: '0.82rem',
+                margin: 0,
+              }}
+            >
+              {isDark
+                ? '← Gulir mouse / touchpad untuk menjelajahi proyek · Klik kartu untuk fitur lengkap →'
+                : '← Scroll mouse / touchpad to explore projects · Click card for details →'}
+            </p>
+          </div>
 
-            {/* Horizontal Track Container */}
-            <div
+          {/* Horizontal Track Container */}
+          <div
+            style={{
+              width: '100%',
+              overflow: 'hidden',
+              padding: '0.5rem 0 1.2rem',
+              flexShrink: 0,
+            }}
+          >
+            <motion.div
+              ref={trackRef}
               style={{
-                width: '100%',
-                overflow: 'hidden',
-                padding: '0.5rem 0 1.2rem',
-                flexShrink: 0,
+                x: smoothX,
+                display: 'flex',
+                gap: '1.4rem',
+                padding: '0 clamp(2rem, 5vw, 5rem)',
+                width: 'max-content',
+                willChange: 'transform',
               }}
             >
-              <motion.div
-                ref={trackRef}
-                style={{
-                  x: smoothX,
-                  display: 'flex',
-                  gap: '1.4rem',
-                  padding: '0 clamp(2rem, 5vw, 5rem)',
-                  width: 'max-content',
-                  willChange: 'transform',
-                }}
-              >
-                {t.projects.items.map((proj) => (
-                  <FlipCard
-                    key={proj.title}
-                    project={proj}
-                    isDark={isDark}
-                    onOpenLightbox={(img, title) => {
-                      setLightboxImg(img);
-                      setLightboxTitle(title);
-                    }}
-                  />
-                ))}
-              </motion.div>
-            </div>
-          </motion.div>
-        </section>
+              {t.projects.items.map((proj) => (
+                <FlipCard
+                  key={proj.title}
+                  project={proj}
+                  isDark={isDark}
+                  onOpenLightbox={(img, title) => {
+                    setLightboxImg(img);
+                    setLightboxTitle(title);
+                  }}
+                />
+              ))}
+            </motion.div>
+          </div>
+        </div>
       ) : (
         /* MOBILE: Natural Touch Swipe Horizontal Scroll */
         <section

@@ -115,7 +115,7 @@ export default function Experience() {
       ref={ref} 
       style={{ 
         position: 'relative', 
-        padding: 'clamp(20px, 3vh, 40px) clamp(1.5rem, 5vw, 4.5rem)', 
+        padding: '0 clamp(1.5rem, 5vw, 4.5rem)', 
         background: 'transparent', 
         width: '100%' 
       }}
