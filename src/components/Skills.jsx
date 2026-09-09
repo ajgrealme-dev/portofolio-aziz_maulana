@@ -121,13 +121,11 @@ export default function Skills() {
   const textColor = isDark ? '#e2e8f0' : '#1e293b';
 
   return (
-    <section 
-      id="skills" 
+    <div 
       ref={ref} 
       style={{ 
         position: 'relative', 
-        padding: 'clamp(70px, 9vh, 120px) clamp(1.5rem, 5vw, 4.5rem)', 
-        zIndex: 10, 
+        padding: 'clamp(20px, 3vh, 40px) clamp(1.5rem, 5vw, 4.5rem)', 
         background: 'transparent', 
         width: '100%' 
       }}
@@ -165,6 +163,6 @@ export default function Skills() {
           <ObsidianSkillGraph isDark={isDark} />
         </motion.div>
       </motion.div>
-    </section>
+    </div>
   );
 }

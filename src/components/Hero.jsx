@@ -47,7 +47,7 @@ export default function Hero() {
     : ['IT Operations & Automation Specialist', 'Junior Specialist', 'Operations Admin', 'Bot Developer'];
 
   return (
-    <section id="hero" style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', padding: '0 clamp(1.5rem, 5vw, 4.5rem)', zIndex: 1, width: '100%', background: 'transparent' }}>
+    <div style={{ position: 'relative', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 clamp(1.5rem, 5vw, 4.5rem)', background: 'transparent' }}>
       <div style={{ position: 'relative', zIndex: 10, textAlign: 'center', maxWidth: '1000px', width: '100%' }}>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -169,6 +169,6 @@ export default function Hero() {
           .mobile-menu-btn { display: block !important; }
         }
       `}</style>
-    </section>
+    </div>
   );
 }

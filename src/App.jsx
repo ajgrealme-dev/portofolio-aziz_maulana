@@ -11,6 +11,7 @@ import Credentials from './components/Credentials';
 import Experience from './components/Experience';
 import Contact from './components/Contact';
 import TerminalDemo from './components/TerminalDemo';
+import StackingCard from './components/StackingCard';
 import './index.css';
 
 function Footer() {
@@ -25,7 +26,7 @@ function Footer() {
       color: isDark ? '#4a6b7a' : '#94a3b8',
       fontSize: '0.85rem', 
       position: 'relative', 
-      zIndex: 10,
+      zIndex: 80,
       width: '100%',
       maxWidth: '100%',
       background: 'transparent',
@@ -96,14 +97,32 @@ function AppContent() {
       <ScrollProgress />
       <BackgroundCanvas isDark={isDark} />
       <Navbar activeSection={activeSection} />
-      <main>
-        <Hero />
-        <About />
-        <Skills />
+      <main style={{ position: 'relative', width: '100%', background: 'transparent' }}>
+        <StackingCard id="hero" zIndex={10}>
+          <Hero />
+        </StackingCard>
+
+        <StackingCard id="about" zIndex={20}>
+          <About />
+        </StackingCard>
+
+        <StackingCard id="skills" zIndex={30}>
+          <Skills />
+        </StackingCard>
+
         <Projects />
-        <Credentials />
-        <Experience />
-        <Contact />
+
+        <StackingCard id="credentials" zIndex={50}>
+          <Credentials />
+        </StackingCard>
+
+        <StackingCard id="experience" zIndex={60}>
+          <Experience />
+        </StackingCard>
+
+        <StackingCard id="contact" zIndex={70} isLast={true}>
+          <Contact />
+        </StackingCard>
       </main>
       <Footer />
     </div>

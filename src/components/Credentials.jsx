@@ -14,14 +14,13 @@ export default function Credentials() {
   const subColor = isDark ? '#94a3b8' : '#64748b';
 
   return (
-    <section
-      id="credentials"
+    <div
       ref={ref}
       style={{
-        padding: 'clamp(70px, 9vh, 120px) 0',
+        padding: 'clamp(20px, 3vh, 40px) 0',
         position: 'relative',
-        zIndex: 10,
-        overflow: 'hidden',
+        width: '100%',
+        background: 'transparent',
       }}
     >
       <motion.div
@@ -482,6 +481,6 @@ export default function Credentials() {
           </div>
         )}
       </AnimatePresence>
-    </section>
+    </div>
   );
 }

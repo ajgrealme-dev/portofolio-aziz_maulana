@@ -416,6 +416,11 @@ export default function Projects() {
     restDelta: 0.001,
   });
 
+  const exitOpacity = useTransform(scrollYProgress, [0.93, 0.98], [1, 0]);
+  const exitScale = useTransform(scrollYProgress, [0.93, 0.98], [1, 0.94]);
+  const exitY = useTransform(scrollYProgress, [0.93, 0.98], [0, -25]);
+  const exitVisibility = useTransform(scrollYProgress, (v) => (v >= 0.98 ? 'hidden' : 'visible'));
+
   return (
     <>
       {isDesktop ? (
@@ -429,10 +434,11 @@ export default function Projects() {
             background: 'transparent',
             width: '100%',
             scrollMarginTop: 0,
+            zIndex: 40,
           }}
         >
           {/* Sticky Viewport Container pinned at top: 0 below Navbar */}
-          <div
+          <motion.div
             style={{
               position: 'sticky',
               top: 0,
@@ -444,7 +450,17 @@ export default function Projects() {
               justifyContent: 'center',
               boxSizing: 'border-box',
               width: '100%',
-              zIndex: 10,
+              zIndex: 40,
+              opacity: exitOpacity,
+              scale: exitScale,
+              y: exitY,
+              visibility: exitVisibility,
+              boxShadow: isDark
+                ? '0 -25px 50px rgba(0, 0, 0, 0.5)'
+                : '0 -15px 35px rgba(99, 102, 241, 0.08)',
+              borderTop: isDark
+                ? '1px solid rgba(0, 245, 255, 0.12)'
+                : '1px solid rgba(99, 102, 241, 0.15)',
             }}
           >
             {/* Header: Centered & Perfectly Framed */}
@@ -536,7 +552,7 @@ export default function Projects() {
                 ))}
               </motion.div>
             </div>
-          </div>
+          </motion.div>
         </section>
       ) : (
         /* MOBILE: Natural Touch Swipe Horizontal Scroll */

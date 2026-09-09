@@ -104,13 +104,11 @@ export default function About() {
   const photoSrc = './foto_website.png';
 
   return (
-    <section 
-      id="about" 
+    <div 
       ref={ref} 
       style={{ 
         position: 'relative', 
-        padding: 'clamp(70px, 9vh, 120px) clamp(1.5rem, 5vw, 4.5rem)', 
-        zIndex: 10, 
+        padding: 'clamp(20px, 3vh, 40px) clamp(1.5rem, 5vw, 4.5rem)', 
         background: 'transparent', 
         width: '100%' 
       }}
@@ -211,6 +209,6 @@ export default function About() {
 
         </div>
       </motion.div>
-    </section>
+    </div>
   );
 }

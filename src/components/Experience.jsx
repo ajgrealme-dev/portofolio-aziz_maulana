@@ -68,7 +68,7 @@ function TimelineItem({ item, isDark, index, inView }) {
   );
 
   return (
-    <div className="experience-timeline-grid" style={{ marginBottom: 'clamp(1.5rem, 3vw, 3rem)' }}>
+    <div className="experience-timeline-grid" style={{ marginBottom: 'clamp(0.6rem, 1.5vw, 1.2rem)' }}>
       {/* Left Column */}
       <div style={{ paddingRight: 'clamp(0.5rem, 2vw, 2rem)', textAlign: 'right' }}>
         {isLeft ? cardContent : null}
@@ -81,8 +81,8 @@ function TimelineItem({ item, isDark, index, inView }) {
           animate={inView ? { scale: 1 } : {}}
           transition={{ delay: index * 0.15 + 0.1, type: 'spring' }}
           style={{
-            width: 'clamp(14px, 2vw, 20px)',
-            height: 'clamp(14px, 2vw, 20px)',
+            width: 'clamp(12px, 1.5vw, 16px)',
+            height: 'clamp(12px, 1.5vw, 16px)',
             borderRadius: '50%',
             background: `radial-gradient(circle, ${accentColor}, ${isDark ? '#39ff14' : '#8b5cf6'})`,
             border: `2px solid ${isDark ? '#0a0a1a' : '#f8faff'}`,
@@ -91,7 +91,7 @@ function TimelineItem({ item, isDark, index, inView }) {
             marginTop: '4px',
           }}
         />
-        <div style={{ width: '2px', flex: 1, background: isDark ? 'rgba(0,245,255,0.2)' : 'rgba(99,102,241,0.2)', minHeight: '60px' }} />
+        <div style={{ width: '2px', flex: 1, background: isDark ? 'rgba(0,245,255,0.2)' : 'rgba(99,102,241,0.2)', minHeight: '36px' }} />
       </div>
 
       {/* Right Column */}
@@ -111,13 +111,11 @@ export default function Experience() {
   const textColor = isDark ? '#e2e8f0' : '#1e293b';
 
   return (
-    <section 
-      id="experience" 
+    <div 
       ref={ref} 
       style={{ 
         position: 'relative', 
-        padding: 'clamp(70px, 9vh, 120px) clamp(1.5rem, 5vw, 4.5rem)', 
-        zIndex: 10, 
+        padding: 'clamp(20px, 3vh, 40px) clamp(1.5rem, 5vw, 4.5rem)', 
         background: 'transparent', 
         width: '100%' 
       }}
@@ -129,18 +127,18 @@ export default function Experience() {
         transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
         style={{ maxWidth: '1000px', margin: '0 auto' }}
       >
-        <motion.div initial={{ opacity: 0, y: 40 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }} style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+        <motion.div initial={{ opacity: 0, y: 40 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }} style={{ textAlign: 'center', marginBottom: '1.2rem' }}>
           <span style={{ color: accentColor, fontFamily: 'JetBrains Mono, monospace', fontSize: '0.85rem', letterSpacing: '3px', fontWeight: 600 }}>{'<experience>'}</span>
-          <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(1.8rem, 4.5vw, 3rem)', color: textColor, margin: '0.5rem 0' }}>{t.experience.title}</h2>
+          <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(1.6rem, 3.5vw, 2.4rem)', color: textColor, margin: '0.25rem 0' }}>{t.experience.title}</h2>
           <div style={{ width: '60px', height: '3px', background: `linear-gradient(90deg, ${accentColor}, ${isDark ? '#39ff14' : '#8b5cf6'})`, margin: '0 auto', borderRadius: '2px', boxShadow: isDark ? `0 0 10px ${accentColor}` : 'none' }} />
         </motion.div>
 
         {/* Education */}
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 }} style={{ marginBottom: '3.5rem' }}>
-          <h3 style={{ color: accentColor, fontFamily: 'JetBrains Mono, monospace', fontSize: '0.85rem', letterSpacing: '2px', marginBottom: '1.5rem', textAlign: 'center' }}>
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 }} style={{ marginBottom: '1.2rem' }}>
+          <h3 style={{ color: accentColor, fontFamily: 'JetBrains Mono, monospace', fontSize: '0.82rem', letterSpacing: '2px', marginBottom: '0.6rem', textAlign: 'center' }}>
             🎓 {t.education.title}
           </h3>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(0.75rem, 2vw, 1.5rem)', maxWidth: '800px', margin: '0 auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(0.6rem, 1.5vw, 1.2rem)', maxWidth: '800px', margin: '0 auto' }}>
             {t.education.items.map((edu, i) => (
               <motion.div key={i}
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -150,13 +148,13 @@ export default function Experience() {
                 style={{
                   background: isDark ? 'rgba(0,245,255,0.04)' : 'rgba(99,102,241,0.05)',
                   border: `1px solid ${isDark ? 'rgba(0,245,255,0.2)' : 'rgba(99,102,241,0.2)'}`,
-                  borderRadius: '20px', padding: 'clamp(0.85rem, 2vw, 1.5rem)',
+                  borderRadius: '16px', padding: 'clamp(0.6rem, 1.5vw, 1rem)',
                   backdropFilter: 'blur(10px)',
                   transition: 'box-shadow 0.3s', cursor: 'default',
                   textAlign: 'left',
                 }}>
                 <div style={{ color: textColor, fontWeight: 700, fontSize: 'clamp(0.82rem, 1.2vw, 0.95rem)' }}>{edu.school}</div>
-                <div style={{ color: isDark ? '#94a3b8' : '#64748b', fontSize: 'clamp(0.72rem, 1vw, 0.85rem)', margin: '4px 0' }}>{edu.major}</div>
+                <div style={{ color: isDark ? '#94a3b8' : '#64748b', fontSize: 'clamp(0.72rem, 1vw, 0.85rem)', margin: '2px 0' }}>{edu.major}</div>
                 <div style={{ color: accentColor, fontSize: 'clamp(0.7rem, 0.9vw, 0.8rem)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>{edu.year}</div>
               </motion.div>
             ))}
@@ -164,7 +162,7 @@ export default function Experience() {
         </motion.div>
 
         {/* Alternating Zig-zag Timeline */}
-        <h3 style={{ color: accentColor, fontFamily: 'JetBrains Mono, monospace', fontSize: '0.85rem', letterSpacing: '2px', marginBottom: '2.5rem', textAlign: 'center' }}>
+        <h3 style={{ color: accentColor, fontFamily: 'JetBrains Mono, monospace', fontSize: '0.82rem', letterSpacing: '2px', marginBottom: '0.8rem', textAlign: 'center' }}>
           💼 {t.experience.title}
         </h3>
         <div>
@@ -173,6 +171,6 @@ export default function Experience() {
           ))}
         </div>
       </motion.div>
-    </section>
+    </div>
   );
 }
