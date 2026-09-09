@@ -132,12 +132,12 @@ export default function Contact() {
         transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
         style={{ maxWidth: '1000px', margin: '0 auto' }}
       >
-        <motion.div initial={{ opacity: 0, y: 40 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }} style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+        <motion.div initial={{ opacity: 0, y: 40 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }} style={{ textAlign: 'center', marginBottom: 'clamp(1rem, 2.5vh, 2rem)' }}>
           <span style={{ color: accentColor, fontFamily: 'JetBrains Mono, monospace', fontSize: '0.85rem', letterSpacing: '3px', fontWeight: 600 }}>{'<contact>'}</span>
-          <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(1.8rem, 4.5vw, 3rem)', color: textColor, margin: '0.5rem 0' }}>{t.contact.title}</h2>
-          <div style={{ width: '60px', height: '3px', background: `linear-gradient(90deg, ${accentColor}, ${isDark ? '#39ff14' : '#8b5cf6'})`, margin: '0 auto 1rem', borderRadius: '2px', boxShadow: isDark ? `0 0 10px ${accentColor}` : 'none' }} />
-          <p style={{ color: subColor, fontSize: '0.9rem' }}>{t.contact.sub}</p>
-          <p style={{ color: isDark ? '#94a3b8' : '#64748b', marginTop: '0.5rem', fontSize: '0.82rem' }}>
+          <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(1.8rem, 4.5vw, 3rem)', color: textColor, margin: '0.4rem 0' }}>{t.contact.title}</h2>
+          <div style={{ width: '60px', height: '3px', background: `linear-gradient(90deg, ${accentColor}, ${isDark ? '#39ff14' : '#8b5cf6'})`, margin: '0 auto 0.75rem', borderRadius: '2px', boxShadow: isDark ? `0 0 10px ${accentColor}` : 'none' }} />
+          <p style={{ color: subColor, fontSize: '0.88rem' }}>{t.contact.sub}</p>
+          <p style={{ color: isDark ? '#94a3b8' : '#64748b', marginTop: '0.4rem', fontSize: '0.82rem' }}>
             {isDark ? '← Geser untuk mengisi formulir pesan →' : '← Swipe to fill the contact form →'}
           </p>
         </motion.div>
@@ -152,7 +152,7 @@ export default function Contact() {
             style={{
               display: 'flex',
               flexDirection: 'column',
-              gap: '1rem',
+              gap: '0.6rem',
               flex: '0 0 min(350px, 86vw)',
               minWidth: 'min(350px, 86vw)',
               scrollSnapAlign: 'center',
@@ -162,25 +162,26 @@ export default function Contact() {
               const content = (
                 <>
                   <div style={{
-                    width: '46px', height: '46px', borderRadius: '12px',
+                    width: '38px', height: '38px', borderRadius: '10px',
                     background: `${accentColor}20`, border: `1px solid ${accentColor}40`,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     flexShrink: 0,
                     boxShadow: isDark ? `0 0 15px ${accentColor}30` : 'none',
+                    fontSize: '1.1rem',
                   }}>
                     {c.icon}
                   </div>
                   <div style={{ overflow: 'hidden', minWidth: 0 }}>
-                    <div style={{ color: accentColor, fontSize: '0.72rem', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '2px' }}>{c.label}</div>
-                    <div style={{ color: textColor, fontWeight: 600, fontSize: '0.92rem', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>{c.value}</div>
+                    <div style={{ color: accentColor, fontSize: '0.68rem', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '1px' }}>{c.label}</div>
+                    <div style={{ color: textColor, fontWeight: 600, fontSize: '0.86rem', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>{c.value}</div>
                   </div>
                 </>
               );
 
               const itemStyle = {
-                display: 'flex', alignItems: 'center', gap: '1rem',
+                display: 'flex', alignItems: 'center', gap: '0.75rem',
                 background: cardBg, border: `1px solid ${cardBorder}`,
-                borderRadius: '18px', padding: '1.15rem 1.35rem',
+                borderRadius: '14px', padding: '0.65rem 1rem',
                 textDecoration: 'none',
                 backdropFilter: 'blur(18px)',
                 WebkitBackdropFilter: 'blur(18px)',
@@ -221,13 +222,14 @@ export default function Contact() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
                 background: `linear-gradient(135deg, ${accentColor}, ${isDark ? '#39ff14' : '#8b5cf6'})`,
                 color: '#05050f', textDecoration: 'none',
-                borderRadius: '16px', padding: '1rem',
-                fontWeight: 700, fontSize: '0.92rem',
+                borderRadius: '14px', padding: '0.75rem 1rem',
+                fontWeight: 700, fontSize: '0.88rem',
                 boxShadow: isDark ? `0 0 25px ${accentColor}40` : '0 10px 25px rgba(99,102,241,0.25)',
                 transition: 'all 0.2s ease',
+                marginTop: '0.15rem',
               }}
             >
               <span>📄</span>

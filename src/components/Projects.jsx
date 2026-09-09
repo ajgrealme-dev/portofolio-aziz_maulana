@@ -29,9 +29,9 @@ function FlipCard({ project, isDark, onOpenLightbox }) {
       style={{ 
         perspective: '1200px', 
         cursor: 'pointer', 
-        height: 'clamp(460px, 58vh, 520px)', 
-        width: 'min(360px, 86vw)', 
-        flex: '0 0 min(360px, 86vw)', 
+        height: 'clamp(430px, 57vh, 520px)', 
+        width: 'min(340px, 85vw)', 
+        flex: '0 0 min(340px, 85vw)', 
         scrollSnapAlign: 'center',
       }}
     >
@@ -341,8 +341,6 @@ export default function Projects({ progress }) {
 
   const [lightboxImg, setLightboxImg] = useState(null);
   const [lightboxTitle, setLightboxTitle] = useState('');
-  const [isDesktop, setIsDesktop] = useState(() => typeof window !== 'undefined' ? window.innerWidth >= 900 : true);
-
   const targetRef = useRef(null);
   const trackRef = useRef(null);
   const [maxScroll, setMaxScroll] = useState(0);
@@ -351,26 +349,15 @@ export default function Projects({ progress }) {
   const accentColor = isDark ? '#00f5ff' : '#6366f1';
   const textColor = isDark ? '#e2e8f0' : '#1e293b';
 
-  // Responsive breakpoint detection
+  // Calculate track travel distance on all viewports (Desktop & Mobile)
   useEffect(() => {
-    const checkDesktop = () => {
-      setIsDesktop(window.innerWidth >= 900);
-    };
-    checkDesktop();
-    window.addEventListener('resize', checkDesktop);
-    return () => window.removeEventListener('resize', checkDesktop);
-  }, []);
-
-  // Calculate track travel distance on Desktop
-  useEffect(() => {
-    if (!isDesktop) return;
-
     const updateMaxScroll = () => {
       if (trackRef.current) {
         const trackWidth = trackRef.current.scrollWidth;
         const viewportWidth = window.innerWidth;
-        // 140px buffer ensures the last card has spacious right padding and is 100% visible
-        const dist = Math.max(0, trackWidth - viewportWidth + 140);
+        // End buffer ensures the last card has comfortable padding and is 100% visible
+        const endBuffer = window.innerWidth < 768 ? 40 : 140;
+        const dist = Math.max(0, trackWidth - viewportWidth + endBuffer);
         maxScrollRef.current = dist;
         setMaxScroll(dist);
       }
@@ -388,7 +375,7 @@ export default function Projects({ progress }) {
       clearTimeout(t3);
       window.removeEventListener('resize', updateMaxScroll);
     };
-  }, [t.projects.items, isDesktop]);
+  }, [t.projects.items]);
 
   // Framer Motion spring for horizontal scroll driven by master progress
   const xMotion = useMotionValue(0);
@@ -411,191 +398,96 @@ export default function Projects({ progress }) {
 
   return (
     <>
-      {isDesktop ? (
-        /* DESKTOP: Master Pinned Fixed Stage Horizontal Track (Zero Jump, "Diam Begitu") */
+      {/* 🌟 Unified Master Pinned Horizontal Track (Desktop & Mobile) 🌟 */}
+      <div
+        id="projects"
+        ref={targetRef}
+        style={{
+          position: 'relative',
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          boxSizing: 'border-box',
+          overflow: 'hidden',
+          background: 'transparent',
+        }}
+      >
+        {/* Header: Centered & Perfectly Framed */}
         <div
-          id="projects"
-          ref={targetRef}
           style={{
-            position: 'relative',
+            maxWidth: '1200px',
             width: '100%',
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            boxSizing: 'border-box',
-            overflow: 'hidden',
-            background: 'transparent',
+            margin: '0 auto',
+            padding: '0 clamp(1.2rem, 5vw, 4.5rem)',
+            textAlign: 'center',
+            marginBottom: 'clamp(0.6rem, 1.8vh, 1.5rem)',
+            flexShrink: 0,
           }}
         >
-          {/* Header: Centered & Perfectly Framed */}
-          <div
+          <span
             style={{
-              maxWidth: '1200px',
-              width: '100%',
-              margin: '0 auto',
-              padding: '0 clamp(1.5rem, 5vw, 4.5rem)',
-              textAlign: 'center',
-              marginBottom: 'clamp(0.8rem, 2vh, 1.6rem)',
-              flexShrink: 0,
+              color: accentColor,
+              fontFamily: 'JetBrains Mono, monospace',
+              fontSize: '0.85rem',
+              letterSpacing: '3px',
+              fontWeight: 600,
             }}
           >
-            <span
-              style={{
-                color: accentColor,
-                fontFamily: 'JetBrains Mono, monospace',
-                fontSize: '0.85rem',
-                letterSpacing: '3px',
-                fontWeight: 600,
-              }}
-            >
-              {'<projects>'}
-            </span>
-            <h2
-              style={{
-                fontFamily: 'Playfair Display, serif',
-                fontSize: 'clamp(1.6rem, 3.5vw, 2.6rem)',
-                color: textColor,
-                margin: '0.25rem 0',
-              }}
-            >
-              {t.projects.title}
-            </h2>
-            <div
-              style={{
-                width: '60px',
-                height: '3px',
-                background: `linear-gradient(90deg, ${accentColor}, ${isDark ? '#39ff14' : '#8b5cf6'})`,
-                margin: '0 auto 0.5rem',
-                borderRadius: '2px',
-                boxShadow: isDark ? `0 0 10px ${accentColor}` : 'none',
-              }}
-            />
-            <p
-              style={{
-                color: isDark ? '#94a3b8' : '#64748b',
-                fontSize: '0.82rem',
-                margin: 0,
-              }}
-            >
-              {isDark
-                ? '← Gulir mouse / touchpad untuk menjelajahi proyek · Klik kartu untuk fitur lengkap →'
-                : '← Scroll mouse / touchpad to explore projects · Click card for details →'}
-            </p>
-          </div>
-
-          {/* Horizontal Track Container */}
-          <div
+            {'<projects>'}
+          </span>
+          <h2
             style={{
-              width: '100%',
-              overflow: 'hidden',
-              padding: '0.5rem 0 1.2rem',
-              flexShrink: 0,
+              fontFamily: 'Playfair Display, serif',
+              fontSize: 'clamp(1.6rem, 3.5vw, 2.6rem)',
+              color: textColor,
+              margin: '0.25rem 0',
             }}
           >
-            <motion.div
-              ref={trackRef}
-              style={{
-                x: smoothX,
-                display: 'flex',
-                gap: '1.4rem',
-                padding: '0 clamp(2rem, 5vw, 5rem)',
-                width: 'max-content',
-                willChange: 'transform',
-              }}
-            >
-              {t.projects.items.map((proj) => (
-                <FlipCard
-                  key={proj.title}
-                  project={proj}
-                  isDark={isDark}
-                  onOpenLightbox={(img, title) => {
-                    setLightboxImg(img);
-                    setLightboxTitle(title);
-                  }}
-                />
-              ))}
-            </motion.div>
-          </div>
+            {t.projects.title}
+          </h2>
+          <div
+            style={{
+              width: '60px',
+              height: '3px',
+              background: `linear-gradient(90deg, ${accentColor}, ${isDark ? '#39ff14' : '#8b5cf6'})`,
+              margin: '0 auto 0.5rem',
+              borderRadius: '2px',
+              boxShadow: isDark ? `0 0 10px ${accentColor}` : 'none',
+            }}
+          />
+          <p
+            style={{
+              color: isDark ? '#94a3b8' : '#64748b',
+              fontSize: '0.82rem',
+              margin: 0,
+            }}
+          >
+            {isDark
+              ? '← Gulir layar untuk menjelajahi proyek · Klik kartu untuk fitur lengkap →'
+              : '← Scroll to explore projects · Click card for details →'}
+          </p>
         </div>
-      ) : (
-        /* MOBILE: Natural Touch Swipe Horizontal Scroll */
-        <section
-          id="projects"
+
+        {/* Horizontal Track Container */}
+        <div
           style={{
-            position: 'relative',
-            padding: 'clamp(70px, 9vh, 100px) 0 60px',
-            zIndex: 10,
-            background: 'transparent',
             width: '100%',
             overflow: 'hidden',
+            padding: '0.4rem 0 1.2rem',
+            flexShrink: 0,
           }}
         >
-          <div
+          <motion.div
+            ref={trackRef}
             style={{
-              maxWidth: '1200px',
-              width: '100%',
-              margin: '0 auto',
-              padding: '0 clamp(1.5rem, 5vw, 4.5rem)',
-              textAlign: 'center',
-              marginBottom: '2rem',
-            }}
-          >
-            <span
-              style={{
-                color: accentColor,
-                fontFamily: 'JetBrains Mono, monospace',
-                fontSize: '0.85rem',
-                letterSpacing: '3px',
-                fontWeight: 600,
-              }}
-            >
-              {'<projects>'}
-            </span>
-            <h2
-              style={{
-                fontFamily: 'Playfair Display, serif',
-                fontSize: 'clamp(1.8rem, 4.5vw, 3rem)',
-                color: textColor,
-                margin: '0.5rem 0',
-              }}
-            >
-              {t.projects.title}
-            </h2>
-            <div
-              style={{
-                width: '60px',
-                height: '3px',
-                background: `linear-gradient(90deg, ${accentColor}, ${isDark ? '#39ff14' : '#8b5cf6'})`,
-                margin: '0 auto 0.75rem',
-                borderRadius: '2px',
-                boxShadow: isDark ? `0 0 10px ${accentColor}` : 'none',
-              }}
-            />
-            <p
-              style={{
-                color: isDark ? '#94a3b8' : '#64748b',
-                fontSize: '0.85rem',
-              }}
-            >
-              {isDark
-                ? '← Geser kartu ke samping untuk menjelajahi proyek · Klik kartu untuk balik →'
-                : '← Swipe cards to explore projects · Click card to flip →'}
-            </p>
-          </div>
-
-          <div
-            className="projects-scroll-container"
-            style={{
+              x: smoothX,
               display: 'flex',
-              gap: '1.2rem',
-              overflowX: 'auto',
-              scrollSnapType: 'x mandatory',
-              padding: '0.5rem clamp(1.5rem, 5vw, 3rem) 2rem',
-              width: '100%',
-              boxSizing: 'border-box',
-              scrollbarWidth: 'none',
-              WebkitOverflowScrolling: 'touch',
+              gap: 'clamp(1rem, 3vw, 1.4rem)',
+              padding: '0 clamp(1.2rem, 5vw, 5rem)',
+              width: 'max-content',
+              willChange: 'transform',
             }}
           >
             {t.projects.items.map((proj) => (
@@ -609,9 +501,9 @@ export default function Projects({ progress }) {
                 }}
               />
             ))}
-          </div>
-        </section>
-      )}
+          </motion.div>
+        </div>
+      </div>
 
       {/* Lightbox Modal for Full HD GUI Preview */}
       {lightboxImg && (

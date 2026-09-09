@@ -5,7 +5,6 @@
 }
 
 html {
-  scroll-behavior: smooth;
   scroll-padding-top: 70px;
   background-color: #05050f;
   overflow-x: clip;
@@ -66,7 +65,8 @@ img { max-width: 100%; height: auto; }
 
 /* Custom scrollbars for horizontal containers */
 .skills-scroll-container,
-.contact-scroll-container {
+.contact-scroll-container,
+.credentials-scroll-container {
   scrollbar-width: thin;
   -webkit-overflow-scrolling: touch;
 }
@@ -84,40 +84,47 @@ img { max-width: 100%; height: auto; }
 }
 
 .dark .skills-scroll-container,
-.dark .contact-scroll-container {
+.dark .contact-scroll-container,
+.dark .credentials-scroll-container {
   scrollbar-color: #00f5ff rgba(255, 255, 255, 0.05);
 }
 
 .light .skills-scroll-container,
-.light .contact-scroll-container {
+.light .contact-scroll-container,
+.light .credentials-scroll-container {
   scrollbar-color: #6366f1 rgba(0, 0, 0, 0.05);
 }
 
 .skills-scroll-container::-webkit-scrollbar,
-.contact-scroll-container::-webkit-scrollbar {
+.contact-scroll-container::-webkit-scrollbar,
+.credentials-scroll-container::-webkit-scrollbar {
   height: 6px;
 }
 
 .dark .skills-scroll-container::-webkit-scrollbar-track,
-.dark .contact-scroll-container::-webkit-scrollbar-track {
+.dark .contact-scroll-container::-webkit-scrollbar-track,
+.dark .credentials-scroll-container::-webkit-scrollbar-track {
   background: rgba(255, 255, 255, 0.02);
   border-radius: 10px;
 }
 
 .light .skills-scroll-container::-webkit-scrollbar-track,
-.light .contact-scroll-container::-webkit-scrollbar-track {
+.light .contact-scroll-container::-webkit-scrollbar-track,
+.light .credentials-scroll-container::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0.04);
   border-radius: 10px;
 }
 
 .dark .skills-scroll-container::-webkit-scrollbar-thumb,
-.dark .contact-scroll-container::-webkit-scrollbar-thumb {
+.dark .contact-scroll-container::-webkit-scrollbar-thumb,
+.dark .credentials-scroll-container::-webkit-scrollbar-thumb {
   background: linear-gradient(90deg, #00f5ff, #39ff14);
   border-radius: 10px;
 }
 
 .light .skills-scroll-container::-webkit-scrollbar-thumb,
-.light .contact-scroll-container::-webkit-scrollbar-thumb {
+.light .contact-scroll-container::-webkit-scrollbar-thumb,
+.light .credentials-scroll-container::-webkit-scrollbar-thumb {
   background: linear-gradient(90deg, #6366f1, #8b5cf6);
   border-radius: 10px;
 }
@@ -202,6 +209,28 @@ img { max-width: 100%; height: auto; }
     overflow-x: visible !important;
     padding-bottom: 0 !important;
     gap: 2rem !important;
+  }
+}
+
+/* Credentials horizontal scroll on mobile, responsive grid on desktop */
+.credentials-scroll-container {
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  padding: 0.5rem 0.5rem 1.5rem;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (min-width: 900px) {
+  .credentials-scroll-container {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 270px), 1fr)) !important;
+    overflow-x: visible !important;
+    padding-bottom: 0 !important;
+    gap: 1.5rem !important;
   }
 }
 

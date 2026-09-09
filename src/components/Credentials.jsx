@@ -65,14 +65,13 @@ export default function Credentials() {
           <p style={{ color: subColor, fontSize: '0.9rem', maxWidth: '650px', margin: '0 auto' }}>
             {t.credentials.subtitle}
           </p>
+          <p style={{ color: isDark ? '#94a3b8' : '#64748b', marginTop: '0.45rem', fontSize: '0.82rem' }}>
+            {isDark ? '← Geser kartu ke samping untuk melihat kredensial lainnya · Klik kartu untuk rincian modul →' : '← Swipe cards to explore credentials · Click card for details →'}
+          </p>
         </motion.div>
 
-        {/* 4 Credential Cards Grid */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 270px), 1fr))',
-          gap: '1.5rem',
-        }}>
+        {/* 🌟 Horizontal Swipe Scroll for Credentials on Mobile, Multi-Col Grid on Desktop 🌟 */}
+        <div className="credentials-scroll-container">
           {t.credentials.items.map((cred, idx) => {
             const cardColor = cred.badgeColor || accentColor;
             return (
@@ -89,7 +88,7 @@ export default function Credentials() {
                     : 'linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(241, 245, 249, 0.9))',
                   border: `1px solid ${isDark ? `${cardColor}35` : 'rgba(99,102,241,0.25)'}`,
                   borderRadius: '22px',
-                  padding: '1.5rem',
+                  padding: '1.4rem',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'space-between',
@@ -97,9 +96,13 @@ export default function Credentials() {
                   position: 'relative',
                   overflow: 'hidden',
                   backdropFilter: 'blur(16px)',
+                  WebkitBackdropFilter: 'blur(16px)',
                   boxShadow: isDark
                     ? `0 15px 35px -10px rgba(0,0,0,0.7), 0 0 20px ${cardColor}15`
                     : '0 15px 35px -10px rgba(99,102,241,0.1)',
+                  flex: '0 0 min(300px, 80vw)',
+                  minWidth: 'min(300px, 80vw)',
+                  scrollSnapAlign: 'center',
                 }}
               >
                 {/* Glowing Top Border Accent */}

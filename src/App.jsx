@@ -20,16 +20,18 @@ function Footer() {
   return (
     <footer style={{
       textAlign: 'center', 
-      padding: '1.2rem clamp(1.5rem, 5vw, 4.5rem)',
-      borderTop: `1px solid ${isDark ? 'rgba(0,245,255,0.1)' : 'rgba(99,102,241,0.15)'}`,
-      color: isDark ? '#4a6b7a' : '#94a3b8',
+      padding: '1.6rem clamp(1.2rem, 5vw, 4.5rem) 2.5rem',
+      borderTop: `1px solid ${isDark ? 'rgba(0,245,255,0.12)' : 'rgba(99,102,241,0.15)'}`,
+      color: isDark ? '#64748b' : '#94a3b8',
       fontSize: '0.82rem', 
       position: 'relative', 
       zIndex: 80,
       width: '100%',
-      maxWidth: '100%',
+      maxWidth: '1200px',
+      margin: 'clamp(3rem, 7vh, 5rem) auto 0',
       background: 'transparent',
       flexShrink: 0,
+      boxSizing: 'border-box',
     }}>
       <span>Made with </span>
       <span style={{ color: '#ef4444' }}>❤️</span>
@@ -131,8 +133,8 @@ function AppContent() {
     const loop = () => {
       const diff = targetProgressRef.current - smoothProgressRef.current;
       if (Math.abs(diff) > 0.00005) {
-        // Liquid damping (~150ms settling) eliminates wheel jerkiness
-        smoothProgressRef.current += diff * 0.09;
+        // Snappy liquid damping (~150ms settling) eliminates wheel jerkiness while tracking directly
+        smoothProgressRef.current += diff * 0.18;
         setSmoothProgress(smoothProgressRef.current);
       } else if (smoothProgressRef.current !== targetProgressRef.current) {
         smoothProgressRef.current = targetProgressRef.current;
@@ -259,11 +261,17 @@ function AppContent() {
           </div>
 
           {/* Stage 6: Contact & Footer (progress 0.88 -> 1.00) */}
-          <div style={{ ...stageBaseStyle, justifyContent: 'space-between', paddingTop: 'clamp(85px, 11vh, 105px)', ...getStageStyle(smoothProgress, 0.88, 0.93, 1.00, 1.00) }}>
-            <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', minHeight: 0 }}>
+          <div style={{
+            ...stageBaseStyle,
+            justifyContent: 'flex-start',
+            paddingTop: 'clamp(70px, 9vh, 95px)',
+            paddingBottom: '30px',
+            ...getStageStyle(smoothProgress, 0.88, 0.93, 1.00, 1.00)
+          }}>
+            <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <Contact />
+              <Footer />
             </div>
-            <Footer />
           </div>
         </div>
       </div>
