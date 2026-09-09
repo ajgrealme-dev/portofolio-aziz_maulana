@@ -135,11 +135,11 @@ export default function About() {
             transition={{ duration: 0.8, delay: 0.2 }} 
             style={{ 
               display: 'flex', flexDirection: 'column', gap: '1.5rem',
-              background: isDark ? 'rgba(15, 23, 42, 0.5)' : 'rgba(255, 255, 255, 0.6)',
-              backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)',
+              background: isDark ? 'rgba(8, 12, 28, 0.85)' : 'rgba(255, 255, 255, 0.9)',
+              backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
               padding: 'clamp(1.25rem, 3vw, 2.25rem)', borderRadius: '24px',
-              border: `1px solid ${isDark ? 'rgba(0,245,255,0.1)' : 'rgba(99,102,241,0.1)'}`,
-              boxShadow: isDark ? '0 10px 30px rgba(0,0,0,0.3)' : '0 10px 30px rgba(99,102,241,0.05)',
+              border: `1px solid ${isDark ? 'rgba(0,245,255,0.18)' : 'rgba(99,102,241,0.18)'}`,
+              boxShadow: isDark ? '0 15px 35px rgba(0,0,0,0.5)' : '0 15px 35px rgba(99,102,241,0.08)',
               width: '100%',
             }}
           >

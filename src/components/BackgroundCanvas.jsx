@@ -38,9 +38,9 @@ function DeepStarfield() {
 
   useFrame((state, delta) => {
     if (ref.current) {
-      // 100% Steady constant drift: Zero scroll dependency
-      ref.current.rotation.z += delta * 0.012;
-      ref.current.rotation.y += delta * 0.01;
+      // 100% Steady constant drift: Zero scroll dependency (faster ambient flow)
+      ref.current.rotation.z += delta * 0.028;
+      ref.current.rotation.y += delta * 0.024;
     }
   });
 
@@ -71,8 +71,8 @@ function MidNebulaStarfield({ isDark }) {
   useFrame((state, delta) => {
     if (ref.current) {
       // Very slow and stable counter-rotation: Zero scroll dependency
-      ref.current.rotation.z -= delta * 0.016;
-      ref.current.rotation.y += delta * 0.014;
+      ref.current.rotation.z -= delta * 0.038;
+      ref.current.rotation.y += delta * 0.032;
     }
   });
 
@@ -102,9 +102,9 @@ function NearWarpStarfield({ isDark }) {
 
   useFrame((state, delta) => {
     if (ref.current) {
-      // Subtle foreground orbit: Zero scroll dependency
-      ref.current.rotation.z += delta * 0.02;
-      ref.current.rotation.y -= delta * 0.018;
+      // Foreground orbit: Zero scroll dependency
+      ref.current.rotation.z += delta * 0.048;
+      ref.current.rotation.y -= delta * 0.042;
     }
   });
 
@@ -128,11 +128,11 @@ function OptimizedShape({ type, position, color, size, rotationSpeed = 0.5, floa
 
   useFrame((state, delta) => {
     if (meshRef.current) {
-      meshRef.current.rotation.x += delta * 0.4 * rotationSpeed;
-      meshRef.current.rotation.y += delta * 0.5 * rotationSpeed;
-      // Smooth sinusoidal floating without separate rAF hooks
+      meshRef.current.rotation.x += delta * 0.85 * rotationSpeed;
+      meshRef.current.rotation.y += delta * 1.1 * rotationSpeed;
+      // Smooth sinusoidal floating
       meshRef.current.position.y =
-        position[1] + Math.sin(state.clock.elapsedTime * 0.9 + floatOffset) * 0.28;
+        position[1] + Math.sin(state.clock.elapsedTime * 1.6 + floatOffset) * 0.38;
     }
   });
 

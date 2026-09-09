@@ -52,9 +52,9 @@ function ScrollProgress({ progress }) {
       height: '3px',
       background: `linear-gradient(90deg, ${isDark ? '#00f5ff' : '#6366f1'}, ${isDark ? '#39ff14' : '#8b5cf6'})`,
       zIndex: 9999,
-      transition: 'width 0.05s linear',
       boxShadow: isDark ? '0 0 10px #00f5ff' : 'none',
       pointerEvents: 'none',
+      willChange: 'width',
     }} />
   );
 }
@@ -64,7 +64,7 @@ function getStageStyle(progress, start, peakStart, peakEnd, end) {
   if (progress < start || progress > end) {
     return {
       opacity: 0,
-      transform: progress < start ? 'scale(0.95) translateY(24px)' : 'scale(0.95) translateY(-24px)',
+      transform: progress < start ? 'scale(0.975) translateY(16px)' : 'scale(0.975) translateY(-16px)',
       pointerEvents: 'none',
       visibility: 'hidden',
     };
@@ -73,10 +73,11 @@ function getStageStyle(progress, start, peakStart, peakEnd, end) {
   // Entering phase
   if (progress < peakStart) {
     const t = (progress - start) / (peakStart - start);
-    const smooth = t * t * (3 - 2 * t);
+    // Quintic smootherstep: zero 1st and 2nd derivatives at edges (Ken Perlin)
+    const smooth = t * t * t * (t * (6 * t - 15) + 10);
     return {
       opacity: smooth,
-      transform: `scale(${0.95 + 0.05 * smooth}) translateY(${24 * (1 - smooth)}px)`,
+      transform: `scale(${0.975 + 0.025 * smooth}) translateY(${16 * (1 - smooth)}px)`,
       pointerEvents: smooth > 0.5 ? 'auto' : 'none',
       visibility: 'visible',
     };
@@ -94,10 +95,10 @@ function getStageStyle(progress, start, peakStart, peakEnd, end) {
 
   // Exiting phase
   const t = (progress - peakEnd) / (end - peakEnd);
-  const smooth = t * t * (3 - 2 * t);
+  const smooth = t * t * t * (t * (6 * t - 15) + 10);
   return {
     opacity: 1 - smooth,
-    transform: `scale(${1 - 0.05 * smooth}) translateY(${-24 * smooth}px)`,
+    transform: `scale(${1 - 0.025 * smooth}) translateY(${-16 * smooth}px)`,
     pointerEvents: (1 - smooth) > 0.5 ? 'auto' : 'none',
     visibility: 'visible',
   };
@@ -106,32 +107,55 @@ function getStageStyle(progress, start, peakStart, peakEnd, end) {
 function AppContent() {
   const { theme } = useApp();
   const isDark = theme === 'dark';
-  const [progress, setProgress] = useState(0);
+  const [smoothProgress, setSmoothProgress] = useState(0);
+  const targetProgressRef = useRef(0);
+  const smoothProgressRef = useRef(0);
   const runwayRef = useRef(null);
 
-  // Master Scroll Progress Listener (0.0 to 1.0 along the 700vh runway)
+  // Master Scroll Progress Listener with RAF Lerp Interpolation
+  // Guarantees continuous 60/120fps liquid silk glide across discrete mouse wheel ticks
   useEffect(() => {
+    let animId;
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
       if (maxScroll <= 0) return;
-      const p = Math.max(0, Math.min(1, scrollY / maxScroll));
-      setProgress(p);
+      targetProgressRef.current = Math.max(0, Math.min(1, scrollY / maxScroll));
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    smoothProgressRef.current = targetProgressRef.current;
+    setSmoothProgress(targetProgressRef.current);
+
+    const loop = () => {
+      const diff = targetProgressRef.current - smoothProgressRef.current;
+      if (Math.abs(diff) > 0.00005) {
+        // Liquid damping (~150ms settling) eliminates wheel jerkiness
+        smoothProgressRef.current += diff * 0.09;
+        setSmoothProgress(smoothProgressRef.current);
+      } else if (smoothProgressRef.current !== targetProgressRef.current) {
+        smoothProgressRef.current = targetProgressRef.current;
+        setSmoothProgress(targetProgressRef.current);
+      }
+      animId = requestAnimationFrame(loop);
+    };
+    animId = requestAnimationFrame(loop);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      cancelAnimationFrame(animId);
+    };
   }, []);
 
-  // Compute active section based on progress
+  // Compute active section based on smoothProgress
   let activeSection = 'hero';
-  if (progress >= 0.87) activeSection = 'contact';
-  else if (progress >= 0.76) activeSection = 'experience';
-  else if (progress >= 0.64) activeSection = 'credentials';
-  else if (progress >= 0.37) activeSection = 'projects';
-  else if (progress >= 0.23) activeSection = 'skills';
-  else if (progress >= 0.10) activeSection = 'about';
+  if (smoothProgress >= 0.88) activeSection = 'contact';
+  else if (smoothProgress >= 0.77) activeSection = 'experience';
+  else if (smoothProgress >= 0.64) activeSection = 'credentials';
+  else if (smoothProgress >= 0.38) activeSection = 'projects';
+  else if (smoothProgress >= 0.23) activeSection = 'skills';
+  else if (smoothProgress >= 0.10) activeSection = 'about';
   else activeSection = 'hero';
 
   const stageBaseStyle = {
@@ -148,6 +172,7 @@ function AppContent() {
     boxSizing: 'border-box',
     overflowY: 'auto',
     scrollbarWidth: 'none',
+    willChange: 'transform, opacity',
   };
 
   return (
@@ -165,12 +190,12 @@ function AppContent() {
       >
         {/* Invisible anchor checkpoints for browser hash links */}
         <div id="hero" style={{ position: 'absolute', top: '0%' }} />
-        <div id="about" style={{ position: 'absolute', top: '18%' }} />
-        <div id="skills" style={{ position: 'absolute', top: '31%' }} />
-        <div id="projects" style={{ position: 'absolute', top: '43%' }} />
+        <div id="about" style={{ position: 'absolute', top: '16%' }} />
+        <div id="skills" style={{ position: 'absolute', top: '30%' }} />
+        <div id="projects" style={{ position: 'absolute', top: '44%' }} />
         <div id="credentials" style={{ position: 'absolute', top: '71%' }} />
-        <div id="experience" style={{ position: 'absolute', top: '83%' }} />
-        <div id="contact" style={{ position: 'absolute', top: '97%' }} />
+        <div id="experience" style={{ position: 'absolute', top: '84%' }} />
+        <div id="contact" style={{ position: 'absolute', top: '96%' }} />
       </div>
 
       {/* 🌟 100% FIXED MASTER VIEWPORT STAGE ("Diam Begitu" Ala Animejs.com & Trapicmotion) 🌟 */}
@@ -196,45 +221,45 @@ function AppContent() {
         <CustomCursor />
 
         {/* Layer 2: Top Glowing Timeline Bar */}
-        <ScrollProgress progress={progress} />
+        <ScrollProgress progress={smoothProgress} />
 
         {/* Layer 3: Fixed Navbar Header */}
         <Navbar activeSection={activeSection} />
 
         {/* Layer 4: The 7 Stages Master Presentation */}
         <div style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
-          {/* Stage 0: Hero (progress 0.00 -> 0.13) */}
-          <div style={{ ...stageBaseStyle, justifyContent: 'center', paddingTop: '70px', ...getStageStyle(progress, 0.00, 0.00, 0.08, 0.13) }}>
+          {/* Stage 0: Hero (progress 0.00 -> 0.14) */}
+          <div style={{ ...stageBaseStyle, justifyContent: 'center', paddingTop: '70px', ...getStageStyle(smoothProgress, 0.00, 0.00, 0.08, 0.14) }}>
             <Hero />
           </div>
 
-          {/* Stage 1: About (progress 0.10 -> 0.26) */}
-          <div style={{ ...stageBaseStyle, ...getStageStyle(progress, 0.10, 0.14, 0.22, 0.26) }}>
+          {/* Stage 1: About (progress 0.09 -> 0.27) */}
+          <div style={{ ...stageBaseStyle, ...getStageStyle(smoothProgress, 0.09, 0.14, 0.22, 0.27) }}>
             <About />
           </div>
 
-          {/* Stage 2: Skills (progress 0.23 -> 0.40) */}
-          <div style={{ ...stageBaseStyle, ...getStageStyle(progress, 0.23, 0.27, 0.36, 0.40) }}>
+          {/* Stage 2: Skills (progress 0.22 -> 0.41) */}
+          <div style={{ ...stageBaseStyle, ...getStageStyle(smoothProgress, 0.22, 0.27, 0.36, 0.41) }}>
             <Skills />
           </div>
 
-          {/* Stage 3: Projects Mandiri Horizontal Scrub (progress 0.37 -> 0.67) */}
-          <div style={{ ...stageBaseStyle, justifyContent: 'center', paddingTop: '70px', ...getStageStyle(progress, 0.37, 0.41, 0.63, 0.67) }}>
-            <Projects progress={progress} />
+          {/* Stage 3: Projects Mandiri Horizontal Scrub (progress 0.37 -> 0.68) */}
+          <div style={{ ...stageBaseStyle, justifyContent: 'center', paddingTop: '70px', ...getStageStyle(smoothProgress, 0.37, 0.42, 0.63, 0.68) }}>
+            <Projects progress={smoothProgress} />
           </div>
 
-          {/* Stage 4: Credentials (progress 0.64 -> 0.79) */}
-          <div style={{ ...stageBaseStyle, ...getStageStyle(progress, 0.64, 0.68, 0.75, 0.79) }}>
+          {/* Stage 4: Credentials (progress 0.64 -> 0.81) */}
+          <div style={{ ...stageBaseStyle, ...getStageStyle(smoothProgress, 0.64, 0.69, 0.76, 0.81) }}>
             <Credentials />
           </div>
 
-          {/* Stage 5: Experience (progress 0.76 -> 0.90) */}
-          <div style={{ ...stageBaseStyle, ...getStageStyle(progress, 0.76, 0.80, 0.86, 0.90) }}>
+          {/* Stage 5: Experience (progress 0.77 -> 0.92) */}
+          <div style={{ ...stageBaseStyle, ...getStageStyle(smoothProgress, 0.77, 0.82, 0.88, 0.92) }}>
             <Experience />
           </div>
 
-          {/* Stage 6: Contact & Footer (progress 0.87 -> 1.00) */}
-          <div style={{ ...stageBaseStyle, justifyContent: 'space-between', paddingTop: 'clamp(85px, 11vh, 105px)', ...getStageStyle(progress, 0.87, 0.91, 1.00, 1.00) }}>
+          {/* Stage 6: Contact & Footer (progress 0.88 -> 1.00) */}
+          <div style={{ ...stageBaseStyle, justifyContent: 'space-between', paddingTop: 'clamp(85px, 11vh, 105px)', ...getStageStyle(smoothProgress, 0.88, 0.93, 1.00, 1.00) }}>
             <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', minHeight: 0 }}>
               <Contact />
             </div>

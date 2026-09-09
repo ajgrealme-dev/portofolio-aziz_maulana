@@ -15,10 +15,10 @@ export default function Contact() {
   const accentColor = isDark ? '#00f5ff' : '#6366f1';
   const textColor = isDark ? '#e2e8f0' : '#1e293b';
   const subColor = isDark ? '#94a3b8' : '#64748b';
-  const cardBg = isDark ? 'rgba(0,245,255,0.03)' : 'rgba(99,102,241,0.04)';
-  const cardBorder = isDark ? 'rgba(0,245,255,0.15)' : 'rgba(99,102,241,0.2)';
-  const inputBg = isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)';
-  const inputBorder = isDark ? 'rgba(0,245,255,0.2)' : 'rgba(99,102,241,0.25)';
+  const cardBg = isDark ? 'rgba(8, 12, 28, 0.85)' : 'rgba(255, 255, 255, 0.9)';
+  const cardBorder = isDark ? 'rgba(0,245,255,0.18)' : 'rgba(99,102,241,0.2)';
+  const inputBg = isDark ? 'rgba(15, 23, 42, 0.75)' : 'rgba(240, 244, 255, 0.75)';
+  const inputBorder = isDark ? 'rgba(0,245,255,0.25)' : 'rgba(99,102,241,0.25)';
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -182,7 +182,8 @@ export default function Contact() {
                 background: cardBg, border: `1px solid ${cardBorder}`,
                 borderRadius: '18px', padding: '1.15rem 1.35rem',
                 textDecoration: 'none',
-                backdropFilter: 'blur(10px)',
+                backdropFilter: 'blur(18px)',
+                WebkitBackdropFilter: 'blur(18px)',
                 transition: 'box-shadow 0.3s',
                 transformStyle: 'preserve-3d',
                 cursor: 'pointer',
@@ -220,15 +221,17 @@ export default function Contact() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
                 background: `linear-gradient(135deg, ${accentColor}, ${isDark ? '#39ff14' : '#8b5cf6'})`,
-                color: '#05050f', fontWeight: 700, padding: '0.95rem',
-                borderRadius: '14px', textDecoration: 'none', fontSize: '0.9rem',
-                boxShadow: isDark ? `0 0 25px ${accentColor}40` : '0 10px 25px rgba(99,102,241,0.3)',
-                marginTop: '0.25rem',
+                color: '#05050f', textDecoration: 'none',
+                borderRadius: '16px', padding: '1rem',
+                fontWeight: 700, fontSize: '0.92rem',
+                boxShadow: isDark ? `0 0 25px ${accentColor}40` : '0 10px 25px rgba(99,102,241,0.25)',
+                transition: 'all 0.2s ease',
               }}
             >
-              📥 Unduh CV PDF
+              <span>📄</span>
+              <span>{t.hero.cv}</span>
             </motion.a>
           </motion.div>
 
@@ -238,7 +241,8 @@ export default function Contact() {
             style={{
               background: cardBg, border: `1px solid ${cardBorder}`,
               borderRadius: '24px', padding: '1.75rem',
-              backdropFilter: 'blur(10px)',
+              backdropFilter: 'blur(18px)',
+              WebkitBackdropFilter: 'blur(18px)',
               display: 'flex', flexDirection: 'column', gap: '1.15rem',
               position: 'relative', overflow: 'hidden',
               flex: '0 0 min(350px, 86vw)',

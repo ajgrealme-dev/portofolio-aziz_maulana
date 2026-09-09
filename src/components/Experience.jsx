@@ -15,11 +15,12 @@ function TimelineItem({ item, isDark, index, inView }) {
       transition={{ duration: 0.7, delay: index * 0.15 }}
       whileHover={{ y: -6, boxShadow: isDark ? `0 20px 50px ${accentColor}20` : '0 20px 50px rgba(99,102,241,0.15)' }}
       style={{
-        background: isDark ? 'rgba(0,245,255,0.04)' : 'rgba(99,102,241,0.05)',
+        background: isDark ? 'rgba(8, 12, 28, 0.85)' : 'rgba(255, 255, 255, 0.9)',
         border: `1px solid ${isDark ? 'rgba(0,245,255,0.2)' : 'rgba(99,102,241,0.2)'}`,
         borderRadius: '20px',
         padding: 'clamp(0.75rem, 1.8vw, 1.5rem)',
-        backdropFilter: 'blur(10px)',
+        backdropFilter: 'blur(18px)',
+        WebkitBackdropFilter: 'blur(18px)',
         transformStyle: 'preserve-3d',
         transition: 'box-shadow 0.3s ease',
         textAlign: isLeft ? 'right' : 'left',
@@ -146,10 +147,11 @@ export default function Experience() {
                 transition={{ delay: 0.3 + i * 0.1 }}
                 whileHover={{ y: -6, boxShadow: isDark ? `0 20px 40px ${accentColor}20` : '0 20px 40px rgba(99,102,241,0.15)' }}
                 style={{
-                  background: isDark ? 'rgba(0,245,255,0.04)' : 'rgba(99,102,241,0.05)',
+                  background: isDark ? 'rgba(8, 12, 28, 0.85)' : 'rgba(255, 255, 255, 0.9)',
                   border: `1px solid ${isDark ? 'rgba(0,245,255,0.2)' : 'rgba(99,102,241,0.2)'}`,
                   borderRadius: '16px', padding: 'clamp(0.6rem, 1.5vw, 1rem)',
-                  backdropFilter: 'blur(10px)',
+                  backdropFilter: 'blur(18px)',
+                  WebkitBackdropFilter: 'blur(18px)',
                   transition: 'box-shadow 0.3s', cursor: 'default',
                   textAlign: 'left',
                 }}>

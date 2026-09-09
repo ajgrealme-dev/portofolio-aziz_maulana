@@ -37,8 +37,8 @@ function SkillTag({ name, isDark, delay }) {
 function SkillCategory({ cat, isDark, inView, catIndex }) {
   const icons = ['📋', '⚡', '🧠'];
   const accentColor = isDark ? '#00f5ff' : '#6366f1';
-  const cardBg = isDark ? 'rgba(0,245,255,0.03)' : 'rgba(99,102,241,0.04)';
-  const cardBorder = isDark ? 'rgba(0,245,255,0.15)' : 'rgba(99,102,241,0.2)';
+  const cardBg = isDark ? 'rgba(8, 12, 28, 0.85)' : 'rgba(255, 255, 255, 0.9)';
+  const cardBorder = isDark ? 'rgba(0,245,255,0.18)' : 'rgba(99,102,241,0.2)';
   const textColor = isDark ? '#e2e8f0' : '#1e293b';
 
   const cardRef = useRef();
@@ -77,7 +77,8 @@ function SkillCategory({ cat, isDark, inView, catIndex }) {
         padding: '1.75rem',
         transformStyle: 'preserve-3d',
         transition: 'box-shadow 0.3s ease',
-        backdropFilter: 'blur(10px)',
+        backdropFilter: 'blur(18px)',
+        WebkitBackdropFilter: 'blur(18px)',
         rotateX,
         rotateY,
         perspective: '1000px',
